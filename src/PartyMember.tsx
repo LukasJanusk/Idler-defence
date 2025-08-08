@@ -1,0 +1,131 @@
+import { useEffect, useState } from 'react';
+import ActionButton from './ActionButton';
+import type { Character } from './character';
+import Sprite from './Sprite';
+import type { CharacterActions, PartyPositionName } from './types';
+import { useGameContext } from './useGameContext';
+import { PlusCircle, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
+import CharacterSelectModal from './CharacterSelectModal';
+
+type PartyMemberProps = {
+  position: 'pos1' | 'pos2' | 'pos3' | 'pos4';
+  character: Character<CharacterActions> | null;
+};
+export function PartyMember({ character, position }: PartyMemberProps) {
+  const [characterSelectMolaleOpen, setCharacterSelectModalOpen] =
+    useState(false);
+  const { dispatch } = useGameContext();
+  const onAnimationEnd = (state: CharacterActions) => {
+    if (state === 'death') {
+      dispatch({
+        type: 'SET_PARTY_MEMBER_STATE',
+        payload: { position, newState: 'dead' },
+      });
+    }
+    if (state === 'resurrect') {
+      dispatch({
+        type: 'SET_PARTY_MEMBER_STATE',
+        payload: { position, newState: 'idle' },
+      });
+    }
+  };
+  useEffect(() => {
+    if (!character) return;
+    if (character.state === 'hit') {
+      const timer = setTimeout(() => {
+        dispatch({
+          type: 'SET_PARTY_MEMBER_STATE',
+          payload: {
+            position: position,
+            newState: 'idle',
+          },
+        });
+      }, character.stunRecovery);
+      return () => clearTimeout(timer);
+    }
+  }, [character, position, dispatch]);
+
+  return (
+    <div className="relative flex flex-col items-center justify-center">
+      <h1>{character?.name}</h1>
+      {characterSelectMolaleOpen && (
+        <div className="absolute top-0">
+          <CharacterSelectModal
+            position={position}
+            onClick={() => setCharacterSelectModalOpen(false)}
+          />
+        </div>
+      )}
+      {character ? (
+        <>
+          <div className="absolute left-0 top-0 border-2 border-transparent hover:border-gray-500">
+            <Sprite
+              animations={character.animations}
+              state={character.state}
+              scale={1}
+              onAnimationEnd={onAnimationEnd}
+            />
+          </div>
+          <div className="flex flex-row items-center">
+            <button
+              onClick={() =>
+                dispatch({
+                  type: 'MOVE_PARTY_MEMBER',
+                  payload: {
+                    from: position,
+                    to:
+                      position === 'pos4'
+                        ? 'pos1'
+                        : (`pos${Number(position.slice(-1)) + 1}` as PartyPositionName),
+                  },
+                })
+              }
+              className="mr-2"
+            >
+              <ArrowBigLeft />
+            </button>
+            <button
+              onClick={() =>
+                dispatch({
+                  type: 'MOVE_PARTY_MEMBER',
+                  payload: {
+                    from: position,
+                    to:
+                      position === 'pos1'
+                        ? 'pos4'
+                        : (`pos${Number(position.slice(-1)) - 1}` as PartyPositionName),
+                  },
+                })
+              }
+              className="ml-2"
+            >
+              <ArrowBigRight />
+            </button>
+          </div>
+          <div className="z-20 flex flex-col gap-1">
+            {character.actions.map((action) => (
+              <ActionButton
+                isActive={character.state === action}
+                label={action}
+                key={action}
+                onClick={() =>
+                  dispatch({
+                    type: 'SET_PARTY_MEMBER_STATE',
+                    payload: { newState: action, position },
+                  })
+                }
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <button className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400 focus:outline-none">
+          <PlusCircle
+            onClick={() => setCharacterSelectModalOpen((prev) => !prev)}
+            className="h-12 w-12 rounded-full text-gray-700"
+          />
+        </button>
+      )}
+    </div>
+  );
+}

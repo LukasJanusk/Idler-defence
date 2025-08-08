@@ -1,16 +1,10 @@
-import { useEffect, useReducer, useRef } from 'react';
-import Sprite from './Sprite';
-import { warriorAnimations } from './warriorAnimations';
-import { spriteReducer } from './spriteReducer';
+import { useEffect, useRef } from 'react';
 import { useParticles } from './useParticles';
+import { PartyMember } from './PartyMember';
+import { useGameContext } from './useGameContext';
 
 function App() {
-  const [state, dispatch] = useReducer(spriteReducer, 'idle');
-  const setIdle = () => dispatch({ type: 'idle' });
-  const setAttack = () => dispatch({ type: 'attack' });
-  const setComboAttack = () => dispatch({ type: 'combo' });
-  const setHit = () => dispatch({ type: 'hit' });
-  const setDeath = () => dispatch({ type: 'death' });
+  const { state } = useGameContext();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const splash = useParticles(canvasRef);
 
@@ -27,57 +21,18 @@ function App() {
   }, [splash, canvasRef]);
   return (
     <>
-      <div className="relative">
+      <div className="relative h-screen w-screen overflow-hidden">
         <canvas
-          className="absolute left-0 top-0"
           ref={canvasRef}
           width={window.innerWidth}
           height={window.innerHeight}
-        ></canvas>
-        <div className="relative-0 left-0">
-          <Sprite animations={warriorAnimations} state={state} scale={1} />
-          <div className="absolute">
-            <button
-              className={`border-2 px-2 text-white  rounded border-transparent hover:border-blue-400 bg-black ${
-                state === 'idle' ? 'border-blue-500' : 'border-transparent'
-              }`}
-              onClick={setIdle}
-            >
-              Idle
-            </button>
-            <button
-              className={`border-2 px-2 text-white  rounded border-transparent hover:border-blue-400 bg-black ${
-                state === 'attack' ? 'border-blue-500' : 'border-transparent'
-              }`}
-              onClick={setAttack}
-            >
-              Attack
-            </button>
-            <button
-              className={`border-2 px-2 text-white  rounded border-transparent hover:border-blue-400 bg-black ${
-                state === 'combo' ? 'border-blue-500' : 'border-transparent'
-              }`}
-              onClick={setComboAttack}
-            >
-              Combo
-            </button>
-            <button
-              className={`border-2 px-2 text-white  rounded border-transparent hover:border-blue-400 bg-black ${
-                state === 'hit' ? 'border-blue-500' : 'border-transparent'
-              }`}
-              onClick={setHit}
-            >
-              Hit
-            </button>
-            <button
-              className={`border-2 px-2 text-white  rounded border-transparent hover:border-blue-400 bg-black ${
-                state === 'death' ? 'border-blue-500' : 'border-transparent'
-              }`}
-              onClick={setDeath}
-            >
-              Death
-            </button>
-          </div>
+          className="absolute left-0 top-0 z-0 h-full w-full"
+        />
+        <div className="absolute bottom-0 left-0 z-10 grid h-[400px] w-[480px] grid-cols-4 grid-rows-1 border-2 border-gray-500">
+          <PartyMember position={'pos4'} character={state.party.pos4} />
+          <PartyMember position={'pos3'} character={state.party.pos3} />
+          <PartyMember position={'pos2'} character={state.party.pos2} />
+          <PartyMember position={'pos1'} character={state.party.pos1} />
         </div>
       </div>
     </>

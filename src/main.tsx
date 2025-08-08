@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { GameClockProvider } from './GameClockProvider.tsx';
+import { GameContextProvider } from './GameContextProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameClockProvider>
-      <App />
+      <GameContextProvider>
+        <App />
+      </GameContextProvider>
     </GameClockProvider>
-  </StrictMode>
+  </StrictMode>,
 );

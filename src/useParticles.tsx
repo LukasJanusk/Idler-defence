@@ -3,7 +3,7 @@ import { useGameClock } from './useGameClock';
 import { Particle, splashBlood } from './particles';
 
 export function useParticles(
-  canvas: React.RefObject<HTMLCanvasElement | null>
+  canvas: React.RefObject<HTMLCanvasElement | null>,
 ) {
   const particles = useRef<Particle[]>([]);
   const gameClock = useGameClock();
@@ -15,10 +15,9 @@ export function useParticles(
       const ctx = canvas.current?.getContext('2d');
       if (!ctx) return;
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      console.log(particles.current.length);
-      console.log('dt' + dt);
-      particles.current = particles.current.filter(p => p.isAlive());
-      particles.current.forEach(p => {
+
+      particles.current = particles.current.filter((p) => p.isAlive());
+      particles.current.forEach((p) => {
         p.update(dt);
         p.draw(ctx);
       });
