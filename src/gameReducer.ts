@@ -1,5 +1,6 @@
-import type { Character } from './character';
-import type { GameState, CharacterActions, PartyPositionName } from './types';
+import type { AnyAction } from './character';
+import type { Projectile } from './projectile';
+import type { GameState, PartyPositionName, AnyCharacter } from './types';
 
 type InitializeAction = {
   type: 'init';
@@ -9,7 +10,7 @@ type AddPartyMemberAction = {
   type: 'ADD_PARTY_MEMBER';
   payload: {
     position: PartyPositionName;
-    character: Character<CharacterActions>;
+    character: AnyCharacter;
   };
 };
 type RemovePartyMemberAction = {
@@ -22,7 +23,7 @@ type SetPartyMemberStateAction = {
   type: 'SET_PARTY_MEMBER_STATE';
   payload: {
     position: PartyPositionName;
-    newState: CharacterActions;
+    newState: AnyAction;
   };
 };
 type MovePartyMemberAction = {
@@ -32,13 +33,17 @@ type MovePartyMemberAction = {
     to: PartyPositionName;
   };
 };
-
+type AddProjectiles = {
+  type: 'ADD_PROJECTILES';
+  payload: Projectile[];
+};
 export type GameReducerAction =
   | InitializeAction
   | AddPartyMemberAction
   | RemovePartyMemberAction
   | SetPartyMemberStateAction
-  | MovePartyMemberAction;
+  | MovePartyMemberAction
+  | AddProjectiles;
 
 export function gameReducer(
   state: GameState,
@@ -131,7 +136,11 @@ export function gameReducer(
         },
       };
     }
-
+    case 'ADD_PROJECTILES':
+      return {
+        ...state,
+        projectiles: [...state.projectiles, ...action.payload],
+      };
     default:
       return state;
   }

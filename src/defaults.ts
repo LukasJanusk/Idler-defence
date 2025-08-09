@@ -1,7 +1,10 @@
 import { v4 } from 'uuid';
-import { Warrior } from './character';
-import type { GameState, WarriorActions } from './types';
-import { createWarriorAnimations } from './warriorAnimations';
+import { FireMage, Knight, LightningMage, Wizard } from './character';
+import type { GameState } from './types';
+import { createFireMageAnimations } from './fireWizardAnimations';
+import { createWizardAnimations } from './wizardAnimations';
+import { createKnightAnimations } from './knightAnimations';
+import { createLightningMageAnimations } from './lightningMageAnimations';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);
@@ -48,54 +51,31 @@ const namesFemale: string[] = [
   'Livia',
   'Claudia',
 ];
-const warriorActions: WarriorActions[] = [
-  'idle',
-  'attack',
-  'hit',
-  'death',
-  'resurrect',
-  'combo',
-];
 export async function initializeGameState(): Promise<GameState> {
   return {
     party: { pos1: null, pos2: null, pos3: null, pos4: null },
     availableCharacters: [
-      new Warrior(
-        `Warrior${v4()}`,
+      new Wizard(
+        `Wizard${v4()}`,
         pickRandomName(namesMale),
-        await createWarriorAnimations(),
-        warriorActions,
+        await createWizardAnimations(),
       ),
-      new Warrior(
-        `Warrior${v4()}`,
-        pickRandomName(namesMale),
-        await createWarriorAnimations(),
-        warriorActions,
+      new LightningMage(
+        `LightningMage${v4()}`,
+        pickRandomName(namesFemale),
+        await createLightningMageAnimations(),
       ),
-      new Warrior(
-        `Warrior${v4()}`,
+      new Knight(
+        `Knight${v4()}`,
         pickRandomName(namesMale),
-        await createWarriorAnimations(),
-        warriorActions,
+        await createKnightAnimations(),
       ),
-      new Warrior(
-        `Warrior${v4()}`,
+      new FireMage(
+        `FireMage${v4()}`,
         pickRandomName(namesMale),
-        await createWarriorAnimations(),
-        warriorActions,
-      ),
-      new Warrior(
-        `Warrior${v4()}`,
-        pickRandomName(namesMale),
-        await createWarriorAnimations(),
-        warriorActions,
-      ),
-      new Warrior(
-        `Warrior${v4()}`,
-        pickRandomName(namesMale),
-        await createWarriorAnimations(),
-        warriorActions,
+        await createFireMageAnimations(),
       ),
     ],
+    projectiles: [],
   };
 }

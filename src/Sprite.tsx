@@ -1,12 +1,14 @@
 import { useAnimation } from './useAnimation';
 import type { SpriteAnimations } from './types';
+import useSpriteLoad from './useSpriteLoad';
 
-export type SpriteProps<T extends string> = {
+type SpriteProps<T extends string> = {
+  animations: Partial<SpriteAnimations<T>>;
   state: T;
-  animations: SpriteAnimations<T>;
-  scale: number;
-  onAnimationEnd?: (state: T) => void;
+  onAnimationEnd: (state: T) => void;
+  scale?: number;
 };
+
 export default function Sprite<T extends string>({
   state,
   animations,
@@ -17,21 +19,25 @@ export default function Sprite<T extends string>({
     if (!onAnimationEnd) return;
     onAnimationEnd(state);
   };
-
-  const frame = useAnimation(animations[state], onEnd);
-  const width = animations[state].sheet.width / animations[state].nFrame;
-  const height = animations[state].sheet.height;
+  const current = animations[state];
+  const frame = useAnimation(current, onEnd);
+  const size = useSpriteLoad(current);
+  if (!size || !current) return <div>Loading sprite...</div>;
+  const width = size.width;
+  const height = size.height;
 
   return (
     <img
-      src={animations[state].sheet.image.src}
+      alt="animation"
+      src={current.sheet.img.src}
       style={{
-        width: width,
-        height: height,
+        border: '1px solid red',
+        width,
+        height,
         objectFit: 'none',
-        scale: scale,
-        objectPosition: `-${frame * width}px 0`,
+        scale,
+        objectPosition: `-${frame && frame * width}px 0`,
       }}
-    ></img>
+    />
   );
 }

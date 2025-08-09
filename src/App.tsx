@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useParticles } from './useParticles';
-import { PartyMember } from './PartyMember';
+import PartyMember from './PartyMember';
 import { useGameContext } from './useGameContext';
+import bg from './assets/bg_castle.jpg';
 
 function App() {
   const { state } = useGameContext();
@@ -22,13 +23,14 @@ function App() {
   return (
     <>
       <div className="relative h-screen w-screen overflow-hidden">
+        <img src={new URL(bg, import.meta.url).href}></img>
         <canvas
           ref={canvasRef}
           width={window.innerWidth}
           height={window.innerHeight}
           className="absolute left-0 top-0 z-0 h-full w-full"
         />
-        <div className="absolute bottom-0 left-0 z-10 grid h-[400px] w-[480px] grid-cols-4 grid-rows-1 border-2 border-gray-500">
+        <div className="absolute bottom-0 left-0 z-10 grid h-[800px] w-[480px] grid-cols-4 grid-rows-1 border-2 border-gray-500">
           <PartyMember position={'pos4'} character={state.party.pos4} />
           <PartyMember position={'pos3'} character={state.party.pos3} />
           <PartyMember position={'pos2'} character={state.party.pos2} />

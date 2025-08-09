@@ -7,7 +7,8 @@ import hit from './assets/warrior/_Hit.png';
 import death from './assets/warrior/_DeathNoMovement.png';
 import dead from './assets/warrior/_DeadNoMovement.png';
 import resurrect from './assets/warrior/_ResurrectNoMovement.png';
-import type { SpriteAnimations, WarriorActions } from './types';
+import type { SpriteAnimations } from './types';
+import type { WarriorAction } from './character';
 
 const idleUrl = new URL(idle, import.meta.url).href;
 
@@ -19,33 +20,27 @@ const deathUrl = new URL(death, import.meta.url).href;
 const deadUrl = new URL(dead, import.meta.url).href;
 const resurrectUrl = new URL(resurrect, import.meta.url).href;
 
-export const idleAnimation = async () =>
-  createAnimation(idleUrl, 10, 100, 'idle');
-export const attackOneAnimation = async () =>
-  await createAnimation(attackOneUrl, 4, 100, 'attack');
-export const attackTwoAnimation = async () =>
-  await createAnimation(attackTwoUrl, 6, 100, 'attack');
-export const comboAttackAnimation = async () =>
-  await createAnimation(comboUrl, 10, 100, 'combo');
-export const hitAnimation = async () =>
-  await createAnimation(hitUrl, 1, 100, 'hit');
-export const deathAnimation = async () =>
-  await createAnimation(deathUrl, 10, 100, 'death');
-export const deadAnimation = async () =>
-  await createAnimation(deadUrl, 1, 100, 'death');
-export const resurrectAnimation = async () =>
-  await createAnimation(resurrectUrl, 10, 100, 'resurrect');
+export const idleAnimation = () => createAnimation(idleUrl, 10, 100, 'idle');
+export const attackOneAnimation = () =>
+  createAnimation(attackOneUrl, 4, 100, 'attack');
+export const attackTwoAnimation = () =>
+  createAnimation(attackTwoUrl, 6, 100, 'attack');
+export const comboAttackAnimation = () =>
+  createAnimation(comboUrl, 10, 100, 'combo');
+export const hitAnimation = () => createAnimation(hitUrl, 1, 100, 'hit');
+export const deathAnimation = () => createAnimation(deathUrl, 10, 100, 'death');
+export const deadAnimation = () => createAnimation(deadUrl, 1, 100, 'death');
+export const resurrectAnimation = () =>
+  createAnimation(resurrectUrl, 10, 100, 'resurrect');
 
-export async function createWarriorAnimations(): Promise<
-  SpriteAnimations<WarriorActions>
-> {
+export function createWarriorAnimations(): SpriteAnimations<WarriorAction> {
   return {
-    idle: await idleAnimation(),
-    attack: await attackTwoAnimation(),
-    combo: await comboAttackAnimation(),
-    hit: await hitAnimation(),
-    death: await deathAnimation(),
-    dead: await deadAnimation(),
-    resurrect: await resurrectAnimation(),
+    idle: idleAnimation(),
+    attack: attackTwoAnimation(),
+    combo: comboAttackAnimation(),
+    hit: hitAnimation(),
+    death: deathAnimation(),
+    dead: deadAnimation(),
+    resurrect: resurrectAnimation(),
   };
 }

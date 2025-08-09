@@ -1,44 +1,38 @@
 import { v4 } from 'uuid';
-import type { CharacterActions } from './types';
+import type { AnyAction } from './character';
 
 export class Sheet {
-  image: HTMLImageElement = new Image();
+  src: string;
   width = 0;
   height = 0;
   loaded = false;
+  img: HTMLImageElement;
 
   constructor(url: string) {
-    this.image.src = url;
+    this.src = url;
+    this.img = new Image();
+    this.img.src = url;
   }
-  async load(): Promise<void> {
-    if (this.image.complete && this.image.naturalWidth !== 0) {
-      this.width = this.image.width;
-      this.height = this.image.height;
+  async load() {
+    if (this.img.complete && this.img.naturalWidth) {
+      this.width = this.img.naturalWidth;
+      this.height = this.img.naturalHeight;
       return;
     }
-    await new Promise<void>((resolve) => {
-      this.image.onload = () => {
-        this.width = this.image.width;
-        this.height = this.image.height;
+    await new Promise<void>((resolve, reject) => {
+      this.img.onload = () => {
+        this.width = this.img.naturalWidth;
+        this.height = this.img.naturalHeight;
         resolve();
       };
+      this.img.onerror = () => reject(new Error('Failed to load image'));
     });
-  }
-
-  getFrameRect(frameIndex: number, frameCount: number) {
-    const frameWidth = this.width / frameCount;
-    return {
-      x: frameIndex * frameWidth,
-      y: 0,
-      width: frameWidth,
-      height: this.height,
-    };
   }
 }
 
 export class Animation {
   id: string = 'Anim' + v4();
-  name: CharacterActions;
+  name: AnyAction;
   frame: number = 0;
   elapsed: number = 0;
   nFrame: number;
@@ -49,15 +43,12 @@ export class Animation {
     sheet: Sheet,
     nFrame: number,
     frameDuration: number,
-    name: CharacterActions,
+    name: AnyAction,
   ) {
     this.sheet = sheet;
     this.nFrame = nFrame;
     this.frameDuration = frameDuration;
     this.name = name;
-  }
-  async init() {
-    await this.sheet.load();
   }
   updateFrame() {
     this.frame = (this.frame + 1) % this.nFrame;
@@ -85,14 +76,13 @@ export class Animation {
     this.elapsed = 0;
   }
 }
-export async function createAnimation(
+export function createAnimation(
   url: string,
   nFrame: number,
   frameDuration: number,
-  name: CharacterActions,
-): Promise<Animation> {
+  name: AnyAction,
+): Animation {
   const sheet = new Sheet(url);
   const anim = new Animation(sheet, nFrame, frameDuration, name);
-  await anim.init();
   return anim;
 }

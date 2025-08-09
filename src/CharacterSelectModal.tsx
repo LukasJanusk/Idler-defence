@@ -1,7 +1,6 @@
 import { XCircle } from 'lucide-react';
 import { useGameContext } from './useGameContext';
-import type { Character } from './character';
-import type { CharacterActions } from './types';
+import type { AnyCharacter } from './types';
 
 type Props = {
   onClick: () => void;
@@ -9,7 +8,7 @@ type Props = {
 };
 export default function CharacterSelectModal({ onClick, position }: Props) {
   const { state, dispatch } = useGameContext();
-  const addCharacterToParty = (character: Character<CharacterActions>) => {
+  const addCharacterToParty = (character: AnyCharacter) => {
     dispatch({
       type: 'ADD_PARTY_MEMBER',
       payload: { position, character },

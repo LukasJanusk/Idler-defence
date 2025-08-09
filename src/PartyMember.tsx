@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
 import ActionButton from './ActionButton';
-import type { Character } from './character';
 import Sprite from './Sprite';
-import type { CharacterActions, PartyPositionName } from './types';
+import type { AnyCharacter, PartyPositionName } from './types';
 import { useGameContext } from './useGameContext';
 import { PlusCircle, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
 import CharacterSelectModal from './CharacterSelectModal';
+import type { AnyAction } from './character';
 
 type PartyMemberProps = {
-  position: 'pos1' | 'pos2' | 'pos3' | 'pos4';
-  character: Character<CharacterActions> | null;
+  character: AnyCharacter | null;
+  position: PartyPositionName;
 };
-export function PartyMember({ character, position }: PartyMemberProps) {
+
+export default function PartyMember({ character, position }: PartyMemberProps) {
   const [characterSelectMolaleOpen, setCharacterSelectModalOpen] =
     useState(false);
   const { dispatch } = useGameContext();
-  const onAnimationEnd = (state: CharacterActions) => {
+  const onAnimationEnd = (state: AnyAction) => {
     if (state === 'death') {
       dispatch({
         type: 'SET_PARTY_MEMBER_STATE',
@@ -46,7 +47,7 @@ export function PartyMember({ character, position }: PartyMemberProps) {
   }, [character, position, dispatch]);
 
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="relative bottom-44 flex flex-col items-center justify-center">
       <h1>{character?.name}</h1>
       {characterSelectMolaleOpen && (
         <div className="absolute top-0">
@@ -58,7 +59,7 @@ export function PartyMember({ character, position }: PartyMemberProps) {
       )}
       {character ? (
         <>
-          <div className="absolute left-0 top-0 border-2 border-transparent hover:border-gray-500">
+          <div className="absolute bottom-0 left-0 border-2 border-transparent hover:border-gray-500">
             <Sprite
               animations={character.animations}
               state={character.state}
