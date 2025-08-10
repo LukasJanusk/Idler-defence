@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Animation } from './animation';
-import { useGameClock } from './useGameClock';
+import { Animation } from '../animation';
+import { useGameClock } from '../context/useGameClock';
 
 export function useAnimation(
   animation: Animation | undefined | null,

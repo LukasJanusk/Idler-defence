@@ -1,6 +1,6 @@
-import { useAnimation } from './useAnimation';
+import { useAnimation } from './hooks/useAnimation';
 import type { SpriteAnimations } from './types';
-import useSpriteLoad from './useSpriteLoad';
+import useSpriteLoad from './hooks/useSpriteLoad';
 
 type SpriteProps<T extends string> = {
   animations: Partial<SpriteAnimations<T>>;

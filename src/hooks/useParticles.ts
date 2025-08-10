@@ -1,14 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { useGameClock } from './useGameClock';
-import { Particle, splashBlood } from './particles';
+import { useGameClock } from '../context/useGameClock';
+import { Particle, splashBlood, splashEmbers } from '../particles';
 
 export function useParticles(
   canvas: React.RefObject<HTMLCanvasElement | null>,
 ) {
   const particles = useRef<Particle[]>([]);
   const gameClock = useGameClock();
-  const splash = (x: number, y: number, n: number) => {
+  const splashBl = (x: number, y: number, n: number) => {
     particles.current.push(...splashBlood(x, y, n));
+  };
+  const splashEmb = (x: number, y: number, n: number) => {
+    particles.current.push(...splashEmbers(x, y, n));
   };
   useEffect(() => {
     const onTick = (dt: number) => {
@@ -27,5 +30,5 @@ export function useParticles(
     return () => gameClock.unsubscribe(onTick);
   }, [gameClock, canvas]);
 
-  return splash;
+  return { splashBl, splashEmb };
 }

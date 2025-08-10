@@ -1,17 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { useParticles } from './useParticles';
+import { useParticles } from './hooks/useParticles';
 import PartyMember from './PartyMember';
-import { useGameContext } from './useGameContext';
+import { useGameContext } from './context/useGameContext';
 import bg from './assets/bg_castle.jpg';
 
 function App() {
   const { state } = useGameContext();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const splash = useParticles(canvasRef);
+  const { splashBl } = useParticles(canvasRef);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      splash(e.x, e.y, 100);
+      splashBl(e.x, e.y, 100);
     };
     const canvas = canvasRef.current;
     canvas?.addEventListener('mousedown', handleClick);
@@ -19,7 +19,7 @@ function App() {
     return () => {
       canvas?.removeEventListener('mousedown', handleClick);
     };
-  }, [splash, canvasRef]);
+  }, [splashBl, canvasRef]);
   return (
     <>
       <div className="relative h-screen w-screen overflow-hidden">

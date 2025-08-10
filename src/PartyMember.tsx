@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ActionButton from './ActionButton';
 import Sprite from './Sprite';
 import type { AnyCharacter, PartyPositionName } from './types';
-import { useGameContext } from './useGameContext';
+import { useGameContext } from './context/useGameContext';
 import { PlusCircle, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
 import CharacterSelectModal from './CharacterSelectModal';
 import type { AnyAction } from './character';
@@ -48,7 +48,9 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
 
   return (
     <div className="relative bottom-44 flex flex-col items-center justify-center">
-      <h1>{character?.name}</h1>
+      <h1 className="rounded bg-black/80 px-2 text-xl font-bold text-white">
+        {character?.name}
+      </h1>
       {characterSelectMolaleOpen && (
         <div className="absolute top-0">
           <CharacterSelectModal
@@ -69,6 +71,7 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
           </div>
           <div className="flex flex-row items-center">
             <button
+              className="mr-2 rounded-lg border-2 border-black bg-gray-500 text-black transition-all duration-200 hover:scale-105 hover:border-blue-600 hover:bg-gray-400 hover:text-blue-600"
               onClick={() =>
                 dispatch({
                   type: 'MOVE_PARTY_MEMBER',
@@ -81,11 +84,11 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
                   },
                 })
               }
-              className="mr-2"
             >
               <ArrowBigLeft />
             </button>
             <button
+              className="mr-2 rounded-lg border-2 border-black bg-gray-500 text-black transition-all duration-200 hover:scale-105 hover:border-blue-600 hover:bg-gray-400 hover:text-blue-600"
               onClick={() =>
                 dispatch({
                   type: 'MOVE_PARTY_MEMBER',
@@ -98,7 +101,6 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
                   },
                 })
               }
-              className="ml-2"
             >
               <ArrowBigRight />
             </button>

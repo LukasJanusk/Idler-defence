@@ -15,7 +15,7 @@ export class Particle {
     vy: number,
     radius: number,
     color: string,
-    gravity = 0
+    gravity = 0,
   ) {
     this.x = x;
     this.y = y;
@@ -56,7 +56,22 @@ export class BloodParticle extends Particle {
     super(x, y, vx, vy, Math.random() * 5, 'red', 150);
   }
 }
+export class EmberParticles extends Particle {
+  constructor(x: number, y: number) {
+    const vx = (Math.random() - 0.5) * 300;
+    const vy = (Math.random() - 1) * 300;
+    super(x, y, vx, vy, Math.random() * 5, getRandomEmberColor(), 150);
+    this.radius = Math.random() * 3;
+  }
+}
 
 export function splashBlood(x: number, y: number, nParticle: number) {
   return Array.from({ length: nParticle }).map(() => new BloodParticle(x, y));
+}
+export function splashEmbers(x: number, y: number, nParticle: number) {
+  return Array.from({ length: nParticle }).map(() => new EmberParticles(x, y));
+}
+function getRandomEmberColor() {
+  const colors = ['#FFA500', '#FFD700', '#FF4500'];
+  return colors[Math.floor(Math.random() * colors.length)];
 }

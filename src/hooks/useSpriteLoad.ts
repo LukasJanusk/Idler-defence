@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Animation } from './animation';
+import { Animation } from '../animation';
+import type { ProjectileAnimation } from '../projectile';
 
-export default function useSpriteLoad(current: Animation | undefined) {
+export default function useSpriteLoad(
+  current: Animation | ProjectileAnimation | undefined,
+) {
   const [size, setSize] = useState<{ width: number; height: number } | null>(
     null,
   );

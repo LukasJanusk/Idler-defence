@@ -37,13 +37,18 @@ type AddProjectiles = {
   type: 'ADD_PROJECTILES';
   payload: Projectile[];
 };
+type FilterProjectiles = {
+  type: 'FILTER_PROJECTILES';
+  payload: (state: Projectile[]) => Projectile[];
+};
 export type GameReducerAction =
   | InitializeAction
   | AddPartyMemberAction
   | RemovePartyMemberAction
   | SetPartyMemberStateAction
   | MovePartyMemberAction
-  | AddProjectiles;
+  | AddProjectiles
+  | FilterProjectiles;
 
 export function gameReducer(
   state: GameState,
@@ -141,6 +146,8 @@ export function gameReducer(
         ...state,
         projectiles: [...state.projectiles, ...action.payload],
       };
+    case 'FILTER_PROJECTILES':
+      return { ...state, projectiles: action.payload(state.projectiles) };
     default:
       return state;
   }

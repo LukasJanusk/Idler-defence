@@ -1,5 +1,8 @@
 import { v4 } from 'uuid';
 import { Sheet } from './animation';
+import type { Rect } from './types';
+import { collideRect, getRectMiddle } from './utils';
+import fireball from './assets/Fire_Wizard/Charge.png';
 
 export class ProjectileAnimation {
   id: string = 'ProjAnim' + v4();
@@ -13,6 +16,7 @@ export class ProjectileAnimation {
   frameDuration: number;
   sheet: Sheet;
   onHit?: () => void;
+  onEnd?: () => void;
   private onHitDidTrigger: boolean = false;
 
   constructor(
@@ -22,6 +26,7 @@ export class ProjectileAnimation {
     frameDuration: number,
     name: string,
     onHit?: () => void,
+    onEnd?: () => void,
   ) {
     this.sheet = sheet;
     this.nFrame = nFrame;
@@ -29,6 +34,7 @@ export class ProjectileAnimation {
     this.frameDuration = frameDuration;
     this.name = name;
     this.onHit = onHit;
+    this.onEnd = onEnd;
   }
   updateFrame() {
     if (this.didHit) {
@@ -51,6 +57,9 @@ export class ProjectileAnimation {
     if (this.didHit && !this.onHitDidTrigger && this.onHit) {
       this.onHit();
       this.onHitDidTrigger = true;
+    }
+    if (!this.alive && this.onEnd) {
+      this.onEnd();
     }
   }
   clone(): ProjectileAnimation {
@@ -95,23 +104,107 @@ export class Projectile {
   id: string;
   name: string;
   animation: ProjectileAnimation;
-  position: { x: number; y: number };
-  targetPosition: { x: number; y: number };
+  targetRect: Rect;
   targetId: string | null;
+  speed: number;
+  rect: Rect;
+  gravity: number;
+  didHit: boolean;
+  isAlive: boolean;
+  onHit?: () => void;
 
   constructor(
     id: string,
     name: string,
     animation: ProjectileAnimation,
-    position: { x: number; y: number },
-    targetPosition: { x: number; y: number },
+    rect: Rect,
+    targetRect: Rect,
+    speed: number,
     targetId: string | null,
+    gravity: number = 10,
+    onHit?: (proj: Projectile) => void,
   ) {
     this.id = id;
     this.name = name;
     this.animation = animation;
-    this.position = position;
+    this.rect = rect;
     this.targetId = targetId;
-    this.targetPosition = targetPosition;
+    this.targetRect = targetRect;
+    this.speed = speed;
+    this.rect = rect;
+    this.gravity = gravity;
+    this.didHit = false;
+    this.isAlive = true;
+    this.onHit = onHit ? () => onHit(this) : undefined;
+  }
+  update(dt: number) {
+    if (!this.didHit && collideRect(this.rect, this.targetRect)) {
+      this.didHit = true;
+      this.animation.didHit = true;
+      if (this.animation.onHit) {
+        this.animation.onHit();
+      }
+      if (this.onHit) {
+        this.onHit();
+      }
+      setTimeout(() => {
+        this.isAlive = false;
+      }, 1000);
+      this.didHit = true;
+      this.animation.didHit = true;
+      return;
+    }
+
+    const projMiddle = getRectMiddle(this.rect);
+    const targetMiddle = getRectMiddle(this.targetRect);
+    const dx = targetMiddle.x - projMiddle.x;
+    const dy = targetMiddle.y - projMiddle.y;
+    const length = Math.hypot(dx, dy);
+    if (length === 0) return;
+
+    const velX = (dx / length) * this.speed;
+    const velY = (dy / length) * this.speed;
+
+    this.rect.x += velX * 0.001 * dt;
+    this.rect.y += velY * 0.001 * dt;
   }
 }
+
+export const createFireBall = (
+  x: number,
+  y: number,
+  targetX: number,
+  targetY: number,
+  onHit?: (proj: Projectile) => void,
+) => {
+  const fireballUrl = new URL(fireball, import.meta.url).href;
+  const fireBallAnimation = createProjectileAnimation(
+    fireballUrl,
+    12,
+    5,
+    100,
+    'fireball',
+  );
+  const fireBallProjectile = new Projectile(
+    `test-${v4()}`,
+    'Firebal Projectile',
+    fireBallAnimation,
+    {
+      x,
+      y,
+      width: 64,
+      height: 64,
+    },
+    {
+      x: targetX,
+      y: targetY,
+      width: 64,
+      height: 64,
+    },
+    100,
+    'test-target',
+    10,
+    onHit,
+  );
+  return fireBallProjectile;
+};

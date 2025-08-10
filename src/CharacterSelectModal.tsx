@@ -1,5 +1,5 @@
 import { XCircle } from 'lucide-react';
-import { useGameContext } from './useGameContext';
+import { useGameContext } from './context/useGameContext';
 import type { AnyCharacter } from './types';
 
 type Props = {

@@ -51,29 +51,29 @@ const namesFemale: string[] = [
   'Livia',
   'Claudia',
 ];
-export async function initializeGameState(): Promise<GameState> {
+export function initializeGameState(): GameState {
   return {
     party: { pos1: null, pos2: null, pos3: null, pos4: null },
     availableCharacters: [
       new Wizard(
         `Wizard${v4()}`,
         pickRandomName(namesMale),
-        await createWizardAnimations(),
+        createWizardAnimations(),
       ),
       new LightningMage(
         `LightningMage${v4()}`,
         pickRandomName(namesFemale),
-        await createLightningMageAnimations(),
+        createLightningMageAnimations(),
       ),
       new Knight(
         `Knight${v4()}`,
         pickRandomName(namesMale),
-        await createKnightAnimations(),
+        createKnightAnimations(),
       ),
       new FireMage(
         `FireMage${v4()}`,
         pickRandomName(namesMale),
-        await createFireMageAnimations(),
+        createFireMageAnimations(),
       ),
     ],
     projectiles: [],
