@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
-import { GameClock } from './gameClock';
+import { GameClock } from '../gameClock';
 import { GameClockContext } from './useGameClock';
 
 const gameClock = new GameClock();

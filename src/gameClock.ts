@@ -1,7 +1,7 @@
 export class GameClock {
   private subscribers: Set<(dt: number) => void> = new Set();
   private last = performance.now();
-  private running = false;
+  running = false;
   private rafId: number | null = null;
 
   start() {
@@ -12,7 +12,7 @@ export class GameClock {
       const now = performance.now();
       const dt = now - this.last;
       this.last = now;
-      this.subscribers.forEach(sub => sub(dt));
+      this.subscribers.forEach((sub) => sub(dt));
       this.rafId = requestAnimationFrame(loop);
     };
 

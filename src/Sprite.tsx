@@ -1,34 +1,43 @@
-import { useAnimation } from './useAnimation';
+import { useAnimation } from './hooks/useAnimation';
 import type { SpriteAnimations } from './types';
+import useSpriteLoad from './hooks/useSpriteLoad';
 
-export type SpriteProps<T extends string> = {
+type SpriteProps<T extends string> = {
+  animations: Partial<SpriteAnimations<T>>;
   state: T;
-  animations: SpriteAnimations<T>;
-  scale: number;
+  onAnimationEnd: (state: T) => void;
+  scale?: number;
 };
+
 export default function Sprite<T extends string>({
   state,
   animations,
+  onAnimationEnd,
   scale = 1,
 }: SpriteProps<T>) {
-  const frame = useAnimation(animations[state]);
-  const width = animations[state].sheet.width / animations[state].nFrame;
-  const height = animations[state].sheet.height;
+  const onEnd = () => {
+    if (!onAnimationEnd) return;
+    onAnimationEnd(state);
+  };
+  const current = animations[state];
+  const frame = useAnimation(current, onEnd);
+  const size = useSpriteLoad(current);
+  if (!size || !current) return <div>Loading sprite...</div>;
+  const width = size.width;
+  const height = size.height;
 
   return (
-    <>
-      <img
-        src={animations[state].sheet.image.src}
-        style={{
-          border: '1px solid red',
-          width: width,
-          height: height,
-          position: 'absolute',
-          objectFit: 'none',
-          scale: scale,
-          objectPosition: `-${frame * width}px 0`,
-        }}
-      ></img>
-    </>
+    <img
+      alt="animation"
+      src={current.sheet.img.src}
+      style={{
+        border: '1px solid red',
+        width,
+        height,
+        objectFit: 'none',
+        scale,
+        objectPosition: `-${frame && frame * width}px 0`,
+      }}
+    />
   );
 }
