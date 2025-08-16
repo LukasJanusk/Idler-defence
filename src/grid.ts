@@ -3,6 +3,8 @@ import type { AnyCharacter, Rect } from './types';
 import { Projectile } from './projectile';
 import { FireMage, Knight, LightningMage, Warrior, Wizard } from './character';
 import { getRectMiddle } from './utils';
+import { Enemy } from './enemy';
+import { Attack } from './attack';
 
 const isCharacter = (entity: unknown): entity is AnyCharacter => {
   if (
@@ -23,6 +25,20 @@ const isProjectile = (entity: unknown): entity is Projectile => {
   }
   return false;
 };
+
+const isEnemy = (entity: unknown): entity is Enemy => {
+  if (entity instanceof Enemy) {
+    return true;
+  }
+  return false;
+};
+
+const isAttack = (entity: unknown): entity is Attack => {
+  if (entity instanceof Attack) {
+    return true;
+  }
+  return false;
+};
 class Area {
   id: string;
   width: number;
@@ -31,9 +47,9 @@ class Area {
   column: number;
   rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
   characters: Array<AnyCharacter> = [];
-  enemies: Array<unknown> = [];
+  enemies: Array<Enemy> = [];
   projectiles: Array<Projectile> = [];
-  attacks: Array<unknown> = [];
+  attacks: Array<Attack> = [];
 
   constructor(
     width: number,
@@ -55,8 +71,20 @@ class Area {
     } else if (isProjectile(entity)) {
       this.projectiles.push(entity);
       return true;
+    } else if (isEnemy(entity)) {
+      this.enemies.push(entity);
+      return true;
+    } else if (isAttack(entity)) {
+      this.attacks.push(entity);
+      return true;
     }
     return false;
+  }
+  cleanup() {
+    this.enemies = this.enemies.filter((e) => e.state !== 'dead');
+    this.characters = this.characters.filter((c) => c.state !== 'dead');
+    this.projectiles = this.projectiles.filter((p) => p.isAlive);
+    this.attacks = this.attacks.filter((a) => !a.didHit);
   }
 }
 
@@ -110,9 +138,39 @@ export class Grid {
     return closest;
   }
   update() {
-    throw Error('Not yet implemented');
+    this.grid.forEach((row) =>
+      row.forEach((area) => {
+        if (area.attacks.length === 0 && area.projectiles.length === 0) return;
+        area.attacks.forEach((attack) => {
+          if (attack.didHit) return;
+          if (attack.source === 'player') {
+            area.enemies.forEach((enemy) => attack.hit(enemy));
+          } else if (attack.source === 'enemy') {
+            area.characters.forEach((char) => attack.hit(char));
+          }
+        });
+        area.projectiles.forEach((proj) => {
+          if (proj.didHit) return;
+          if (proj.source === 'player') {
+            area.enemies.forEach((enemy) => proj.hit(enemy));
+          } else if (proj.source === 'enemy') {
+            area.characters.forEach((character) => proj.hit(character));
+          }
+        });
+        area.enemies.forEach((e) => {
+          if (e.health <= 0) {
+            e.state = 'death';
+          }
+        });
+        area.characters.forEach((c) => {
+          if (c.health <= 0) {
+            c.state = 'death';
+          }
+        });
+      }),
+    );
   }
   cleanup() {
-    throw Error('Not yet implemented');
+    this.grid.forEach((row) => row.forEach((area) => area.cleanup()));
   }
 }

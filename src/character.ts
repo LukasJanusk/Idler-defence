@@ -1,4 +1,4 @@
-import type { SpriteAnimations } from './types';
+import type { Rect, SpriteAnimations } from './types';
 
 export type BaseAction =
   | 'idle'
@@ -7,6 +7,7 @@ export type BaseAction =
   | 'death'
   | 'dead'
   | 'resurrect';
+export type EnemyAction = BaseAction | 'move';
 export type WarriorAction = BaseAction | 'combo';
 export type KnightAction = BaseAction | 'guard' | 'protect';
 export type FireMageAction = BaseAction | 'flamejet' | 'fireball';
@@ -26,17 +27,20 @@ export type AnyAction =
   | FireMageAction
   | WizardAction
   | KnightAction
-  | LightningMageAction;
+  | LightningMageAction
+  | EnemyAction;
 
 export class Character<T extends string> {
   id: string;
   name: string;
+  health: number = 2000;
   animations: SpriteAnimations<T>;
   actions: T[];
   state: T;
   stunRecovery: number = 200;
   characterClass: string = 'base';
   icon: string = '👤';
+  rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
 
   constructor(
     id: string,

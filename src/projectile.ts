@@ -104,6 +104,8 @@ export class Projectile {
   id: string;
   name: string;
   animation: ProjectileAnimation;
+  damage: number;
+  source: 'player' | 'enemy';
   targetRect: Rect;
   targetId: string | null;
   speed: number;
@@ -117,6 +119,8 @@ export class Projectile {
     id: string,
     name: string,
     animation: ProjectileAnimation,
+    damage: number,
+    source: 'player' | 'enemy',
     rect: Rect,
     targetRect: Rect,
     speed: number,
@@ -127,6 +131,8 @@ export class Projectile {
     this.id = id;
     this.name = name;
     this.animation = animation;
+    this.damage = damage;
+    this.source = source;
     this.rect = rect;
     this.targetId = targetId;
     this.targetRect = targetRect;
@@ -168,6 +174,24 @@ export class Projectile {
     this.rect.x += velX * 0.001 * dt;
     this.rect.y += velY * 0.001 * dt;
   }
+  hit(target: { rect: Rect; health: number }) {
+    if (!this.didHit && collideRect(this.rect, target.rect)) {
+      this.didHit = true;
+      this.animation.didHit = true;
+      target.health -= this.damage;
+      if (this.animation.onHit) {
+        this.animation.onHit();
+      }
+      if (this.onHit) {
+        this.onHit();
+      }
+      setTimeout(() => {
+        this.isAlive = false;
+      }, 1000);
+      this.didHit = true;
+      return;
+    }
+  }
 }
 
 export const createFireBall = (
@@ -189,6 +213,8 @@ export const createFireBall = (
     `test-${v4()}`,
     'Firebal Projectile',
     fireBallAnimation,
+    60,
+    'player',
     {
       x,
       y,

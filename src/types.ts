@@ -1,4 +1,4 @@
-import type { Dispatch } from 'react';
+import type { Dispatch, Ref, RefObject } from 'react';
 import { Animation } from './animation';
 import type {
   AnyAction,

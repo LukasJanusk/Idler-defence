@@ -52,7 +52,7 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
         {character?.name}
       </h1>
       {characterSelectMolaleOpen && (
-        <div className="absolute top-0">
+        <div className="absolute bottom-0">
           <CharacterSelectModal
             position={position}
             onClick={() => setCharacterSelectModalOpen(false)}
