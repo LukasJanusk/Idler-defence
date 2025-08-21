@@ -1,6 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { useGameClock } from '../context/useGameClock';
-import { Particle, splashBlood, splashEmbers } from '../particles';
+import { useGameClock } from '@/context/useGameClock';
+import {
+  Particle,
+  splashBlood,
+  splashEmbers,
+} from '@/model/entities/particles';
 
 export function useParticles(
   canvas: React.RefObject<HTMLCanvasElement | null>,

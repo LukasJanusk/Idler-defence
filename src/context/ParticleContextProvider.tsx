@@ -1,6 +1,6 @@
 import { useRef, type ReactNode } from 'react';
 import { ParticleContext } from './ParticleContext';
-import { useParticles } from '../hooks/useParticles';
+import { useParticles } from '@/hooks/useParticles';
 import { GAME_HEIGHT, GAME_WIDTH } from '../constants';
 
 type ParticleContextProps = {

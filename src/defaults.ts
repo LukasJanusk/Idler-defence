@@ -1,10 +1,15 @@
 import { v4 } from 'uuid';
-import { FireMage, Knight, LightningMage, Wizard } from './character';
+import {
+  FireMage,
+  Knight,
+  LightningMage,
+  Wizard,
+} from './model/entities/character';
 import type { GameState } from './types';
-import { createFireMageAnimations } from './fireWizardAnimations';
-import { createWizardAnimations } from './wizardAnimations';
-import { createKnightAnimations } from './knightAnimations';
-import { createLightningMageAnimations } from './lightningMageAnimations';
+import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
+import { createWizardAnimations } from '@/model/animations/wizardAnimations';
+import { createKnightAnimations } from '@/model/animations/knightAnimations';
+import { createLightningMageAnimations } from '@/model/animations/lightningMageAnimations';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);

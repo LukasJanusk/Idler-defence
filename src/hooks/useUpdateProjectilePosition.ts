@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Projectile } from '../projectile';
+import type { Projectile } from '../model/entities/projectile';
 import { useGameClock } from '../context/useGameClock';
 
 export default function useUpdateProjectilePosition(projectile: Projectile) {

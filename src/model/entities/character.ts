@@ -1,4 +1,11 @@
-import type { Rect, SpriteAnimations } from './types';
+import type { Rect, SpriteAnimations } from '@/types';
+import {
+  createFireWizardFireballAttack,
+  createFireWizardFlameJetAttack,
+  createFireWizardStabAttack,
+} from '../characterAttacks/fireWizardAttacks';
+import { type Grid } from '../grid';
+import { GRID_AREA_SIZE } from '@/constants';
 
 export type BaseAction =
   | 'idle'
@@ -41,6 +48,7 @@ export class Character<T extends string> {
   characterClass: string = 'base';
   icon: string = '👤';
   rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
+  pos: 'pos1' | 'pos2' | 'pos3' | 'pos4' | null = null;
 
   constructor(
     id: string,
@@ -77,12 +85,16 @@ export class Warrior extends Character<WarriorAction> {
   ) {
     super(id, name, animations, actions);
   }
+  initAttacks(grid: Grid) {
+    console.log('warrior attacks init', grid);
+  }
 }
 
 export class FireMage extends Character<FireMageAction> {
   characterClass = 'Fire Mage';
   icon = '🔥';
   stunRecovery = 400;
+  attacksLoaded: boolean = false;
 
   constructor(
     id: string,
@@ -100,10 +112,57 @@ export class FireMage extends Character<FireMageAction> {
   ) {
     super(id, name, animations, actions);
   }
+  initAttacks(grid: Grid) {
+    if (this.attacksLoaded === true) return;
+    this.animations.attack.onFrame(3, () => {
+      const attack = createFireWizardStabAttack(this.rect.x, this.rect.y, 1);
+      attack.rect.x = this.rect.x + attack.range * GRID_AREA_SIZE;
+      if (this.pos !== 'pos1') return;
+      grid.grid[3][4].registerEntity(attack);
+    });
+    const createJet = () => {
+      const attack = createFireWizardFlameJetAttack(
+        this.rect.x,
+        this.rect.y,
+        1,
+      );
+      attack.rect.x = this.rect.x + attack.range * GRID_AREA_SIZE;
+      if (this.pos !== 'pos1') return;
+      grid.grid[3][4].registerEntity(attack);
+    };
+    this.animations.flamejet.onFrame(3, createJet);
+    this.animations.flamejet.onFrame(4, createJet);
+    this.animations.flamejet.onFrame(5, createJet);
+    this.animations.fireball.onFrame(6, () => {
+      const projectile = createFireWizardFireballAttack(
+        this.rect.x + GRID_AREA_SIZE,
+        this.rect.y,
+        1,
+      );
+
+      switch (this.pos) {
+        case 'pos1':
+          grid.grid[3][4].registerEntity(projectile);
+          return;
+        case 'pos2':
+          grid.grid[3][3].registerEntity(projectile);
+          return;
+        case 'pos3':
+          grid.grid[3][2].registerEntity(projectile);
+          return;
+        case 'pos4':
+          grid.grid[3][1].registerEntity(projectile);
+          return;
+        default:
+          return;
+      }
+    });
+    this.attacksLoaded = true;
+  }
 }
 
 export class Knight extends Character<KnightAction> {
-  characterClass: 'Knight';
+  characterClass: string = 'Knight';
   icon = '🛡️';
   stunRecovery = 100;
 
@@ -124,9 +183,12 @@ export class Knight extends Character<KnightAction> {
   ) {
     super(id, name, animations, actions);
   }
+  initAttacks(grid: Grid) {
+    console.log('Knight attacks init', grid);
+  }
 }
 export class Wizard extends Character<WizardAction> {
-  characterClass: 'Wizard';
+  characterClass: string = 'Wizard';
   icon = '🧙';
   stunRecovery = 400;
   constructor(
@@ -145,9 +207,12 @@ export class Wizard extends Character<WizardAction> {
   ) {
     super(id, name, animations, actions);
   }
+  initAttacks(grid: Grid) {
+    console.log('Wizard attacks init', grid);
+  }
 }
 export class LightningMage extends Character<LightningMageAction> {
-  characterClass: 'Lightning mage';
+  characterClass: string = 'Lightning mage';
   icon = '⚡';
   stunRecovery = 400;
   constructor(
@@ -164,5 +229,8 @@ export class LightningMage extends Character<LightningMageAction> {
     ],
   ) {
     super(id, name, animations, actions);
+  }
+  initAttacks(grid: Grid) {
+    console.log('Lightning Mage attacks init', grid);
   }
 }

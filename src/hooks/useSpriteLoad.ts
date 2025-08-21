@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Animation } from '../animation';
-import type { ProjectileAnimation } from '../projectile';
+import { Animation } from '@/model/animations/animation';
+import type { ProjectileAnimation } from '@/model/entities/projectile';
 
 export default function useSpriteLoad(
   current: Animation | ProjectileAnimation | undefined,

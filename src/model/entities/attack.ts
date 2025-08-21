@@ -1,31 +1,36 @@
 import type { BaseAction } from './character';
-import type { Rect } from './types';
+import type { Rect } from '@/types';
 
 export class Attack {
+  id: string;
   damage: number;
   rect: Rect;
   triggerFrame: number;
   didHit: boolean;
   source: 'player' | 'enemy';
-  onHit?: () => void;
+  range: number;
+  onHit?: ({ health }: { health: number }) => void;
   multiplier: number;
 
   constructor(
+    id: string,
     damage: number,
     rect: Rect,
     triggerFrame: number,
-    didHit: boolean = false,
     source: 'player' | 'enemy',
-    onHit?: () => void,
+    range?: number,
+    onHit?: ({ health }: { health: number }) => void,
     multiplier?: number,
   ) {
+    this.id = id;
     this.damage = damage;
     this.rect = rect;
     this.triggerFrame = triggerFrame;
-    this.didHit = didHit;
     this.source = source;
+    this.range = range || 1;
     this.onHit = onHit;
     this.multiplier = multiplier || 1;
+    this.didHit = false;
   }
 
   hit(target: { health: number; state: unknown | BaseAction }) {
@@ -33,7 +38,7 @@ export class Attack {
       target.health -= this.damage;
       target.state = 'hit';
       this.didHit = true;
-      this.onHit?.();
+      this.onHit?.(target);
     }
   }
 }

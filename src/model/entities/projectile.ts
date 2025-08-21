@@ -1,8 +1,8 @@
 import { v4 } from 'uuid';
-import { Sheet } from './animation';
-import type { Rect } from './types';
-import { collideRect, getRectMiddle } from './utils';
-import fireball from './assets/Fire_Wizard/Charge.png';
+import { Sheet } from '@/model/animations/animation';
+import type { Rect } from '@/types';
+import { collideRect, getRectMiddle } from '@/utils';
+import fireball from '@/assets/Fire_Wizard/Charge.png';
 
 export class ProjectileAnimation {
   id: string = 'ProjAnim' + v4();

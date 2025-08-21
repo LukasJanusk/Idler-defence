@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import type { AnyAction } from './character';
+import type { AnyAction } from '@/model/entities/character';
 
 export class Sheet {
   src: string;
@@ -39,6 +39,10 @@ export class Animation {
   frameDuration: number;
   sheet: Sheet;
 
+  private frameCallbacks: Map<number, Set<() => void>> = new Map();
+  private triggeredThisLoop: Set<number> = new Set();
+  private prevFrame: number = -1;
+
   constructor(
     sheet: Sheet,
     nFrame: number,
@@ -50,16 +54,38 @@ export class Animation {
     this.frameDuration = frameDuration;
     this.name = name;
   }
+  onFrame(frame: number, callback: () => void) {
+    if (!this.frameCallbacks.has(frame)) {
+      this.frameCallbacks.set(frame, new Set());
+    }
+    this.frameCallbacks.get(frame)!.add(callback);
+  }
   updateFrame() {
     this.frame = (this.frame + 1) % this.nFrame;
   }
   tick(dt: number) {
     this.elapsed += dt;
+
     if (this.elapsed >= this.frameDuration) {
-      this.updateFrame();
       this.elapsed -= this.frameDuration;
+
+      this.prevFrame = this.frame;
+      this.updateFrame();
+
+      if (this.frame === 0 && this.prevFrame === this.nFrame - 1) {
+        this.triggeredThisLoop.clear();
+      }
+
+      if (!this.triggeredThisLoop.has(this.frame)) {
+        const callbacks = this.frameCallbacks.get(this.frame);
+        if (callbacks) {
+          callbacks.forEach((cb) => cb());
+          this.triggeredThisLoop.add(this.frame);
+        }
+      }
     }
   }
+
   clone(): Animation {
     const clone = new Animation(
       this.sheet,

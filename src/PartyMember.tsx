@@ -5,7 +5,7 @@ import type { AnyCharacter, PartyPositionName } from './types';
 import { useGameContext } from './context/useGameContext';
 import { PlusCircle, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
 import CharacterSelectModal from './CharacterSelectModal';
-import type { AnyAction } from './character';
+import type { AnyAction } from '@/model/entities/character';
 
 type PartyMemberProps = {
   character: AnyCharacter | null;
@@ -47,7 +47,7 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
   }, [character, position, dispatch]);
 
   return (
-    <div className="relative bottom-44 flex flex-col items-center justify-center">
+    <div className="relative bottom-80 flex flex-col items-center justify-center border-2 border-green-500">
       <h1 className="rounded bg-black/80 px-2 text-xl font-bold text-white">
         {character?.name}
       </h1>
@@ -61,7 +61,7 @@ export default function PartyMember({ character, position }: PartyMemberProps) {
       )}
       {character ? (
         <>
-          <div className="absolute bottom-0 left-0 border-2 border-transparent hover:border-gray-500">
+          <div className="absolute left-0 top-[-128px] border-2 border-transparent hover:border-gray-500">
             <Sprite
               animations={character.animations}
               state={character.state}

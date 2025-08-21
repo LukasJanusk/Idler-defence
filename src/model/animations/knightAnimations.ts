@@ -1,16 +1,16 @@
 import { createAnimation } from './animation';
-import idle from './assets/Knight/Idle.png';
-import attackOne from './assets/Knight/Attack 1.png';
-import attackTwo from './assets/Knight/Attack 2.png';
-import attackThree from './assets/Knight/Attack 3.png';
-import protect from './assets/Knight/Protect.png';
-import guard from './assets/Knight/Defend.png';
-import hit from './assets/Knight/Hurt.png';
-import dead from './assets/Knight/Dead.png';
-import death from './assets/Knight/Death.png';
-import resurrect from './assets/Knight/Resurrect.png';
-import type { SpriteAnimations } from './types';
-import type { KnightAction } from './character';
+import idle from '@/assets/Knight/Idle.png';
+import attackOne from '@/assets/Knight/Attack 1.png';
+import attackTwo from '@/assets/Knight/Attack 2.png';
+import attackThree from '@/assets/Knight/Attack 3.png';
+import protect from '@/assets/Knight/Protect.png';
+import guard from '@/assets/Knight/Defend.png';
+import hit from '@/assets/Knight/Hurt.png';
+import dead from '@/assets/Knight/Dead.png';
+import death from '@/assets/Knight/Death.png';
+import resurrect from '@/assets/Knight/Resurrect.png';
+import type { SpriteAnimations } from '@/types';
+import type { KnightAction } from '@/model/entities/character';
 
 const idleUrl = new URL(idle, import.meta.url).href;
 

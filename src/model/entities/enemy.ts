@@ -1,29 +1,31 @@
-import type { Rect } from './types';
-import { Animation } from './animation';
+import type { Rect, SpriteAnimations } from '@/types';
 import type { Attack } from './attack';
 import type { EnemyAction } from './character';
 
-export class Enemy {
+export class Enemy<T extends string> {
+  id: string;
   health: number;
   range: number;
   damage: number;
   speed: number;
-  animations: Animation[];
+  animations: SpriteAnimations<T>;
   actions: EnemyAction[];
   state: EnemyAction;
   rect: Rect;
   attack: Attack;
   constructor(
+    id: string,
     health: number,
     range: number,
     damage: number,
     speed: number,
-    animations: Animation[],
+    animations: SpriteAnimations<T>,
     actions: EnemyAction[],
     rect: Rect,
     attack: Attack,
     state: EnemyAction,
   ) {
+    this.id = id;
     this.health = health;
     this.range = range;
     this.damage = damage;

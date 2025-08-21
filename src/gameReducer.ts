@@ -1,6 +1,6 @@
-import type { AnyAction } from './character';
-import type { Projectile } from './projectile';
-import type { GameState, PartyPositionName, AnyCharacter } from './types';
+import type { AnyAction } from '@/model/entities/character';
+import type { Projectile } from '@/model/entities/projectile';
+import type { GameState, PartyPositionName, AnyCharacter } from '@/types';
 
 type InitializeAction = {
   type: 'init';
@@ -61,17 +61,20 @@ export function gameReducer(
         party: action.payload.party,
         availableCharacters: action.payload.availableCharacters,
       };
-    case 'ADD_PARTY_MEMBER':
+    case 'ADD_PARTY_MEMBER': {
+      const char = action.payload.character;
+      char.pos = action.payload.position;
       return {
         ...state,
         party: {
           ...state.party,
-          [action.payload.position]: action.payload.character,
+          [action.payload.position]: char,
         },
         availableCharacters: state.availableCharacters.filter(
           (character) => character.id !== action.payload.character.id,
         ),
       };
+    }
     case 'REMOVE_PARTY_MEMBER':
       return {
         ...state,
@@ -80,17 +83,25 @@ export function gameReducer(
           [action.payload.position]: null,
         },
       };
-    case 'SET_PARTY_MEMBER_STATE':
+    case 'SET_PARTY_MEMBER_STATE': {
+      const character = state.party[action.payload.position];
+      if (!character) return state;
+
+      const updated = Object.assign(
+        Object.create(Object.getPrototypeOf(character)),
+        character,
+        {
+          state: action.payload.newState,
+        },
+      );
       return {
         ...state,
         party: {
           ...state.party,
-          [action.payload.position]: {
-            ...state.party[action.payload.position],
-            state: action.payload.newState,
-          },
+          [action.payload.position]: updated,
         },
       };
+    }
     case 'MOVE_PARTY_MEMBER': {
       const fromCharacter = state.party[action.payload.from];
       const toCharacter = state.party[action.payload.to];

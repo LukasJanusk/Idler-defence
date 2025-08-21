@@ -1,17 +1,16 @@
+import type { EnemyAction } from '@/model/entities/character';
 import Sprite from './Sprite';
-import type { Enemy } from './enemy';
+import type { Enemy } from '@/model/entities/enemy';
 type EnemyProps = {
-  enemy: Enemy;
+  enemy: Enemy<EnemyAction>;
 };
 
 export default function EnemyComponent({ enemy }: EnemyProps) {
   const currentState = enemy.state;
-  const currentAnimation = enemy.animations[currentState];
-
   return (
     <>
       <Sprite
-        animations={currentAnimation}
+        animations={enemy.animations}
         state={currentState}
         scale={1}
         onAnimationEnd={() => {}}

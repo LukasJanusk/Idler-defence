@@ -1,5 +1,5 @@
-import type { Dispatch, Ref, RefObject } from 'react';
-import { Animation } from './animation';
+import type { Dispatch } from 'react';
+import { Animation } from '@/model/animations/animation';
 import type {
   AnyAction,
   FireMage,
@@ -12,9 +12,9 @@ import type {
   WizardAction,
   LightningMage,
   LightningMageAction,
-} from './character';
+} from './model/entities/character';
 import type { GameReducerAction } from './gameReducer';
-import type { Projectile } from './projectile';
+import type { Projectile } from './model/entities/projectile';
 
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;

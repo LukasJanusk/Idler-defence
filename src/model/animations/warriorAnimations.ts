@@ -1,14 +1,14 @@
 import { createAnimation } from './animation';
-import idle from './assets/warrior/_Idle.png';
-import attackOne from './assets/warrior/_Attack.png';
-import attackTwo from './assets/warrior/_Attack2NoMovement.png';
-import comboAttack from './assets/warrior/_AttackComboNoMovement.png';
-import hit from './assets/warrior/_Hit.png';
-import death from './assets/warrior/_DeathNoMovement.png';
-import dead from './assets/warrior/_DeadNoMovement.png';
-import resurrect from './assets/warrior/_ResurrectNoMovement.png';
-import type { SpriteAnimations } from './types';
-import type { WarriorAction } from './character';
+import idle from '@/assets/warrior/_Idle.png';
+import attackOne from '@/assets/warrior/_Attack.png';
+import attackTwo from '@/assets/warrior/_Attack2NoMovement.png';
+import comboAttack from '@/assets/warrior/_AttackComboNoMovement.png';
+import hit from '@/assets/warrior/_Hit.png';
+import death from '@/assets/warrior/_DeathNoMovement.png';
+import dead from '@/assets/warrior/_DeadNoMovement.png';
+import resurrect from '@/assets/warrior/_ResurrectNoMovement.png';
+import type { SpriteAnimations } from '@/types';
+import type { WarriorAction } from '@/model/entities/character';
 
 const idleUrl = new URL(idle, import.meta.url).href;
 

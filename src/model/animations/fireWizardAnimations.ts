@@ -1,15 +1,15 @@
 import { createAnimation } from './animation';
-import idle from './assets/Fire_Wizard/Idle.png';
-import attackOne from './assets/Fire_Wizard/Attack_1.png';
-import attackTwo from './assets/Fire_Wizard/Attack_2.png';
-import fireBall from './assets/Fire_Wizard/Fireball.png';
-import flameJet from './assets/Fire_Wizard/Flame_jet.png';
-import hit from './assets/Fire_Wizard/Hurt.png';
-import death from './assets/Fire_Wizard/Death.png';
-import dead from './assets/Fire_Wizard/Dead.png';
-import resurrect from './assets/Fire_Wizard/Resurrect.png';
-import type { SpriteAnimations } from './types';
-import type { FireMageAction } from './character';
+import idle from '@/assets/Fire_Wizard/Idle.png';
+import attackOne from '@/assets/Fire_Wizard/Attack_1.png';
+import attackTwo from '@/assets/Fire_Wizard/Attack_2.png';
+import fireBall from '@/assets/Fire_Wizard/Fireball.png';
+import flameJet from '@/assets/Fire_Wizard/Flame_jet.png';
+import hit from '@/assets/Fire_Wizard/Hurt.png';
+import death from '@/assets/Fire_Wizard/Death.png';
+import dead from '@/assets/Fire_Wizard/Dead.png';
+import resurrect from '@/assets/Fire_Wizard/Resurrect.png';
+import type { SpriteAnimations } from '@/types';
+import type { FireMageAction } from '@/model/entities/character';
 
 const idleUrl = new URL(idle, import.meta.url).href;
 const attackOneUrl = new URL(attackOne, import.meta.url).href;

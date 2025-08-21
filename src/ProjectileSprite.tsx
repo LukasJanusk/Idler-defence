@@ -1,4 +1,4 @@
-import type { Projectile } from './projectile';
+import type { Projectile } from './model/entities/projectile';
 import { useProjectileAnimation } from './hooks/useProjectileAnimation';
 import useUpdateProjectilePosition from './hooks/useUpdateProjectilePosition';
 
@@ -16,7 +16,7 @@ export default function ProjectileSprite({ projectile }: ProjectileProps) {
     <>
       <img
         style={{
-          zIndex: 20,
+          zIndex: 30,
           position: 'absolute',
           left: position.x - width / 2,
           top: position.y - height / 2,
@@ -25,6 +25,7 @@ export default function ProjectileSprite({ projectile }: ProjectileProps) {
           objectFit: 'none',
           transform: `rotate(${position.rotation}deg)`,
           objectPosition: `-${frame * width}px 0`,
+          border: '2px solid blue',
         }}
         src={animation.sheet.img.src}
         alt={animation.name}

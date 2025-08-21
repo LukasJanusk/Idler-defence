@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useGameClock } from '../context/useGameClock';
-import type { ProjectileAnimation } from '../projectile';
+import type { ProjectileAnimation } from '../model/entities/projectile';
 
 export function useProjectileAnimation(animation: ProjectileAnimation) {
   const [frame, setFrame] = useState<number>(animation.frame);

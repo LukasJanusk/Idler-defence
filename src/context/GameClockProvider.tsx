@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
-import { GameClock } from '../gameClock';
+import { GameClock } from '../model/gameClock';
 import { GameClockContext } from './useGameClock';
 
 const gameClock = new GameClock();
@@ -13,10 +13,8 @@ export function GameClockProvider({ children }: Props) {
     return () => gameClock.stop();
   }, []);
   return (
-    <>
-      <GameClockContext.Provider value={gameClock}>
-        {children}
-      </GameClockContext.Provider>
-    </>
+    <GameClockContext.Provider value={gameClock}>
+      {children}
+    </GameClockContext.Provider>
   );
 }

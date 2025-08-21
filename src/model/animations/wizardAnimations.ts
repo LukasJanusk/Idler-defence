@@ -1,14 +1,14 @@
 import { createAnimation } from './animation';
-import idle from './assets/Wanderer_Magican/Idle.png';
-import attackOne from './assets/Wanderer_Magican/Attack_1.png';
-import attackTwo from './assets/Wanderer_Magican/Attack_2.png';
-import magicSphere from './assets/Wanderer_Magican/Magic_sphere.png';
-import hit from './assets/Wanderer_Magican/Hurt.png';
-import death from './assets/Wanderer_Magican/Death.png';
-import dead from './assets/Wanderer_Magican/Dead.png';
-import resurrect from './assets/Wanderer_Magican/Resurrect.png';
-import type { SpriteAnimations } from './types';
-import type { WizardAction } from './character';
+import idle from '@/assets/Wanderer_Magican/Idle.png';
+import attackOne from '@/assets/Wanderer_Magican/Attack_1.png';
+import attackTwo from '@/assets/Wanderer_Magican/Attack_2.png';
+import magicSphere from '@/assets/Wanderer_Magican/Magic_sphere.png';
+import hit from '@/assets/Wanderer_Magican/Hurt.png';
+import death from '@/assets/Wanderer_Magican/Death.png';
+import dead from '@/assets/Wanderer_Magican/Dead.png';
+import resurrect from '@/assets/Wanderer_Magican/Resurrect.png';
+import type { SpriteAnimations } from '@/types';
+import type { WizardAction } from '@/model/entities/character';
 
 const idleUrl = new URL(idle, import.meta.url).href;
 const attackOneUrl = new URL(attackOne, import.meta.url).href;

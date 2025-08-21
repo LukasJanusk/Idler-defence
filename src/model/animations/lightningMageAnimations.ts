@@ -1,13 +1,13 @@
 import { createAnimation } from './animation';
-import idle from './assets/Lightning_Mage/Idle.png';
-import attackOne from './assets/Lightning_Mage/Attack_1.png';
-import chargedBolts from './assets/Lightning_Mage/Attack_2.png';
-import hit from './assets/Lightning_Mage/Hurt.png';
-import death from './assets/Lightning_Mage/Death.png';
-import dead from './assets/Lightning_Mage/Dead.png';
-import resurrect from './assets/Lightning_Mage/Resurrect.png';
-import type { SpriteAnimations } from './types';
-import type { LightningMageAction } from './character';
+import idle from '@/assets/Lightning_Mage/Idle.png';
+import attackOne from '@/assets/Lightning_Mage/Attack_1.png';
+import chargedBolts from '@/assets/Lightning_Mage/Attack_2.png';
+import hit from '@/assets/Lightning_Mage/Hurt.png';
+import death from '@/assets/Lightning_Mage/Death.png';
+import dead from '@/assets/Lightning_Mage/Dead.png';
+import resurrect from '@/assets/Lightning_Mage/Resurrect.png';
+import type { SpriteAnimations } from '@/types';
+import type { LightningMageAction } from '@/model/entities/character';
 
 const idleUrl = new URL(idle, import.meta.url).href;
 const attackOneUrl = new URL(attackOne, import.meta.url).href;
