@@ -1,6 +1,13 @@
 import type { BaseAction } from './character';
 import type { Rect } from '@/types';
 
+// Range explanation:
+
+// 0: grid area of occupant
+// 1: adjesent area
+// 2: one after adjesent area
+// ...
+
 export class Attack {
   id: string;
   damage: number;
@@ -11,6 +18,8 @@ export class Attack {
   range: number;
   onHit?: ({ health }: { health: number }) => void;
   multiplier: number;
+  duration: number = 100;
+  elapsed: number = 0;
 
   constructor(
     id: string,
@@ -39,6 +48,12 @@ export class Attack {
       target.state = 'hit';
       this.didHit = true;
       this.onHit?.(target);
+    }
+  }
+  update(dt: number) {
+    this.elapsed += dt;
+    if (!this.didHit && this.elapsed >= this.duration) {
+      this.didHit = true;
     }
   }
 }

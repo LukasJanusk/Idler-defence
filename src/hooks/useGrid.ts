@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 export default function useGrid(grid: Grid) {
   const gameClock = useGameClock();
   useEffect(() => {
-    function onTick(_dt: number) {
-      grid.update();
+    function onTick(dt: number) {
+      grid.update(dt);
     }
     gameClock.subscribe(onTick);
 

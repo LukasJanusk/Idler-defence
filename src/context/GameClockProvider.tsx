@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 import { GameClock } from '../model/gameClock';
 import { GameClockContext } from './useGameClock';
 
+//Singleton
 const gameClock = new GameClock();
 
 type Props = {

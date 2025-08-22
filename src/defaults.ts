@@ -5,11 +5,14 @@ import {
   LightningMage,
   Wizard,
 } from './model/entities/character';
-import type { GameState } from './types';
+import type { AnyCharacter, GameState } from './types';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { createKnightAnimations } from '@/model/animations/knightAnimations';
 import { createLightningMageAnimations } from '@/model/animations/lightningMageAnimations';
+import { Enemy } from './model/entities/enemy';
+import { createZombieOneAnimations } from './model/animations/enemies/zombieAnimations';
+import { createBasicAttack } from './model/enemyAttacks/basicAttack';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);
@@ -56,31 +59,62 @@ const namesFemale: string[] = [
   'Livia',
   'Claudia',
 ];
+
+export const createAvailableCharacters = () => {
+  const available = new Set<AnyCharacter>();
+  available.add(
+    new Wizard(
+      `Wizard${v4()}`,
+      pickRandomName(namesMale),
+      createWizardAnimations(),
+    ),
+  );
+  available.add(
+    new LightningMage(
+      `LightningMage${v4()}`,
+      pickRandomName(namesFemale),
+      createLightningMageAnimations(),
+    ),
+  );
+  available.add(
+    new Knight(
+      `Knight${v4()}`,
+      pickRandomName(namesMale),
+      createKnightAnimations(),
+    ),
+  );
+  available.add(
+    new FireMage(
+      `FireMage${v4()}`,
+      pickRandomName(namesMale),
+      createFireMageAnimations(),
+    ),
+  );
+  return available;
+};
 export function initializeGameState(): GameState {
   return {
     party: { pos1: null, pos2: null, pos3: null, pos4: null },
-    availableCharacters: [
-      new Wizard(
-        `Wizard${v4()}`,
-        pickRandomName(namesMale),
-        createWizardAnimations(),
-      ),
-      new LightningMage(
-        `LightningMage${v4()}`,
-        pickRandomName(namesFemale),
-        createLightningMageAnimations(),
-      ),
-      new Knight(
-        `Knight${v4()}`,
-        pickRandomName(namesMale),
-        createKnightAnimations(),
-      ),
-      new FireMage(
-        `FireMage${v4()}`,
-        pickRandomName(namesMale),
-        createFireMageAnimations(),
-      ),
-    ],
+    availableCharacters: createAvailableCharacters(),
     projectiles: [],
   };
 }
+
+export const createZombieOne = () => {
+  const zombie = new Enemy(
+    `ZombieOne-${v4()}`,
+    1000,
+    1,
+    20,
+    100,
+    createZombieOneAnimations(),
+    { x: 768, y: 0, width: 128, height: 128 },
+    createBasicAttack(0, 0, 0, 1),
+  );
+  zombie.attack = createBasicAttack(
+    zombie.rect.x + 128,
+    zombie.rect.y,
+    zombie.damage,
+  );
+  return zombie;
+};

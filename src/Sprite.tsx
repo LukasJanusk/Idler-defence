@@ -1,25 +1,25 @@
 import { useAnimation } from './hooks/useAnimation';
-import type { SpriteAnimations } from './types';
+import type { Animation } from '@/model/animations/animation';
 import useSpriteLoad from './hooks/useSpriteLoad';
 
-type SpriteProps<T extends string> = {
-  animations: Partial<SpriteAnimations<T>>;
-  state: T;
-  onAnimationEnd: (state: T) => void;
+type SpriteProps = {
+  animation: Animation;
+  entity: 'character' | 'enemy';
+  onAnimationEnd?: () => void;
   scale?: number;
 };
 
-export default function Sprite<T extends string>({
-  state,
-  animations,
+export default function Sprite({
+  animation,
   onAnimationEnd,
+  entity,
   scale = 1,
-}: SpriteProps<T>) {
+}: SpriteProps) {
   const onEnd = () => {
     if (!onAnimationEnd) return;
-    onAnimationEnd(state);
+    onAnimationEnd();
   };
-  const current = animations[state];
+  const current = animation;
   const frame = useAnimation(current, onEnd);
   const size = useSpriteLoad(current);
   if (!size || !current) return <div>Loading sprite...</div>;
@@ -37,6 +37,7 @@ export default function Sprite<T extends string>({
         objectFit: 'none',
         scale,
         objectPosition: `-${frame && frame * width}px 0`,
+        transform: entity === 'enemy' ? `scaleX(-1)` : `scaleX(1)`,
       }}
     />
   );

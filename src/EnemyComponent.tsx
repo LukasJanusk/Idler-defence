@@ -6,15 +6,9 @@ type EnemyProps = {
 };
 
 export default function EnemyComponent({ enemy }: EnemyProps) {
-  const currentState = enemy.state;
   return (
-    <>
-      <Sprite
-        animations={enemy.animations}
-        state={currentState}
-        scale={1}
-        onAnimationEnd={() => {}}
-      />
-    </>
+    <div className="absolute">
+      <Sprite animation={enemy.animations[enemy.state]} entity="enemy" />
+    </div>
   );
 }

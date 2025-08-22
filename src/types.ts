@@ -15,6 +15,9 @@ import type {
 } from './model/entities/character';
 import type { GameReducerAction } from './gameReducer';
 import type { Projectile } from './model/entities/projectile';
+import type { Grid } from './model/grid';
+import type { Particle } from './model/entities/particles';
+import type { GameClock } from './model/gameClock';
 
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
@@ -47,7 +50,7 @@ type CharacterBase<A extends AnyAction> = {
 export type GameState = {
   party: Party;
   projectiles: Projectile[];
-  availableCharacters: Array<AnyCharacter>;
+  availableCharacters: Set<AnyCharacter>;
 };
 export type PartyPosition = {
   name: PartyPositionName;
@@ -57,4 +60,23 @@ export type PartyPosition = {
 export type GameContextType = {
   state: GameState;
   dispatch: Dispatch<GameReducerAction>;
+};
+
+export type GameStore = {
+  gameClock: GameClock;
+  party: Party;
+  grid: Grid;
+  particles: Particle[];
+  availableCharacters: Set<AnyCharacter>;
+
+  // actions
+
+  addCharacterToParty: (pos: PartyPositionName, char: AnyCharacter) => void;
+  removeCharacterFromParty: (pos: PartyPositionName) => void;
+  moveCharacter: (from: PartyPositionName, to: PartyPositionName) => void;
+  updateCharacterState: (
+    position: PartyPositionName,
+    patch: Partial<AnyCharacter>,
+  ) => void;
+  getGameClock: () => GameClock;
 };

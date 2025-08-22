@@ -84,6 +84,14 @@ export class Warrior extends Character<WarriorAction> {
     ],
   ) {
     super(id, name, animations, actions);
+    this.animations['death'].onFrame(
+      this.animations.death.nFrame - 1,
+      () => (this.state = 'dead'),
+    );
+    this.animations['resurrect'].onFrame(
+      this.animations.resurrect.nFrame - 1,
+      () => (this.state = 'idle'),
+    );
   }
   initAttacks(grid: Grid) {
     console.log('warrior attacks init', grid);
@@ -111,9 +119,20 @@ export class FireMage extends Character<FireMageAction> {
     ],
   ) {
     super(id, name, animations, actions);
+    this.animations['death'].onFrame(this.animations.death.nFrame, () => {
+      console.log('On Death trigger');
+    });
+    this.animations['resurrect'].onFrame(
+      this.animations.resurrect.nFrame - 1,
+      () => (this.state = 'idle'),
+    );
   }
   initAttacks(grid: Grid) {
     if (this.attacksLoaded === true) return;
+    if (!this.pos) {
+      console.warn(`${this.name} tried to initAttacks without pos set`);
+      return;
+    }
     this.animations.attack.onFrame(3, () => {
       const attack = createFireWizardStabAttack(this.rect.x, this.rect.y, 1);
       attack.rect.x = this.rect.x + attack.range * GRID_AREA_SIZE;
@@ -182,6 +201,14 @@ export class Knight extends Character<KnightAction> {
     ],
   ) {
     super(id, name, animations, actions);
+    this.animations['death'].onFrame(
+      this.animations.death.nFrame - 1,
+      () => (this.state = 'dead'),
+    );
+    this.animations['resurrect'].onFrame(
+      this.animations.resurrect.nFrame - 1,
+      () => (this.state = 'idle'),
+    );
   }
   initAttacks(grid: Grid) {
     console.log('Knight attacks init', grid);
@@ -206,6 +233,14 @@ export class Wizard extends Character<WizardAction> {
     ],
   ) {
     super(id, name, animations, actions);
+    this.animations['death'].onFrame(
+      this.animations.death.nFrame - 1,
+      () => (this.state = 'dead'),
+    );
+    this.animations['resurrect'].onFrame(
+      this.animations.resurrect.nFrame - 1,
+      () => (this.state = 'idle'),
+    );
   }
   initAttacks(grid: Grid) {
     console.log('Wizard attacks init', grid);
@@ -229,6 +264,14 @@ export class LightningMage extends Character<LightningMageAction> {
     ],
   ) {
     super(id, name, animations, actions);
+    this.animations['death'].onFrame(
+      this.animations.death.nFrame - 1,
+      () => (this.state = 'dead'),
+    );
+    this.animations['resurrect'].onFrame(
+      this.animations.resurrect.nFrame - 1,
+      () => (this.state = 'idle'),
+    );
   }
   initAttacks(grid: Grid) {
     console.log('Lightning Mage attacks init', grid);

@@ -41,7 +41,6 @@ export class Animation {
 
   private frameCallbacks: Map<number, Set<() => void>> = new Map();
   private triggeredThisLoop: Set<number> = new Set();
-  private prevFrame: number = -1;
 
   constructor(
     sheet: Sheet,
@@ -69,10 +68,9 @@ export class Animation {
     if (this.elapsed >= this.frameDuration) {
       this.elapsed -= this.frameDuration;
 
-      this.prevFrame = this.frame;
       this.updateFrame();
 
-      if (this.frame === 0 && this.prevFrame === this.nFrame - 1) {
+      if (this.frame === 0) {
         this.triggeredThisLoop.clear();
       }
 

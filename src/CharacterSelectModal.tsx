@@ -1,18 +1,19 @@
 import { XCircle } from 'lucide-react';
-import { useGameContext } from './context/useGameContext';
+// import { useGameContext } from './context/useGameContext';
 import type { AnyCharacter } from './types';
+import { useGameStore } from './store';
 
 type Props = {
   onClick: () => void;
   position: 'pos1' | 'pos2' | 'pos3' | 'pos4';
 };
 export default function CharacterSelectModal({ onClick, position }: Props) {
-  const { state, dispatch } = useGameContext();
+  const addPartyMember = useGameStore((store) => store.addCharacterToParty);
+  const availableCharacters = useGameStore(
+    (store) => store.availableCharacters,
+  );
   const addCharacterToParty = (character: AnyCharacter) => {
-    dispatch({
-      type: 'ADD_PARTY_MEMBER',
-      payload: { position, character },
-    });
+    addPartyMember(position, character);
     onClick();
   };
   return (
@@ -25,7 +26,7 @@ export default function CharacterSelectModal({ onClick, position }: Props) {
       </button>
       <h2 className="mb-4 text-xl font-bold text-white">Select Character</h2>
       <div className="flex flex-col items-center justify-center space-y-2">
-        {state.availableCharacters.map((character) => (
+        {Array.from(availableCharacters).map((character) => (
           <button
             key={character.id}
             className="flex max-h-[400px] flex-col items-center justify-center overflow-y-auto rounded-lg bg-gray-700 p-1 text-white hover:bg-gray-600"

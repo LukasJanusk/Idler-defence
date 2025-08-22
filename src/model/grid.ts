@@ -158,7 +158,7 @@ export class Grid {
     );
     return closest;
   }
-  private moveEnemy(currentArea: Area) {
+  private registerEnemiesToArea(currentArea: Area) {
     currentArea.enemies.forEach((enemy) => {
       const newArea = this.getClosestArea(enemy.rect);
       if (newArea.id === currentArea.id) return;
@@ -166,7 +166,7 @@ export class Grid {
       newArea.registerEntity(enemy);
     });
   }
-  private moveProjectile(currentArea: Area) {
+  private registerProjetilesToArea(currentArea: Area) {
     currentArea.projectiles.forEach((projectile) => {
       const newArea = this.getClosestArea(projectile.rect);
       if (newArea.id === currentArea.id) return;
@@ -174,11 +174,11 @@ export class Grid {
       newArea.registerEntity(projectile);
     });
   }
-  private moveEntities() {
+  private registerEntitiesToArea() {
     this.grid.forEach((row) =>
       row.forEach((area) => {
-        this.moveEnemy(area);
-        this.moveProjectile(area);
+        this.registerEnemiesToArea(area);
+        this.registerProjetilesToArea(area);
       }),
     );
   }
@@ -188,8 +188,9 @@ export class Grid {
   private handleEnemyAttacks(attack: Attack, area: Area) {
     area.characters.forEach((character) => attack.hit(character));
   }
-  private handleAreaAttacks(area: Area) {
+  private handleAreaAttacks(area: Area, dt: number) {
     area.attacks.forEach((attack) => {
+      attack.update(dt);
       if (attack.didHit) return;
       if (attack.source === 'player') {
         this.handlePlayerAttacks(attack, area);
@@ -214,10 +215,43 @@ export class Grid {
       }
     });
   }
-  private setAreaEntitiesStates(area: Area) {
+
+  private getAdjacentAreas(area: Area): Area[] {
+    const dirs = [
+      [0, 1], // right
+      [0, -1], // left
+      [1, 0], // down
+      [-1, 0], // up
+      [1, 1], // diagonal down-right
+      [1, -1], // diagonal down-left
+      [-1, 1], // diagonal up-right
+      [-1, -1], // diagonal up-left
+    ];
+
+    const neighbors: Area[] = [];
+
+    dirs.forEach(([dr, dc]) => {
+      const r = area.row + dr;
+      const c = area.column + dc;
+      if (r >= 0 && r < this.vertical && c >= 0 && c < this.horizontal) {
+        neighbors.push(this.grid[r][c]);
+      }
+    });
+
+    return neighbors;
+  }
+
+  private caharacterIsInRange(area: Area): boolean {
+    return this.getAdjacentAreas(area).some((adj) => adj.characters.length > 0);
+  }
+
+  private setAreaEntitiesStates(area: Area, dt: number) {
     area.enemies.forEach((e) => {
-      if (e.health <= 0) {
-        e.state = 'death';
+      e.update(dt);
+      if (this.caharacterIsInRange(area)) {
+        e.setAttack();
+      } else {
+        e.setDefaultAction();
       }
     });
     area.characters.forEach((c) => {
@@ -226,14 +260,14 @@ export class Grid {
       }
     });
   }
-  update() {
-    this.moveEntities();
+  update(dt: number) {
+    this.registerEntitiesToArea();
     this.grid.forEach((row) =>
       row.forEach((area) => {
         if (area.attacks.length === 0 && area.projectiles.length === 0) return;
-        this.handleAreaAttacks(area);
+        this.handleAreaAttacks(area, dt);
         this.handleAreaProjectiles(area);
-        this.setAreaEntitiesStates(area);
+        this.setAreaEntitiesStates(area, dt);
       }),
     );
     this.cleanup();
