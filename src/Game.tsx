@@ -6,6 +6,8 @@ import { useMemo } from 'react';
 import EnemyComponent from './EnemyComponent';
 import { createZombieOne } from './defaults';
 import { useGameStore } from './store';
+import SkillButton from './SkillButton';
+import fireballIcon from '@/assets/fireball_icon.svg?url';
 
 export default function Game() {
   const grid = useGameStore((store) => store.grid);
@@ -30,7 +32,7 @@ export default function Game() {
       }}
     >
       {/* <img src={new URL(bg, import.meta.url).href}></img> */}
-
+      <SkillButton skillName="Fireball" url={fireballIcon} />
       <div className="absolute left-0 top-0 z-10 grid grid-cols-9 grid-rows-5">
         {Array.from({ length: 45 }).map(() => (
           <div className="absolure box-border h-[128px] w-[128px] border-2 border-red-500"></div>

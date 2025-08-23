@@ -1,5 +1,5 @@
 import { createAnimation } from '../animation';
-import idle from '@/assets/Zombie_1/idle.png';
+import idle from '@/assets/Zombie_1/Idle.png';
 import attack from '@/assets/Zombie_1/Attack.png';
 import dead from '@/assets/Zombie_1/Dead.png';
 import death from '@/assets/Zombie_1/Death.png';

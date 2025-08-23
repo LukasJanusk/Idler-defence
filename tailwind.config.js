@@ -6,21 +6,35 @@ export default {
       colors: {
         medieval: {
           // Backgrounds
-          dark: '#0F0F0F', // near black
-          stone: '#1E2A38', // deep desaturated blue-gray
+          dark: '#0F0F0F',
+          stone: '#1E2A38',
+          stoneLight: '#D3D3D3',
+          stoneCrimson: '#7A1F2E',
 
           // Neutrals
-          parchment: '#D9CBB4', // beige paper
-          wood: '#3E2C23', // leather/wood
+          parchment: '#D9CBB4',
+          wood: '#3E2C23',
 
           // Metallics
-          gold: '#C9A227', // aged gold
-          silver: '#C0C0C0', // steel/silver
+          gold: '#C9A227',
+          silver: '#C0C0C0',
 
           // Fantasy Accents
-          blood: '#8B1E3F', // crimson red
-          arcane: '#6A4C93', // arcane purple
-          emerald: '#3A7D44', // healing green
+          blood: '#8B1E3F',
+          arcane: '#6A4C93',
+          emerald: '#3A7D44',
+
+          green: {
+            100: '#E6F2EA',
+            200: '#CCE6D5',
+            300: '#99CCAA',
+            400: '#66B380',
+            500: '#339955',
+            600: '#2D804C',
+            700: '#246639',
+            800: '#1E4D2B',
+            900: '#15331B',
+          },
         },
 
         // Semantic mappings (with hover shades)
