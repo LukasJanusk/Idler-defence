@@ -18,6 +18,9 @@ const meta = {
     onClick: fn(),
     url: fireball,
     skillName: 'Fireball',
+    size: 'md',
+    disabled: false,
+    selected: false,
   },
 } satisfies Meta<typeof SkillButton>;
 
@@ -26,6 +29,14 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 
+export const Xs: Story = {
+  args: {
+    onClick: fn(),
+    url: fireball,
+    skillName: 'Fireball',
+    size: 'xs',
+  },
+};
 export const Small: Story = {
   args: {
     onClick: fn(),
@@ -84,5 +95,15 @@ export const Idle: Story = {
     skillName: 'Idle',
     size: 'lg',
     selected: false,
+  },
+};
+export const Disabled: Story = {
+  args: {
+    onClick: fn(),
+    url: fireMageIdle,
+    skillName: 'Idle',
+    size: 'lg',
+    selected: false,
+    disabled: true,
   },
 };

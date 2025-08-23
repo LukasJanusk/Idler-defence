@@ -6,7 +6,7 @@ import flamejet from '@/assets/flamejet_icon.svg';
 import { fn } from 'storybook/test';
 import SkillContainer from '@/SkillContainer';
 
-const fireMageSkills = [
+export const FireMageSkills = [
   {
     id: '1',
     name: 'Regenerate',
@@ -60,7 +60,7 @@ const meta = {
     layout: 'centered',
   },
   args: {
-    skills: fireMageSkills,
+    skills: FireMageSkills,
   },
 } satisfies Meta<typeof SkillContainer>;
 
@@ -71,6 +71,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FireMage: Story = {
   args: {
-    skills: fireMageSkills,
+    skills: FireMageSkills,
   },
 };

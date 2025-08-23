@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SkillButton from './SkillButton';
 import Indicator from './Indicator';
+import Container from './Container';
 
 export type Skill = {
   id: string;
@@ -23,7 +24,7 @@ export default function SkillContainer({ skills }: SkillContainerProps) {
     skill.onSelect();
   };
   return (
-    <div className="content-box flex h-[256px] w-[256px] flex-col flex-nowrap border-4 border-medieval-wood bg-medieval-stone shadow-lg">
+    <Container size="md">
       <div className="mt-2 flex h-[64px] flex-row items-center justify-around">
         {skills.map((skill, index) => (
           <div key={skill.id} className="">
@@ -72,6 +73,6 @@ export default function SkillContainer({ skills }: SkillContainerProps) {
           info="Every character has four skills. This panel displays selected skill information."
         />
       </div>
-    </div>
+    </Container>
   );
 }

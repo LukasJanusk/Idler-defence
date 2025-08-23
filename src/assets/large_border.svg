@@ -1,0 +1,30 @@
+<svg 
+  xmlns="http://www.w3.org/2000/svg" 
+  viewBox="0 0 512 256" 
+  className="w-full h-auto text-yellow-500" 
+  shapeRendering="crispEdges"
+  fill="currentColor"
+>
+  <rect x="0" y="0" width="8" height="2" />
+  <rect x="504" y="0" width="8" height="2" />
+  <rect x="0" y="2" width="2" height="6" />
+  <rect x="6" y="2" width="2" height="254" />
+  <rect x="504" y="2" width="2" height="254" />
+  <rect x="510" y="2" width="2" height="6" />
+  <rect x="8" y="4" width="496" height="4" />
+  <rect x="2" y="6" width="4" height="2" />
+  <rect x="506" y="6" width="4" height="2" />
+  <rect x="4" y="8" width="2" height="242" />
+  <rect x="8" y="8" width="2" height="2" />
+  <rect x="502" y="8" width="2" height="2" />
+  <rect x="506" y="8" width="2" height="242" />
+  <rect x="8" y="246" width="2" height="6" />
+  <rect x="502" y="246" width="2" height="6" />
+  <rect x="0" y="248" width="4" height="2" />
+  <rect x="10" y="248" width="492" height="4" />
+  <rect x="508" y="248" width="4" height="2" />
+  <rect x="0" y="250" width="2" height="6" />
+  <rect x="510" y="250" width="2" height="6" />
+  <rect x="2" y="254" width="4" height="2" />
+  <rect x="506" y="254" width="4" height="2" />
+</svg>
