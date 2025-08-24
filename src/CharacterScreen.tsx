@@ -15,6 +15,11 @@ export default function CharacterScreen() {
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const party = useGameStore((store) => store.party);
   const selectedCharacter = selectedPosition ? party[selectedPosition] : null;
+  const addCharacter = useGameStore((store) => store.addCharacterToParty);
+  const hireCharacter = (id: string) => {
+    if (!selectedPosition) return;
+    addCharacter(selectedPosition, id);
+  };
 
   return (
     <div
@@ -42,7 +47,10 @@ export default function CharacterScreen() {
             <>
               <div className="grid grid-cols-2 grid-rows-1">
                 {selectedCharacter ? (
-                  <SkillContainer skills={selectedCharacter.skills} />
+                  <SkillContainer
+                    position={selectedPosition}
+                    skills={selectedCharacter.skills}
+                  />
                 ) : (
                   <CharacterSelect
                     availableCharacters={availableCharacters}
@@ -64,6 +72,7 @@ export default function CharacterScreen() {
                   null
                 }
                 availableAttributes={0}
+                onHire={hireCharacter}
               />
             </>
           )}

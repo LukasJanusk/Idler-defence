@@ -34,13 +34,13 @@ export const wizardSkills: Skill[] = [
   },
   {
     id: 'Wizard-MagicSphere',
-    name: 'Defend',
+    name: 'Magic Sphere',
     description:
       'Releases enourmous discharge of pure arcane energy. Only the most elite wizards can master this technique.',
     url: '',
     damage: 220,
     duration: 1.6,
     speed: 1,
-    action: 'protect',
+    action: 'magicSphere',
   },
 ];

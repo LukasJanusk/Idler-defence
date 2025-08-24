@@ -41,6 +41,13 @@ export type AnyAction =
   | LightningMageAction
   | EnemyAction;
 
+export type CharacterAction =
+  | WarriorAction
+  | FireMageAction
+  | WizardAction
+  | KnightAction
+  | LightningMageAction;
+
 export class Character<T extends string> {
   id: string;
   name: string;

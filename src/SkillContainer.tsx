@@ -2,16 +2,26 @@ import { useState } from 'react';
 import SkillButton from './SkillButton';
 import Indicator from './Indicator';
 import Container from './Container';
-import type { Skill } from '@/types';
+import type { PartyPositionName, Skill } from '@/types';
+import { useGameStore } from './store';
+import type { CharacterAction } from './model/entities/character';
 
 type SkillContainerProps = {
   skills: Skill[];
+  position: PartyPositionName;
 };
-export default function SkillContainer({ skills }: SkillContainerProps) {
+export default function SkillContainer({
+  skills,
+  position,
+}: SkillContainerProps) {
   const [selectedSkill, setSelectedSkill] = useState<number>(0);
+  const setCharacterState = useGameStore((store) => store.updateCharacterState);
 
   const handleSelectSkill = (index: number) => {
     setSelectedSkill(index);
+    setCharacterState(position, {
+      state: skills[index].action as CharacterAction,
+    });
   };
   return (
     <Container size="md">

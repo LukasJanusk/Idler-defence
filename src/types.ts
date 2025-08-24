@@ -89,7 +89,7 @@ export type GameStore = {
 
   // actions
 
-  addCharacterToParty: (pos: PartyPositionName, char: AnyCharacter) => void;
+  addCharacterToParty: (pos: PartyPositionName, id: string) => void;
   removeCharacterFromParty: (pos: PartyPositionName) => void;
   moveCharacter: (from: PartyPositionName, to: PartyPositionName) => void;
   updateCharacterState: (

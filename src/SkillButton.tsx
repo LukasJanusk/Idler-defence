@@ -1,5 +1,6 @@
 import { ReactComponent as SkillBorder } from '@/assets/skill_border.svg?react';
 import { useHover } from './hooks/useHover';
+import { ReactComponent as MissingSkill } from '@/assets/missing_skill.svg?react';
 
 type SkillButtonProps = {
   url: string;
@@ -51,12 +52,18 @@ export default function SkillButton({
         <SkillBorder
           className={`relative z-10 transition-all duration-200 ${sizeStyles} ${disabled ? 'text-medieval-silver' : isHovering || selected ? 'text-secondary' : 'text-medieval-silver'}`}
         />
-        <img
-          src={new URL(url, import.meta.url).href}
-          className={`absolute left-0 top-0 z-10 ${sizeStyles}`}
-          alt={skillName}
-          draggable={false}
-        />
+        {url && url !== '' ? (
+          <img
+            src={new URL(url, import.meta.url).href}
+            className={`absolute left-0 top-0 z-10 ${sizeStyles}`}
+            alt={skillName}
+            draggable={false}
+          />
+        ) : (
+          <MissingSkill
+            className={`absolute left-0 top-0 z-10 text-medieval-silver ${sizeStyles}`}
+          />
+        )}
       </div>
     </button>
   );

@@ -17,11 +17,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   availableCharacters: createAvailableCharacters(),
   gold: 0,
   score: 0,
-  addCharacterToParty: (pos, char) =>
+  addCharacterToParty: (pos, id) =>
     set(
-      produce((draft) => {
+      produce<GameStore>((draft) => {
         const grid = get().grid;
-
+        const char = Array.from(draft.availableCharacters).find(
+          (c) => c.id === id,
+        );
+        if (!char) return;
         char.initAttacks(grid);
 
         const targetChar = char;
