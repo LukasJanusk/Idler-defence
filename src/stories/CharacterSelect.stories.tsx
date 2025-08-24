@@ -20,7 +20,8 @@ const meta = {
   },
   args: {
     availableCharacters: createAvailableCharacters(),
-    position: 'pos1',
+    selected: null,
+    setSelected: () => {},
   },
 } satisfies Meta<typeof CharacterSelect>;
 

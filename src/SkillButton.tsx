@@ -18,7 +18,7 @@ export default function SkillButton({
   onClick,
   disabled = false,
 }: SkillButtonProps) {
-  const xsStyles = 'h-[32px] w-[32px]';
+  const xsStyles = 'h-[38px] w-[38px]';
   const smStyles = 'h-[48px] w-[48px]';
   const mdStyles = 'h-[56px] w-[56px]';
   const lgStyles = 'h-[80px] w-[80px]';
@@ -40,7 +40,7 @@ export default function SkillButton({
   return (
     <button
       ref={hoverRef}
-      className={`relative ${sizeStyles} transition-all ${!disabled && 'duration-200 hover:scale-105 active:scale-95'}`}
+      className={`relative ${sizeStyles} transition-all ${!disabled && 'duration-200 hover:scale-105 active:scale-95'} text-xs`}
       onClick={onClick}
       aria-label={skillName}
       disabled={disabled}
@@ -49,7 +49,7 @@ export default function SkillButton({
         className={`absolute left-0 top-0 ${backgroundColorStyles} transiotn-all duration-200`}
       >
         <SkillBorder
-          className={`relative z-20 transition-all duration-200 ${sizeStyles} ${disabled ? 'text-medieval-silver' : isHovering || selected ? 'text-secondary' : 'text-medieval-silver'}`}
+          className={`relative z-10 transition-all duration-200 ${sizeStyles} ${disabled ? 'text-medieval-silver' : isHovering || selected ? 'text-secondary' : 'text-medieval-silver'}`}
         />
         <img
           src={new URL(url, import.meta.url).href}

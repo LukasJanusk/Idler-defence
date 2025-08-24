@@ -22,7 +22,22 @@ import type { GameClock } from './model/gameClock';
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
 export type PartyPositionName = 'pos1' | 'pos2' | 'pos3' | 'pos4';
-
+export type Skill = {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  damage: number;
+  duration: number;
+  speed: number;
+  action: AnyAction;
+};
+export type Attributes = {
+  strength: number;
+  dexterity: number;
+  intelligence: number;
+  vitality: number;
+};
 export type WarriorCharacter = Warrior & CharacterBase<WarriorAction>;
 export type FireMageCharacter = FireMage & CharacterBase<FireMageAction>;
 export type WizardCharacter = Wizard & CharacterBase<WizardAction>;
@@ -65,9 +80,12 @@ export type GameContextType = {
 export type GameStore = {
   gameClock: GameClock;
   party: Party;
+  selectedPosition: null | PartyPositionName;
   grid: Grid;
   particles: Particle[];
   availableCharacters: Set<AnyCharacter>;
+  gold: number;
+  score: number;
 
   // actions
 
@@ -79,4 +97,5 @@ export type GameStore = {
     patch: Partial<AnyCharacter>,
   ) => void;
   getGameClock: () => GameClock;
+  selectPosition: (pos: PartyPositionName) => void;
 };

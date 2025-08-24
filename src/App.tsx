@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { GameContextProvider } from './context/GameContextProvider';
 import { GameGridProvider } from './context/GameGridProvider';
 
 import ParticleContextProvider from './context/ParticleContextProvider';
 import Game from './Game';
+import { useGameStore } from './store';
 
 function App() {
   return (

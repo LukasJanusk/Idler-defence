@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Animation } from '@/model/animations/animation';
-import { useGameClock } from '@/context/useGameClock';
+import { useGameStore } from '@/store';
 
 export function useAnimation(animation: Animation | undefined | null) {
   const [frame, setFrame] = useState<number | null>(0);
-  const gameClock = useGameClock();
+  const gameClock = useGameStore((store) => store.gameClock);
 
   useEffect(() => {
     if (!animation) {

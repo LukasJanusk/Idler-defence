@@ -6,13 +6,17 @@ import { produce, enableMapSet } from 'immer';
 import { createAvailableCharacters } from './defaults';
 
 enableMapSet();
+const clock = new GameClock();
 
 export const useGameStore = create<GameStore>((set, get) => ({
-  gameClock: new GameClock(),
+  gameClock: clock,
   party: { pos1: null, pos2: null, pos3: null, pos4: null },
+  selectedPosition: null,
   grid: new Grid(9, 5, 128),
   particles: [],
   availableCharacters: createAvailableCharacters(),
+  gold: 0,
+  score: 0,
   addCharacterToParty: (pos, char) =>
     set(
       produce((draft) => {
@@ -120,7 +124,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   moveCharacter: (from, to) =>
     set(
       produce<GameStore>((draft) => {
-        const { party, grid } = draft;
+        const { party } = draft;
         const snapshot = { ...party };
 
         const fromCharacter = snapshot[from];
@@ -128,13 +132,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (!fromCharacter) return;
 
         const positions = {
-          pos1: { x: 384, y: 256, area: grid.grid[2][3] },
-          pos2: { x: 256, y: 256, area: grid.grid[2][2] },
-          pos3: { x: 128, y: 256, area: grid.grid[2][1] },
-          pos4: { x: 0, y: 256, area: grid.grid[2][0] },
+          pos1: { x: 0, y: 256, area: draft.grid.grid[2][0] },
+          pos2: { x: 128, y: 256, area: draft.grid.grid[2][1] },
+          pos3: { x: 256, y: 256, area: draft.grid.grid[2][2] },
+          pos4: { x: 384, y: 256, area: draft.grid.grid[2][3] },
         };
 
-        // rotation logic
         if (from === 'pos1' && to === 'pos4') {
           if (!snapshot.pos4) {
             party.pos4 = fromCharacter;
@@ -171,7 +174,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             );
           });
           pos.area.characters.push(character);
-          character.pos = slot as PartyPositionName;
         });
       }),
     ),
@@ -192,4 +194,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ grid });
   },
   getGameClock: () => get().gameClock,
+  selectPosition: (pos) =>
+    set((store) => ({ ...store, selectedPosition: pos })),
 }));

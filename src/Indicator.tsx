@@ -54,7 +54,7 @@ export default function Indicator({ info, icon, value }: IndicatorProps) {
         </span>
       )}
       {modalOpen && info.length && (
-        <div className="absolute -top-[128px] left-1/2 z-20 max-h-[128px] min-h-[64px] min-w-[128px] -translate-x-1/2 overflow-auto rounded-md bg-medieval-parchment p-2 text-center text-sm font-semibold text-black shadow-lg">
+        <div className="absolute -top-[128px] left-1/2 z-20 max-h-[128px] min-h-[64px] min-w-[128px] -translate-x-1/2 overflow-auto rounded-md bg-medieval-parchment p-2 text-center font-sans text-xs text-black shadow-lg">
           {info}
         </div>
       )}

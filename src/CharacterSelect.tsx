@@ -1,23 +1,21 @@
-import { useState } from 'react';
-import type { AnyCharacter, PartyPositionName } from './types';
+import type { AnyCharacter } from './types';
 import Container from './Container';
 
 type CharacterSelectProps = {
   availableCharacters: Set<AnyCharacter>;
-  position: PartyPositionName;
+  selected: string | null;
+  setSelected: (id: string) => void;
 };
 
 export default function CharacterSelect({
   availableCharacters,
+  selected,
+  setSelected,
 }: CharacterSelectProps) {
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(
-    null,
-  );
-
   const handleSelectCharacter = (charId: string) => {
-    setSelectedCharacter(charId);
+    setSelected(charId);
   };
-  const isSelected = (id: string) => id === selectedCharacter;
+  const isSelected = (id: string) => id === selected;
   return (
     <Container size="md">
       <div className="flex flex-row items-center justify-between px-2 text-2xl font-bold text-medieval-silver">

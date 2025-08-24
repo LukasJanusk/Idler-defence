@@ -2,26 +2,16 @@ import { useState } from 'react';
 import SkillButton from './SkillButton';
 import Indicator from './Indicator';
 import Container from './Container';
+import type { Skill } from '@/types';
 
-export type Skill = {
-  id: string;
-  name: string;
-  description: string;
-  url: string;
-  damage: number;
-  duration: number;
-  speed: number;
-  onSelect: () => void;
-};
 type SkillContainerProps = {
   skills: Skill[];
 };
 export default function SkillContainer({ skills }: SkillContainerProps) {
   const [selectedSkill, setSelectedSkill] = useState<number>(0);
 
-  const handleSelectSkill = (index: number, skill: Skill) => {
+  const handleSelectSkill = (index: number) => {
     setSelectedSkill(index);
-    skill.onSelect();
   };
   return (
     <Container size="md">
@@ -32,7 +22,7 @@ export default function SkillContainer({ skills }: SkillContainerProps) {
               url={skill.url}
               skillName={skill.name}
               selected={selectedSkill === index}
-              onClick={() => handleSelectSkill(index, skill)}
+              onClick={() => handleSelectSkill(index)}
               size="md"
             />
           </div>
@@ -48,10 +38,10 @@ export default function SkillContainer({ skills }: SkillContainerProps) {
           </div>
         </div>
       </div>
-      <div className="font-semi-bold text-md flex-grow overflow-auto border-2 border-medieval-parchment bg-medieval-wood px-2 text-medieval-silver">
+      <div className="font-semi-bold text-md m-2 flex-grow overflow-auto border-2 border-medieval-parchment bg-medieval-wood px-2 text-medieval-silver">
         {skills[selectedSkill].description}
       </div>
-      <div className="flex w-full flex-row items-center justify-start gap-1 bg-medieval-stone py-1">
+      <div className="flex w-full flex-row items-center justify-start gap-1 bg-medieval-stone p-2">
         <Indicator
           icon="⚔️"
           value={skills[selectedSkill].damage}

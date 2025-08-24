@@ -1,23 +1,52 @@
 import { ReactComponent as LargeBorder } from '@/assets/large_border.svg?react';
+import { GRID_AREA_SIZE } from './constants';
+
 type ContainerProps = {
   children: React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
 };
+
 export default function Container({ children, size = 'md' }: ContainerProps) {
-  const sizeStyles =
-    size === 'sm'
-      ? 'h-[128px] w-[128px]'
-      : size === 'md'
-        ? 'h-[256px] w-[256px]'
-        : 'h-[256px] w-[512px]';
+  let width = GRID_AREA_SIZE;
+  let height = GRID_AREA_SIZE;
+
+  if (size === 'md') {
+    width = GRID_AREA_SIZE * 2;
+    height = GRID_AREA_SIZE * 2;
+  } else if (size === 'lg') {
+    width = GRID_AREA_SIZE * 4;
+    height = GRID_AREA_SIZE * 2;
+  }
+
   return (
-    <div className={`${size !== 'lg' && 'border-4 border-medieval-wood'}`}>
+    <div
+      className="relative box-border"
+      style={{
+        width: `${size === 'lg' ? width + 16 : width}px`,
+        height: `${size === 'lg' ? height + 16 : height}px`,
+      }}
+    >
+      {size === 'lg' && (
+        <LargeBorder
+          className="pointer-events-none absolute -left-2 -top-4 z-10 box-border text-medieval-parchment"
+          style={{
+            width: `${width + 16}px`,
+            height: `${height + 32}px`,
+          }}
+        />
+      )}
+
       <div
-        className={`relative flex ${sizeStyles} flex-col flex-nowrap bg-medieval-stone shadow-lg`}
+        className="relative flex flex-col flex-nowrap overflow-visible bg-medieval-stone"
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          minWidth: `${width}px`,
+          minHeight: `${height}px`,
+          maxWidth: `${width}px`,
+          maxHeight: `${height}px`,
+        }}
       >
-        {size === 'lg' && (
-          <LargeBorder className="absolute left-[-8px] top-[-8px] z-10 h-[272px] w-[528px] text-medieval-parchment" />
-        )}
         {children}
       </div>
     </div>

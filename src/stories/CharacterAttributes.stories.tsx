@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CharacterAttributes, { type Attributes } from '@/CharacterAttributes';
-import { FireMageSkills } from './SkillContainer.stories';
+import CharacterAttributes from '@/CharacterAttributes';
+import type { Attributes } from '@/types';
+import { FireMage } from '@/model/entities/character';
+import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
+import { v4 } from 'uuid';
 const attributes: Attributes = {
   strength: 10,
   dexterity: 15,
   intelligence: 20,
   vitality: 25,
 };
-const character = { id: '1', name: 'Hero' };
+
 const setAttributes = (name: keyof Attributes) => {
   attributes[name] += 1;
 };
@@ -20,10 +23,13 @@ const meta = {
     layout: 'centered',
   },
   args: {
-    character: character,
-    attributes: attributes,
+    character: new FireMage(
+      'FireMage-test' + v4(),
+      'Vadim',
+      createFireMageAnimations(),
+    ),
     availableAttributes: 0,
-    skills: FireMageSkills,
+    hired: true,
   },
 } satisfies Meta<typeof CharacterAttributes>;
 
@@ -34,41 +40,46 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    character: character,
+    character: new FireMage(
+      'FireMage-test' + v4(),
+      'Vadim',
+      createFireMageAnimations(),
+    ),
     availableAttributes: 0,
-    attributes: attributes,
-    skills: FireMageSkills,
-    pos: 'pos4',
   },
 };
 export const HiredAvailablePoints: Story = {
   args: {
-    character: character,
+    character: new FireMage(
+      'FireMage-test' + v4(),
+      'Vadim',
+      createFireMageAnimations(),
+    ),
     availableAttributes: 10,
-    attributes: attributes,
-    skills: FireMageSkills,
-    pos: 'pos1',
-    setAttributes: setAttributes,
+    hired: true,
   },
 };
 export const HiredNoAvailablePoints: Story = {
   args: {
-    character: character,
+    character: new FireMage(
+      'FireMage-test' + v4(),
+      'Vadim',
+      createFireMageAnimations(),
+    ),
     availableAttributes: 0,
-    attributes: attributes,
-    skills: FireMageSkills,
-    pos: 'pos1',
-    setAttributes: setAttributes,
+    hired: true,
   },
 };
 export const ToHire: Story = {
   args: {
-    character: character,
+    character: new FireMage(
+      'FireMage-test' + v4(),
+      'Vadim',
+      createFireMageAnimations(),
+    ),
     availableAttributes: 0,
-    attributes: attributes,
-    skills: FireMageSkills,
-    pos: undefined,
-    setAttributes: setAttributes,
+    hired: false,
+
     onHire: (id: string) => {
       console.log(`Hire character with id: ${id}`);
     },

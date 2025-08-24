@@ -1,4 +1,4 @@
-import type { Rect, SpriteAnimations } from '@/types';
+import type { Attributes, Rect, Skill, SpriteAnimations } from '@/types';
 import {
   createFireWizardFireballAttack,
   createFireWizardFlameJetAttack,
@@ -6,6 +6,10 @@ import {
 } from '../characterAttacks/fireWizardAttacks';
 import { type Grid } from '../grid';
 import { GRID_AREA_SIZE } from '@/constants';
+import { FireMageSkills } from './skills/fireMageSkills';
+import { wizardSkills } from './skills/wizardSkills';
+import { lightningMageSkills } from './skills/LightningMageSkills';
+import { KnightSkills } from './skills/knightSkills';
 
 export type BaseAction =
   | 'idle'
@@ -49,6 +53,9 @@ export class Character<T extends string> {
   icon: string = '👤';
   rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
   pos: 'pos1' | 'pos2' | 'pos3' | 'pos4' | null = null;
+  attributes: Attributes;
+  skills: Skill[] = [];
+  className = 'Hero';
 
   constructor(
     id: string,
@@ -61,6 +68,12 @@ export class Character<T extends string> {
     this.animations = animations;
     this.actions = actions;
     this.state = actions[0];
+    this.attributes = {
+      strength: 10,
+      dexterity: 10,
+      intelligence: 10,
+      vitality: 10,
+    };
   }
 }
 
@@ -84,6 +97,7 @@ export class Warrior extends Character<WarriorAction> {
     ],
   ) {
     super(id, name, animations, actions);
+
     this.animations['death'].onFrame(
       this.animations.death.nFrame - 1,
       () => (this.state = 'dead'),
@@ -92,6 +106,13 @@ export class Warrior extends Character<WarriorAction> {
       this.animations.resurrect.nFrame - 1,
       () => (this.state = 'idle'),
     );
+    this.attributes = {
+      strength: 20,
+      dexterity: 15,
+      intelligence: 10,
+      vitality: 10,
+    };
+    this.skills = KnightSkills;
   }
   initAttacks(grid: Grid) {
     console.log('warrior attacks init', grid);
@@ -103,6 +124,7 @@ export class FireMage extends Character<FireMageAction> {
   icon = '🔥';
   stunRecovery = 400;
   attacksLoaded: boolean = false;
+  actions: FireMageAction[];
 
   constructor(
     id: string,
@@ -119,6 +141,7 @@ export class FireMage extends Character<FireMageAction> {
     ],
   ) {
     super(id, name, animations, actions);
+    this.actions = actions;
     this.animations['death'].onFrame(this.animations.death.nFrame, () => {
       console.log('On Death trigger');
     });
@@ -126,6 +149,13 @@ export class FireMage extends Character<FireMageAction> {
       this.animations.resurrect.nFrame - 1,
       () => (this.state = 'idle'),
     );
+    this.attributes = {
+      strength: 10,
+      dexterity: 15,
+      intelligence: 20,
+      vitality: 10,
+    };
+    this.skills = FireMageSkills;
   }
   initAttacks(grid: Grid) {
     if (this.attacksLoaded === true) return;
@@ -209,6 +239,13 @@ export class Knight extends Character<KnightAction> {
       this.animations.resurrect.nFrame - 1,
       () => (this.state = 'idle'),
     );
+    this.attributes = {
+      strength: 15,
+      dexterity: 10,
+      intelligence: 20,
+      vitality: 10,
+    };
+    this.skills = KnightSkills;
   }
   initAttacks(grid: Grid) {
     console.log('Knight attacks init', grid);
@@ -241,6 +278,13 @@ export class Wizard extends Character<WizardAction> {
       this.animations.resurrect.nFrame - 1,
       () => (this.state = 'idle'),
     );
+    this.attributes = {
+      strength: 10,
+      dexterity: 10,
+      intelligence: 25,
+      vitality: 10,
+    };
+    this.skills = wizardSkills;
   }
   initAttacks(grid: Grid) {
     console.log('Wizard attacks init', grid);
@@ -272,6 +316,13 @@ export class LightningMage extends Character<LightningMageAction> {
       this.animations.resurrect.nFrame - 1,
       () => (this.state = 'idle'),
     );
+    this.attributes = {
+      strength: 15,
+      dexterity: 15,
+      intelligence: 15,
+      vitality: 10,
+    };
+    this.skills = lightningMageSkills;
   }
   initAttacks(grid: Grid) {
     console.log('Lightning Mage attacks init', grid);

@@ -5,33 +5,21 @@ import useSpriteLoad from './hooks/useSpriteLoad';
 type SpriteProps = {
   animation: Animation;
   entity: 'character' | 'enemy';
-  onAnimationEnd?: () => void;
   scale?: number;
 };
 
-export default function Sprite({
-  animation,
-  onAnimationEnd,
-  entity,
-  scale = 1,
-}: SpriteProps) {
-  const onEnd = () => {
-    if (!onAnimationEnd) return;
-    onAnimationEnd();
-  };
-  const current = animation;
-  const frame = useAnimation(current, onEnd);
-  const size = useSpriteLoad(current);
-  if (!size || !current) return <div>Loading sprite...</div>;
+export default function Sprite({ animation, entity, scale = 1 }: SpriteProps) {
+  const frame = useAnimation(animation);
+  const size = useSpriteLoad(animation);
+  if (!size || !animation) return <div>Loading sprite...</div>;
   const width = size.width;
   const height = size.height;
 
   return (
     <img
       alt="animation"
-      src={current.sheet.img.src}
+      src={animation.sheet.img.src}
       style={{
-        border: '1px solid red',
         width,
         height,
         objectFit: 'none',
