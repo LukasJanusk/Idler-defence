@@ -1,38 +1,30 @@
-import { useEffect, useRef } from 'react';
-import { useGameClock } from '@/context/useGameClock';
-import {
-  Particle,
-  splashBlood,
-  splashEmbers,
-} from '@/model/entities/particles';
+import { useEffect } from 'react';
+
+import { useGameStore } from '@/store';
 
 export function useParticles(
   canvas: React.RefObject<HTMLCanvasElement | null>,
 ) {
-  const particles = useRef<Particle[]>([]);
-  const gameClock = useGameClock();
+  const gameClock = useGameStore((store) => store.gameClock);
+  const grid = useGameStore((store) => store.grid);
   const splashBl = (x: number, y: number, n: number) => {
-    particles.current.push(...splashBlood(x, y, n));
+    grid.generateParticles('blood', x, y, n);
   };
   const splashEmb = (x: number, y: number, n: number) => {
-    particles.current.push(...splashEmbers(x, y, n));
+    grid.generateParticles('ember', x, y, n);
   };
   useEffect(() => {
     const onTick = (dt: number) => {
       const ctx = canvas.current?.getContext('2d');
       if (!ctx) return;
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-      particles.current = particles.current.filter((p) => p.isAlive());
-      particles.current.forEach((p) => {
-        p.update(dt);
-        p.draw(ctx);
-      });
+      grid.filterExpiredParticles();
+      grid.updateAndDrawParticles(dt, ctx);
     };
     gameClock.subscribe(onTick);
 
     return () => gameClock.unsubscribe(onTick);
-  }, [gameClock, canvas]);
+  }, [gameClock, canvas, grid]);
 
   return { splashBl, splashEmb };
 }

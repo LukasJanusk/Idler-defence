@@ -20,7 +20,7 @@ export default function ParticleContextProvider({
         ref={ref}
         width={GAME_WIDTH}
         height={GAME_HEIGHT}
-        className="absolute left-0 top-0 z-10 h-full w-full"
+        className="absolute left-0 top-0"
       />
       {children}
     </ParticleContext.Provider>

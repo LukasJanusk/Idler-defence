@@ -25,7 +25,7 @@ export function GameContextProvider({ children }: GameContextProps) {
   return (
     <GameContext.Provider value={value}>
       <div className="relative h-full w-full overflow-hidden">
-        <span className="fixed left-0 top-0 z-20">{`x: ${mouse.x}, y: ${mouse.y}`}</span>
+        <span className="fixed left-0 top-0">{`x: ${mouse.x}, y: ${mouse.y}`}</span>
         {children}
       </div>
     </GameContext.Provider>

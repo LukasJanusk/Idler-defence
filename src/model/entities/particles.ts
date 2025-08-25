@@ -1,4 +1,8 @@
+import { v4 } from 'uuid';
+
+export type ParticleType = 'blood' | 'ember';
 export class Particle {
+  id: string;
   x: number;
   y: number;
   vx: number;
@@ -17,6 +21,7 @@ export class Particle {
     color: string,
     gravity = 0,
   ) {
+    this.id = v4();
     this.x = x;
     this.y = y;
     this.vx = vx;

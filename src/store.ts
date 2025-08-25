@@ -25,6 +25,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           (c) => c.id === id,
         );
         if (!char) return;
+        char.pos = pos;
         char.initAttacks(grid);
 
         const targetChar = char;
@@ -137,10 +138,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (!fromCharacter) return;
 
         const positions = {
-          pos1: { x: 0, y: 256, area: draft.grid.grid[2][0] },
-          pos2: { x: 128, y: 256, area: draft.grid.grid[2][1] },
-          pos3: { x: 256, y: 256, area: draft.grid.grid[2][2] },
-          pos4: { x: 384, y: 256, area: draft.grid.grid[2][3] },
+          pos4: { x: 0, y: 256, area: draft.grid.grid[2][0] },
+          pos3: { x: 128, y: 256, area: draft.grid.grid[2][1] },
+          pos2: { x: 256, y: 256, area: draft.grid.grid[2][2] },
+          pos1: { x: 384, y: 256, area: draft.grid.grid[2][3] },
         };
 
         if (from === 'pos1' && to === 'pos4') {

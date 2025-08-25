@@ -43,24 +43,25 @@ export default function Bar({
   const height =
     size === 'sm' ? SMALL_HEIGHT : size === 'lg' ? LARGE_HEIGHT : MEDIUM_HEIGHT;
   const color = colorStyles?.length ? colorStyles : 'bg-medieval-green-800';
-
+  const displayValue = value > maxValue ? maxValue : value;
   return (
     <div
       ref={maxRef}
-      className={`relative box-border flex w-full min-w-[${MIN_WIDTH}px] justify-start border-2 border-medieval-silver bg-medieval-stone shadow-md`}
+      className={`relative box-border flex w-full justify-start border-2 border-medieval-silver bg-medieval-stone shadow-md`}
+      style={{ minWidth: `${MIN_WIDTH}px` }}
     >
       <div
         style={{
-          width: `${Math.round((value / maxValue) * maxWidth)}px`,
+          width: `${Math.round((displayValue / maxValue) * maxWidth)}px`,
           height: `${height}px`,
-          minHeight: `${height}px`,
+          maxHeight: `${height}px`,
         }}
         className={`${color} h-full min-h-[20px] flex-row`}
       ></div>{' '}
       {showValues && (
         <div
           className={`${size === 'sm' ? 'text-sm' : size === 'md' ? 'text-base' : 'text-lg'} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-medieval-silver`}
-        >{`${value}/${maxValue}`}</div>
+        >{`${displayValue}/${maxValue}`}</div>
       )}
       {label && (
         <div

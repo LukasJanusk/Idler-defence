@@ -12,6 +12,12 @@ import {
 import { getRectMiddle } from '../utils';
 import { Enemy } from './entities/enemy';
 import { Attack } from './entities/attack';
+import {
+  Particle,
+  splashBlood,
+  splashEmbers,
+  type ParticleType,
+} from './entities/particles';
 
 const isCharacter = (entity: unknown): entity is AnyCharacter => {
   if (
@@ -97,6 +103,10 @@ class Area {
     const index = this.projectiles.findIndex((p) => p.id === projectile.id);
     if (index !== -1) this.projectiles.splice(index, 1);
   }
+  unRegisterParticle(particle: Particle) {
+    const index = this.projectiles.findIndex((p) => p.id === particle.id);
+    if (index !== -1) this.projectiles.splice(index, 1);
+  }
   cleanup() {
     for (const enemy of this.enemies) {
       if (enemy.state === 'dead') {
@@ -114,6 +124,7 @@ export class Grid {
   horizontal: number;
   vertical: number;
   areaSize: number;
+  particles: Particle[] = [];
 
   constructor(horizontal: number, vertical: number, areaSize: number) {
     this.horizontal = horizontal;
@@ -157,6 +168,23 @@ export class Grid {
       }),
     );
     return closest;
+  }
+  generateParticles(type: ParticleType, x: number, y: number, n: number) {
+    switch (type) {
+      case 'blood':
+        return this.particles.push(...splashBlood(x, y, n));
+      case 'ember':
+        return this.particles.push(...splashEmbers(x, y, n));
+    }
+  }
+  updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {
+    this.particles.forEach((p) => {
+      p.update(dt);
+      p.draw(ctx);
+    });
+  }
+  filterExpiredParticles() {
+    this.particles = this.particles.filter((p) => p.isAlive());
   }
   private registerEnemiesToArea(currentArea: Area) {
     currentArea.enemies.forEach((enemy) => {

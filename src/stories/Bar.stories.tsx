@@ -14,6 +14,7 @@ const meta = {
     maxValue: 100,
     size: 'md',
     colorStyles: '',
+    showValues: false,
   },
 } satisfies Meta<typeof Bar>;
 

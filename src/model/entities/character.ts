@@ -189,6 +189,23 @@ export class FireMage extends Character<FireMageAction> {
     this.animations.flamejet.onFrame(3, createJet);
     this.animations.flamejet.onFrame(4, createJet);
     this.animations.flamejet.onFrame(5, createJet);
+    const generateEmbers = (stepX: number) => {
+      grid.generateParticles(
+        'ember',
+        this.rect.x + stepX,
+        this.rect.y + 76,
+        10,
+      );
+    };
+    this.animations.flamejet.onFrame(2, () => generateEmbers(138));
+    this.animations.flamejet.onFrame(3, () => generateEmbers(178));
+    this.animations.flamejet.onFrame(4, () => generateEmbers(198));
+    this.animations.flamejet.onFrame(5, () => generateEmbers(228));
+    this.animations.flamejet.onFrame(6, () => generateEmbers(258));
+    this.animations.flamejet.onFrame(7, () => generateEmbers(288));
+    this.animations.flamejet.onFrame(8, () => generateEmbers(318));
+    this.animations.flamejet.onFrame(9, () => generateEmbers(348));
+
     this.animations.fireball.onFrame(6, () => {
       const projectile = createFireWizardFireballAttack(
         this.rect.x + GRID_AREA_SIZE,

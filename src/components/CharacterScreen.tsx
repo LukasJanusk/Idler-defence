@@ -23,7 +23,7 @@ export default function CharacterScreen() {
 
   return (
     <div
-      className="absolute left-[8px] top-[256px]"
+      className="absolute left-[0px] top-[256px]"
       style={{
         height: `${GRID_AREA_SIZE * 3}px`,
         width: `${GRID_AREA_SIZE * 4}px`,
