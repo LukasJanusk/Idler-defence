@@ -107,9 +107,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }),
     ),
-  removeCharacterFromParty: (pos) =>
+  removeCharacterFromParty: (pos?) =>
     set(
       produce<GameStore>((draft) => {
+        const position = pos || get().selectedPosition;
+        if (!position) return;
         const positions = {
           pos1: draft.grid.grid[2][3],
           pos2: draft.grid.grid[2][2],
@@ -117,10 +119,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           pos4: draft.grid.grid[2][0],
         };
 
-        const targetArea = positions[pos];
+        const targetArea = positions[position];
         if (targetArea) {
           targetArea.characters = [];
-          draft.party[pos] = null;
+          draft.party[position] = null;
         }
       }),
     ),

@@ -49,6 +49,7 @@ export default function CharacterScreen() {
                 {selectedCharacter ? (
                   <SkillContainer
                     position={selectedPosition}
+                    state={selectedCharacter.state}
                     skills={selectedCharacter.skills}
                   />
                 ) : (

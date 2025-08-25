@@ -11,6 +11,7 @@ export const lightningMageSkills: Skill[] = [
     duration: 0.7,
     speed: 1,
     action: 'idle',
+    level: 1,
   },
   {
     id: 'LightningMage-LightningStrike',
@@ -22,6 +23,7 @@ export const lightningMageSkills: Skill[] = [
     duration: 1,
     speed: 1,
     action: 'attack',
+    level: 1,
   },
   {
     id: 'LightningMage-ChargedBolts',
@@ -32,6 +34,7 @@ export const lightningMageSkills: Skill[] = [
     duration: 0.4,
     speed: 1,
     action: 'chargedBolts',
+    level: 1,
   },
   {
     id: 'LightningMage-LightningStream',
@@ -42,5 +45,6 @@ export const lightningMageSkills: Skill[] = [
     duration: 1.3,
     speed: 1,
     action: 'chargedBolts',
+    level: 1,
   },
 ];

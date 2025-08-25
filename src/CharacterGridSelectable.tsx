@@ -50,7 +50,7 @@ export default function CharacterGridSelectable({
       }}
       className={`relative flex flex-row items-center justify-center`}
     >
-      <button
+      <div
         aria-label={`Select character ${character.name}`}
         onClick={() => selectPosition(position)}
       >
@@ -58,7 +58,7 @@ export default function CharacterGridSelectable({
           <CharacterSprite position={position} character={character} />
         )}
         {position === selectedPosition && <SelectedIndicator />}
-      </button>
+      </div>
     </div>
   );
 }

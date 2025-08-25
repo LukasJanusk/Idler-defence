@@ -24,5 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const FireMage: Story = {
   args: {
     skills: FireMageSkills,
+    state: 'idle',
+    position: 'pos1',
   },
 };

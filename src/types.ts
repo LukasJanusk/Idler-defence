@@ -31,6 +31,7 @@ export type Skill = {
   duration: number;
   speed: number;
   action: AnyAction;
+  level: number;
 };
 export type Attributes = {
   strength: number;
@@ -90,7 +91,7 @@ export type GameStore = {
   // actions
 
   addCharacterToParty: (pos: PartyPositionName, id: string) => void;
-  removeCharacterFromParty: (pos: PartyPositionName) => void;
+  removeCharacterFromParty: (pos?: PartyPositionName) => void;
   moveCharacter: (from: PartyPositionName, to: PartyPositionName) => void;
   updateCharacterState: (
     position: PartyPositionName,

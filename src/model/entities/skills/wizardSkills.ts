@@ -11,6 +11,7 @@ export const wizardSkills: Skill[] = [
     duration: 0.8,
     speed: 1,
     action: 'idle',
+    level: 1,
   },
   {
     id: 'Wizard-MagicArrow',
@@ -21,6 +22,8 @@ export const wizardSkills: Skill[] = [
     duration: 0.9,
     speed: 1,
     action: 'magicArrow',
+
+    level: 1,
   },
   {
     id: 'Wizard-MagicBall',
@@ -31,6 +34,7 @@ export const wizardSkills: Skill[] = [
     duration: 0.7,
     speed: 1,
     action: 'magicBall',
+    level: 1,
   },
   {
     id: 'Wizard-MagicSphere',
@@ -42,5 +46,6 @@ export const wizardSkills: Skill[] = [
     duration: 1.6,
     speed: 1,
     action: 'magicSphere',
+    level: 1,
   },
 ];

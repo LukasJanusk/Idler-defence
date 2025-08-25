@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 import type { AnyCharacter, Attributes } from './types';
 import CharacterToHireSkills from './CharacterToHireSkills';
 import Indicator from './Indicator';
+import { useGameStore } from './store';
 
 type CharacterAttributesProps = {
   character: AnyCharacter | null;
@@ -19,6 +20,8 @@ export default function CharacterAttributes({
   onHire,
   setAttributes,
 }: CharacterAttributesProps) {
+  const handleDisband = useGameStore((store) => store.removeCharacterFromParty);
+
   if (!character) return <></>;
   return (
     <Container size="md">
@@ -72,7 +75,7 @@ export default function CharacterAttributes({
       {hired ? (
         <button
           className={`mb-2 h-8 w-32 self-center rounded border-2 border-medieval-stoneCrimson font-bold text-medieval-parchment transition-all duration-200 hover:scale-100 hover:border-transparent hover:bg-medieval-stoneCrimson active:scale-95`}
-          onClick={() => onHire && onHire(character.id)}
+          onClick={() => handleDisband()}
         >
           Disband ❌
         </button>

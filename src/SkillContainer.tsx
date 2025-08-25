@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SkillButton from './SkillButton';
 import Indicator from './Indicator';
 import Container from './Container';
@@ -8,63 +8,70 @@ import type { CharacterAction } from './model/entities/character';
 
 type SkillContainerProps = {
   skills: Skill[];
+  state: CharacterAction;
   position: PartyPositionName;
 };
 export default function SkillContainer({
   skills,
+  state,
   position,
 }: SkillContainerProps) {
-  const [selectedSkill, setSelectedSkill] = useState<number>(0);
+  const [selectedSkill, setSelectedSkill] = useState(
+    skills.find((skill) => skill.action === state) || null,
+  );
   const setCharacterState = useGameStore((store) => store.updateCharacterState);
-
-  const handleSelectSkill = (index: number) => {
-    setSelectedSkill(index);
+  const handleSelectSkill = (skill: Skill) => {
+    setSelectedSkill(skill);
     setCharacterState(position, {
-      state: skills[index].action as CharacterAction,
+      state: skill.action as CharacterAction,
     });
   };
+  useEffect(() => {
+    setSelectedSkill(skills.find((skill) => skill.action === state) || null);
+  }, [state, skills]);
+
   return (
     <Container size="md">
       <div className="mt-2 flex h-[64px] flex-row items-center justify-around">
-        {skills.map((skill, index) => (
+        {skills.map((skill) => (
           <div key={skill.id} className="">
             <SkillButton
               url={skill.url}
               skillName={skill.name}
-              selected={selectedSkill === index}
-              onClick={() => handleSelectSkill(index)}
+              selected={selectedSkill ? skill === selectedSkill : false}
+              onClick={() => handleSelectSkill(skill)}
               size="md"
             />
           </div>
         ))}
       </div>
       <div className="flex flex-row items-center justify-between px-2 text-2xl font-bold text-medieval-silver">
-        {skills[selectedSkill].name}
+        {selectedSkill?.name}
         <div className="items center flex flex-row gap-1">
           {' '}
           <span className="text-base">LVL</span>
           <div className="h-[24px] w-[24px] rounded-full bg-medieval-emerald text-center text-base font-bold text-white">
-            10
+            {selectedSkill?.level}
           </div>
         </div>
       </div>
       <div className="font-semi-bold text-md m-2 flex-grow overflow-auto border-2 border-medieval-parchment bg-medieval-wood px-2 text-medieval-silver">
-        {skills[selectedSkill].description}
+        {selectedSkill?.description}
       </div>
       <div className="flex w-full flex-row items-center justify-start gap-1 bg-medieval-stone p-2">
         <Indicator
           icon="⚔️"
-          value={skills[selectedSkill].damage}
+          value={selectedSkill?.damage || 0}
           info={'Damage dealt by the skill.'}
         />
         <Indicator
           icon="💨"
-          value={skills[selectedSkill].speed}
+          value={selectedSkill?.speed || 0}
           info="Current percentage of the base skill speed."
         />
         <Indicator
           icon="⏳"
-          value={skills[selectedSkill].duration}
+          value={selectedSkill?.duration || 0}
           info="Duration of the skill in seconds."
         />
         <Indicator
