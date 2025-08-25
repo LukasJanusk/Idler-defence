@@ -1,5 +1,5 @@
 import type { EnemyAction } from '@/model/entities/character';
-import Sprite from './Sprite';
+import Sprite from './components/reusable/Sprite';
 import type { Enemy } from '@/model/entities/enemy';
 type EnemyProps = {
   enemy: Enemy<EnemyAction>;

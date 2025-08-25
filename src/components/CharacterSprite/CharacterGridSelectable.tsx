@@ -1,8 +1,8 @@
 import AddNewCharacterButton from './AddNewCharacterButton';
 import CharacterSprite from './CharacterSprite';
-import { GRID_AREA_SIZE } from './constants';
-import { useGameStore } from './store';
-import type { PartyPositionName } from './types';
+import { GRID_AREA_SIZE } from '@/constants';
+import { useGameStore } from '@/store';
+import type { PartyPositionName } from '@/types';
 
 export type CharacterGridSelectableProps = {
   position: PartyPositionName;

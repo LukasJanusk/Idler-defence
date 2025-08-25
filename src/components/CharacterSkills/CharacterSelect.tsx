@@ -1,5 +1,5 @@
-import type { AnyCharacter } from './types';
-import Container from './Container';
+import type { AnyCharacter } from '../../types';
+import Container from '../reusable/Container';
 
 type CharacterSelectProps = {
   availableCharacters: Set<AnyCharacter>;
@@ -16,6 +16,15 @@ export default function CharacterSelect({
     setSelected(charId);
   };
   const isSelected = (id: string) => id === selected;
+
+  if (availableCharacters.size < 1)
+    return (
+      <Container size="md">
+        <div className="self-center justify-self-center p-4 text-center text-2xl font-bold text-medieval-parchment">
+          No characters available
+        </div>
+      </Container>
+    );
   return (
     <Container size="md">
       <div className="flex flex-row items-center justify-between px-2 text-2xl font-bold text-medieval-silver">

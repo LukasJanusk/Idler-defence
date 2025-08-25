@@ -1,6 +1,6 @@
 import { ArrowBigLeft, ArrowBigRight } from 'lucide-react';
-import { useGameStore } from './store';
-import type { PartyPositionName } from './types';
+import { useGameStore } from '@/store';
+import type { PartyPositionName } from '@/types';
 import type React from 'react';
 
 type PositionChangeButtonProps = {

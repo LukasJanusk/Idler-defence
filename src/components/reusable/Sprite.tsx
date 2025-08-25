@@ -1,6 +1,6 @@
-import { useAnimation } from './hooks/useAnimation';
+import { useAnimation } from '@/hooks/useAnimation';
 import type { Animation } from '@/model/animations/animation';
-import useSpriteLoad from './hooks/useSpriteLoad';
+import useSpriteLoad from '@/hooks/useSpriteLoad';
 
 type SpriteProps = {
   animation: Animation;

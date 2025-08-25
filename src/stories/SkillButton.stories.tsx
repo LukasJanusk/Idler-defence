@@ -4,7 +4,7 @@ import fireMageIdle from '@/assets/fire_wizard_idle_icon.svg';
 import fireMageStab from '@/assets/fire_wizard_stab_icon.svg';
 import flamejet from '@/assets/flamejet_icon.svg';
 import { fn } from 'storybook/test';
-import SkillButton from '@/SkillButton';
+import SkillButton from '@/components/reusable/SkillButton';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

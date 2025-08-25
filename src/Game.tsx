@@ -6,9 +6,9 @@ import { useEffect, useMemo } from 'react';
 import EnemyComponent from './EnemyComponent';
 import { createZombieOne } from './defaults';
 import { useGameStore } from './store';
-import SkillButton from './SkillButton';
+import SkillButton from './components/reusable/SkillButton';
 import fireballIcon from '@/assets/fireball_icon.svg?url';
-import CharacterScreen from './CharacterScreen';
+import CharacterScreen from './components/CharacterScreen';
 
 export default function Game() {
   const grid = useGameStore((store) => store.grid);

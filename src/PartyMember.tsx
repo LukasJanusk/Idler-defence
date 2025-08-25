@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ActionButton from './ActionButton';
-import Sprite from './Sprite';
+import Sprite from './components/reusable/Sprite';
 import type { PartyPositionName } from './types';
 import { PlusCircle, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
 import CharacterSelectModal from './CharacterSelectModal';

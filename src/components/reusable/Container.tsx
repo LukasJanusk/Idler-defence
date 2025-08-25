@@ -1,5 +1,5 @@
 import { ReactComponent as LargeBorder } from '@/assets/large_border.svg?react';
-import { GRID_AREA_SIZE } from './constants';
+import { GRID_AREA_SIZE } from '@/constants';
 
 type ContainerProps = {
   children: React.ReactNode;

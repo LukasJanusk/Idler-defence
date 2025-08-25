@@ -1,7 +1,7 @@
-import { useHover } from './hooks/useHover';
+import { useHover } from '@/hooks/useHover';
 import PositionChangeButton from './PositionChangeButton';
-import Sprite from './Sprite';
-import type { AnyCharacter, PartyPositionName } from './types';
+import Sprite from '../reusable/Sprite';
+import type { AnyCharacter, PartyPositionName } from '@/types';
 
 export type CharacterSpriteProps = {
   position: PartyPositionName;

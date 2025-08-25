@@ -1,6 +1,6 @@
 import { PlusCircle } from 'lucide-react';
-import type { PartyPositionName } from './types';
-import { useGameStore } from './store';
+import type { PartyPositionName } from '@/types';
+import { useGameStore } from '@/store';
 
 type AddNewCharacterButtonProps = {
   position: PartyPositionName;

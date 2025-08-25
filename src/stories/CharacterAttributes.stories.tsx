@@ -1,19 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CharacterAttributes from '@/CharacterAttributes';
-import type { Attributes } from '@/types';
+import CharacterAttributes from '@/components/CharacterAttributes/CharacterAttributes';
 import { FireMage } from '@/model/entities/character';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import { v4 } from 'uuid';
-const attributes: Attributes = {
-  strength: 10,
-  dexterity: 15,
-  intelligence: 20,
-  vitality: 25,
-};
-
-const setAttributes = (name: keyof Attributes) => {
-  attributes[name] += 1;
-};
 
 const meta = {
   title: 'CharacterAttributes',

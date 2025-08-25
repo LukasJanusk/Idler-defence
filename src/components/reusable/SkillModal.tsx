@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { GRID_AREA_SIZE } from './constants';
+import { GRID_AREA_SIZE } from '@/constants';
 
 type GameModalProps = {
   size: 'sm' | 'md' | 'lg';

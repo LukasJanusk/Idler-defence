@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
-import CharacterScreen from '@/CharacterScreen';
+import CharacterScreen from '@/components/CharacterScreen';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters } from '@/defaults';
 import { GameClock } from '@/model/gameClock';

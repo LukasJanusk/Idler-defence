@@ -1,10 +1,10 @@
-import CharacterAttributes from './CharacterAttributes';
-import Container from './Container';
-import SkillContainer from './SkillContainer';
-import CharacterSelect from './CharacterSelect';
-import { GRID_AREA_SIZE } from './constants';
-import CharacterGridSelectable from './CharacterGridSelectable';
-import { useGameStore } from './store';
+import CharacterAttributes from './CharacterAttributes/CharacterAttributes';
+import Container from './reusable/Container';
+import SkillContainer from './CharacterSkills/SkillContainer';
+import CharacterSelect from './CharacterSkills/CharacterSelect';
+import { GRID_AREA_SIZE } from '@/constants';
+import CharacterGridSelectable from './CharacterSprite/CharacterGridSelectable';
+import { useGameStore } from '@/store';
 import { useState } from 'react';
 
 export default function CharacterScreen() {

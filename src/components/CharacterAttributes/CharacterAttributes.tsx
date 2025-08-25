@@ -1,9 +1,9 @@
-import Container from './Container';
+import Container from '../reusable/Container';
 import { Plus } from 'lucide-react';
-import type { AnyCharacter, Attributes } from './types';
+import type { AnyCharacter, Attributes } from '@/types';
 import CharacterToHireSkills from './CharacterToHireSkills';
-import Indicator from './Indicator';
-import { useGameStore } from './store';
+import Indicator from '../reusable/Indicator';
+import { useGameStore } from '@/store';
 
 type CharacterAttributesProps = {
   character: AnyCharacter | null;

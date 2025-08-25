@@ -1,7 +1,7 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import CharacterGridSelectable, {
   type CharacterGridSelectableProps,
-} from '@/CharacterGridSelectable';
+} from '@/components/CharacterSprite/CharacterGridSelectable';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters } from '@/defaults';
 import { GameClock } from '@/model/gameClock';

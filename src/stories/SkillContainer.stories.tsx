@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import SkillContainer from '@/SkillContainer';
+import SkillContainer from '@/components/CharacterSkills/SkillContainer';
 import { FireMageSkills } from '@/model/entities/skills/fireMageSkills';
 
 const meta = {

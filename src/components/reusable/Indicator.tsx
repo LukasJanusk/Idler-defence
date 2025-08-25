@@ -1,4 +1,4 @@
-import { useHover } from './hooks/useHover';
+import { useHover } from '@/hooks/useHover';
 
 export type IndicatorIcons = '⚔️' | '⏳' | '💨' | '❔';
 
