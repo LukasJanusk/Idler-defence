@@ -11,6 +11,7 @@ export const KnightSkills: Skill[] = [
     speed: 1,
     action: 'idle',
     level: 1,
+    cost: -1,
   },
   {
     id: 'Knight-PowerfulStab',
@@ -22,6 +23,7 @@ export const KnightSkills: Skill[] = [
     speed: 1,
     action: 'attack',
     level: 1,
+    cost: 10,
   },
   {
     id: 'Knight-GuardAlly',
@@ -34,6 +36,7 @@ export const KnightSkills: Skill[] = [
     speed: 1,
     action: 'guard',
     level: 1,
+    cost: 1,
   },
   {
     id: 'Knight-Defend',
@@ -46,5 +49,6 @@ export const KnightSkills: Skill[] = [
     speed: 1,
     action: 'protect',
     level: 1,
+    cost: 2,
   },
 ];

@@ -9,6 +9,7 @@ import { KnightSkills } from './skills/knightSkills';
 import { setupDeathResurrect } from '@/utils';
 import { createFireMageAnimations } from '../animations/fireWizardAnimations';
 
+const AUTOMATE = true;
 export type BaseAction =
   | 'idle'
   | 'attack'
@@ -49,9 +50,9 @@ export type CharacterAction =
 export class Character<T extends string> {
   id: string;
   name: string;
-  health: number = 100;
+  health: number = 0;
   maxHealth: number = 100;
-  energy: number = 100;
+  energy: number = 0;
   maxEnergy: number = 100;
   animations: SpriteAnimations<T>;
   actions: T[];
@@ -64,8 +65,10 @@ export class Character<T extends string> {
   attributes: Attributes;
   skills: Skill[] = [];
   className = 'Hero';
-  healthRecovery = 1;
-  energyRecovery = 1;
+  healthRecovery = 0.1;
+  energyRecovery = 0.1;
+  lastAction: null | T = null;
+  private AUTOMATE = false;
 
   private elapsed = 0;
   private interval = UPDATE_RATE;
@@ -91,6 +94,34 @@ export class Character<T extends string> {
   getCurrentSkill() {
     return this.skills.find((skill) => skill.action === this.state);
   }
+  setAutomate() {
+    this.AUTOMATE = !this.AUTOMATE;
+  }
+  initAttributes() {
+    this.health = this.attributes.vitality * 10;
+    this.energy = this.attributes.intelligence * 10;
+    this.maxHealth = this.attributes.vitality * 10;
+    this.maxEnergy = this.attributes.intelligence * 10;
+    this.energyRecovery = this.attributes.intelligence * 0.01;
+    this.healthRecovery = this.attributes.vitality * 0.01;
+    this.actions.forEach(
+      (action) =>
+        (this.animations[action].frameDuration -= this.attributes.dexterity),
+    );
+    this.skills.forEach((skill) => {
+      if (skill.damage > 0) {
+        const multiplier = (100 + this.attributes.strength) / 100;
+        skill.damage *= multiplier;
+      }
+      this.actions.forEach((action) => {
+        if (action === skill.action) {
+          const frames = this.animations[action].nFrame;
+          const frameDuration = this.animations[action].frameDuration;
+          skill.duration = Number(((frames * frameDuration) / 1000).toFixed(2));
+        }
+      });
+    });
+  }
   update(dt: number) {
     if (this.state === 'death' || this.state === 'dead') return;
     this.elapsed += dt;
@@ -105,10 +136,26 @@ export class Character<T extends string> {
         this.energy + ticks * this.energyRecovery,
         this.maxEnergy,
       );
+      if (
+        AUTOMATE &&
+        this.lastAction &&
+        this.skills.some((s) => s.action === this.lastAction)
+      ) {
+        const action = this.skills.find((s) => s.action === this.lastAction);
+        if (action) this.state = action.action as T;
+      }
     }
+
     this.health = Math.max(this.health, 0);
     this.energy = Math.max(this.energy, 0);
     if (this.health === 0 && 'death' in this.actions) this.state = 'death' as T;
+    const skill = this.getCurrentSkill();
+
+    if (!skill) return;
+    if (this.energy <= skill.cost) {
+      this.lastAction = this.state;
+      this.state = 'idle' as T;
+    }
   }
 }
 
@@ -214,13 +261,25 @@ export class Knight extends Character<KnightAction> {
     this.attributes = {
       strength: 15,
       dexterity: 10,
-      intelligence: 20,
-      vitality: 10,
+      intelligence: 10,
+      vitality: 20,
     };
     this.skills = KnightSkills;
   }
   initAttacks(grid: Grid) {
     console.log('Knight attacks init', grid);
+    this.animations.idle.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.attack.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.guard.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.protect.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
   }
 }
 export class Wizard extends Character<WizardAction> {

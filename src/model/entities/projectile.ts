@@ -4,6 +4,7 @@ import type { Rect } from '@/types';
 import { collideRect, getRectMiddle } from '@/utils';
 import fireball from '@/assets/Fire_Wizard/Charge.png';
 import { Animation } from '@/model/animations/animation';
+import type { AnyAction } from './character';
 
 export class ProjectileAnimation {
   id: string = 'ProjAnim' + v4();
@@ -161,9 +162,10 @@ export class Projectile {
     this.rect.x += velX * 0.001 * dt;
     this.rect.y += velY * 0.001 * dt;
   }
-  hit(target: { id: string; rect: Rect; health: number }) {
+  hit(target: { id: string; rect: Rect; health: number; state: AnyAction }) {
     if (this.hitEntities.some((e) => e === target.id)) return;
     if (collideRect(this.rect, target.rect)) {
+      target.state = 'hit';
       target.health -= this.damage;
       if (this.didHit) return;
       if (this.onHit) {

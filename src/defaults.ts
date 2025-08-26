@@ -99,7 +99,7 @@ export const createZombieOne = () => {
     1000,
     0,
     20,
-    100,
+    500,
     createZombieOneAnimations(),
     { x: 768, y: 0, width: 128, height: 128 },
     createBasicAttack(0, 0, 0, 1),

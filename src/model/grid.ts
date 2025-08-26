@@ -218,6 +218,7 @@ export class Grid {
       if (attack.source === 'player') {
         this.handlePlayerAttacks(attack, area);
       } else if (attack.source === 'enemy') {
+        console.log(area);
         this.handleEnemyAttacks(attack, area);
       }
     });
@@ -272,7 +273,7 @@ export class Grid {
 
   private setAreaEntitiesStates(area: Area, dt: number) {
     area.enemies.forEach((e) => {
-      e.update(dt);
+      e.update(dt, this);
       if (this.grid[area.row][area.column - e.range].characters.length) {
         e.setAttack();
       } else {
@@ -302,6 +303,19 @@ export class Grid {
   }
   getProjectiles() {
     return this.grid.flat().flatMap((area) => [...area.projectiles]);
+  }
+  getCharacters() {
+    return this.grid.flat().flatMap((area) => [...area.characters]);
+  }
+  getParty() {
+    const getCharacter = (area: Area) =>
+      area.characters.length > 0 ? area.characters[0] : null;
+    return {
+      pos1: getCharacter(this.grid[2][3]),
+      pos2: getCharacter(this.grid[2][2]),
+      pos3: getCharacter(this.grid[2][1]),
+      pos4: getCharacter(this.grid[2][0]),
+    };
   }
   addEnemies(row: number, col: number, enemies: Enemy<EnemyAction>[]) {
     if (row >= this.vertical || col >= this.horizontal) return;

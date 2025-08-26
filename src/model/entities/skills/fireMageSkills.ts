@@ -15,6 +15,7 @@ export const FireMageSkills: Skill[] = [
     speed: 1,
     action: 'idle',
     level: 1,
+    cost: -10,
   },
   {
     id: 'FireMage-FireBall',
@@ -26,6 +27,7 @@ export const FireMageSkills: Skill[] = [
     speed: 1,
     action: 'fireball',
     level: 1,
+    cost: 20,
   },
   {
     id: 'FireMage-FlameJet',
@@ -38,6 +40,7 @@ export const FireMageSkills: Skill[] = [
     speed: 1,
     action: 'flamejet',
     level: 1,
+    cost: 40,
   },
   {
     id: 'FireMage-Stab',
@@ -50,5 +53,6 @@ export const FireMageSkills: Skill[] = [
     speed: 1,
     action: 'attack',
     level: 1,
+    cost: 40,
   },
 ];

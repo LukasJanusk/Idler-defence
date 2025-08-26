@@ -12,7 +12,7 @@ const SMALL_HEIGHT = 16;
 const MEDIUM_HEIGHT = 24;
 const LARGE_HEIGHT = 32;
 const LABEL_OFFSET = 12;
-const MIN_WIDTH = 100;
+const MIN_WIDTH = 64;
 
 export default function Bar({
   value,
@@ -41,7 +41,7 @@ export default function Bar({
   const height =
     size === 'sm' ? SMALL_HEIGHT : size === 'lg' ? LARGE_HEIGHT : MEDIUM_HEIGHT;
   const color = colorStyles?.length ? colorStyles : 'bg-medieval-green-800';
-  const displayValue = value > maxValue ? maxValue : value;
+  const displayValue = Math.floor(value > maxValue ? maxValue : value);
 
   return (
     <div

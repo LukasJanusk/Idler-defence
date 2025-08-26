@@ -15,9 +15,7 @@ export const createBasicAttack = (
     1,
     'enemy',
   );
-  attack.onHit = (entity: { health: number }) => {
-    entity.health -= attack.damage;
-  };
   attack.multiplier = multiplier;
+
   return attack;
 };

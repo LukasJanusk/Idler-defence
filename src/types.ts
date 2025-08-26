@@ -34,6 +34,7 @@ export type Skill = {
   speed: number;
   action: AnyAction;
   level: number;
+  cost: number;
 };
 export type Attributes = {
   strength: number;

@@ -59,7 +59,7 @@ export const createFireWizardFireballAttack = (
     'character',
     { x: x + 60, y: y + 38, width: 32, height: 64 },
     { x: 1280, y: y, width: GRID_AREA_SIZE, height: GRID_AREA_SIZE },
-    100,
+    300,
     null,
   );
   return projectile;
@@ -103,6 +103,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       10,
     );
   };
+
   fireWizard.animations.flamejet.onFrame(2, () => generateEmbers(138));
   fireWizard.animations.flamejet.onFrame(3, () => generateEmbers(178));
   fireWizard.animations.flamejet.onFrame(4, () => generateEmbers(198));
@@ -151,5 +152,18 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
         return;
     }
   });
+  fireWizard.animations.idle.onFrame(0, () => {
+    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
+  });
+  fireWizard.animations.attack.onFrame(0, () => {
+    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
+  });
+  fireWizard.animations.fireball.onFrame(0, () => {
+    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
+  });
+  fireWizard.animations.flamejet.onFrame(0, () => {
+    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
+  });
+
   fireWizard.attacksLoaded = true;
 };

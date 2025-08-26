@@ -1,10 +1,12 @@
 import type { Rect, SpriteAnimations } from '@/types';
 import type { Attack } from './attack';
 import type { EnemyAction } from './character';
+import type { Grid } from '../grid';
 
 export class Enemy<T extends string = never> {
   id: string;
   health: number;
+
   range: number;
   damage: number;
   speed: number;
@@ -14,11 +16,12 @@ export class Enemy<T extends string = never> {
   actions: (EnemyAction | T)[];
   state: EnemyAction | T;
 
-  stunRecovery = 100;
+  stunRecovery = 300;
   stunDuration = 0;
   onDead: Set<() => void> = new Set();
   onDeath: Set<() => void> = new Set();
-
+  maxHealth: number = 1000;
+  attacksInit: boolean = false;
   constructor(
     id: string,
     health: number,
@@ -54,6 +57,18 @@ export class Enemy<T extends string = never> {
       console.log('enemy died');
     });
   }
+  initAttacks(grid: Grid) {
+    if (this.attacksInit) return;
+
+    this.animations.attack.onFrame(this.animations.attack.nFrame - 1, () => {
+      const attackArea = grid.getClosestArea(this.rect);
+      console.log(this.attack.rect);
+      grid.grid[attackArea.row][attackArea.column - this.range].registerEntity(
+        this.attack,
+      );
+    });
+    this.attacksInit = true;
+  }
   registerOnDeath(fn: () => void) {
     this.onDeath.add(fn);
   }
@@ -77,23 +92,30 @@ export class Enemy<T extends string = never> {
       return;
     }
     if (this.health <= 0) {
-      console.log(this.state);
       this.state = 'death';
       this.onDeath.forEach((fn) => fn());
       this.onDeath.clear();
     }
   }
+
   setAttack() {
-    if (this.state === 'dead' && this.state === 'death') {
+    if (
+      this.state !== 'dead' &&
+      this.state !== 'death' &&
+      this.state !== 'hit'
+    ) {
       if (this.state === 'attack') return;
       this.state = 'attack';
     }
   }
   setDefaultAction() {
-    if (this.state !== 'dead' && this.state !== 'death') this.state = 'move';
+    if (this.state !== 'dead' && this.state !== 'death' && this.state !== 'hit')
+      this.state = 'move';
   }
-  update(dt: number) {
+  update(dt: number, grid: Grid) {
     if (this.health <= 0) this.health = 0;
+    this.initAttacks(grid);
+    this.attack.rect = { ...this.attack.rect, x: this.rect.x - this.range };
     this.checkIfDead();
     this.checkStun(dt);
     if (this.state === 'move') {

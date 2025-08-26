@@ -10,14 +10,15 @@ import Button from './components/reusable/Button';
 import { createZombieOne } from './defaults';
 import EnemyComponent from './EnemyComponent';
 import ProjectileComponent from './components/ProjectileComponent';
+import useGrid from './hooks/useGrid';
 
 export default function Game() {
-  const grid = useGameStore((store) => store.grid);
   const [showGrid, setShowGrid] = useState(false);
   const { splashBlood, splashEmbers } = useParticleContext();
   const addEnemy = () => grid.addEnemies(2, 8, [createZombieOne()]);
   const gameClock = useGameStore((store) => store.gameClock);
-
+  const { grid, enemies, projectiles, party } = useGrid();
+  // console.log(grid.grid.flat().flatMap((area) => area.attacks).length);
   useEffect(() => {
     gameClock.start();
     return () => {
@@ -34,7 +35,7 @@ export default function Game() {
       }}
       className="border-2 border-medieval-silver"
     >
-      <CharacterScreen />
+      <CharacterScreen party={party} />
       <div className="absolute left-0 top-0 flex flex-row">
         <Button onClick={() => splashEmbers(600, 200, 100)}>
           Splash embers
@@ -54,8 +55,8 @@ export default function Game() {
             ></div>
           ))}
       </div>{' '}
-      <ProjectileComponent />
-      <EnemyComponent />
+      <ProjectileComponent projectiles={projectiles} />
+      <EnemyComponent enemies={enemies} />
     </div>
   );
 }

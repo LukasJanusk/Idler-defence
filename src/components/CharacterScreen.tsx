@@ -6,14 +6,18 @@ import { GRID_AREA_SIZE } from '@/constants';
 import CharacterGridSelectable from './CharacterSprite/CharacterGridSelectable';
 import { useGameStore } from '@/store';
 import { useState } from 'react';
+import type { AnyCharacter, PartyPositionName } from '@/types';
 
-export default function CharacterScreen() {
+type Props = {
+  party: Record<PartyPositionName, AnyCharacter | null>;
+};
+export default function CharacterScreen({ party }: Props) {
   const [selectedId, setSelectedId] = useState<null | string>(null);
   const availableCharacters = useGameStore(
     (store) => store.availableCharacters,
   );
   const selectedPosition = useGameStore((store) => store.selectedPosition);
-  const party = useGameStore((store) => store.party);
+  // const party = useGameStore((store) => store.party);
   const selectedCharacter = selectedPosition ? party[selectedPosition] : null;
   const addCharacter = useGameStore((store) => store.addCharacterToParty);
   const hireCharacter = (id: string) => {
@@ -36,10 +40,10 @@ export default function CharacterScreen() {
           width: `${GRID_AREA_SIZE * 4}px`,
         }}
       >
-        <CharacterGridSelectable position={'pos4'} />
-        <CharacterGridSelectable position={'pos3'} />
-        <CharacterGridSelectable position={'pos2'} />
-        <CharacterGridSelectable position={'pos1'} />
+        <CharacterGridSelectable position={'pos4'} character={party.pos4} />
+        <CharacterGridSelectable position={'pos3'} character={party.pos3} />
+        <CharacterGridSelectable position={'pos2'} character={party.pos2} />
+        <CharacterGridSelectable position={'pos1'} character={party.pos1} />
       </div>
       <Container size="lg">
         <div className={`flex flex-row`}>

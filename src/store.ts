@@ -26,6 +26,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         );
         if (!char) return;
         char.pos = pos;
+        char.initAttributes();
         char.initAttacks(grid);
 
         const targetChar = char;
@@ -200,6 +201,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ grid });
   },
   getGameClock: () => get().gameClock,
+  getParty: () => get().party,
   getEnemies: () => {
     return get()
       .grid.grid.flat()

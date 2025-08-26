@@ -1,11 +1,13 @@
 import AddNewCharacterButton from './AddNewCharacterButton';
 import CharacterSprite from './CharacterSprite';
 import { GRID_AREA_SIZE } from '@/constants';
+
 import { useGameStore } from '@/store';
-import type { PartyPositionName } from '@/types';
+import type { AnyCharacter, PartyPositionName } from '@/types';
 
 export type CharacterGridSelectableProps = {
   position: PartyPositionName;
+  character: AnyCharacter | null;
 };
 function SelectedIndicator() {
   return (
@@ -16,10 +18,13 @@ function SelectedIndicator() {
 }
 export default function CharacterGridSelectable({
   position,
+  character,
 }: CharacterGridSelectableProps) {
-  const character = useGameStore((store) => store.party[position]);
+  // const character = useGameStore((store) => store.party[position]);
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const selectPosition = useGameStore((store) => store.selectPosition);
+  // const { characters } = useGrid();
+  // const character = characters.find((c) => c.pos === position);
   if (!character)
     return (
       <div

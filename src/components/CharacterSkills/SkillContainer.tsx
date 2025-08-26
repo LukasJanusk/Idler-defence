@@ -24,6 +24,7 @@ export default function SkillContainer({
     setSelectedSkill(skill);
     setCharacterState(position, {
       state: skill.action as CharacterAction,
+      lastAction: null,
     });
   };
   useEffect(() => {
@@ -68,9 +69,9 @@ export default function SkillContainer({
           info={'Damage dealt by the skill.'}
         />
         <Indicator
-          icon="💨"
-          value={selectedSkill?.speed || 0}
-          info="Current percentage of the base skill speed."
+          icon="🔵"
+          value={selectedSkill?.cost || 0}
+          info="Energy cost."
         />
         <Indicator
           icon="⏳"

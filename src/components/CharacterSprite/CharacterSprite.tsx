@@ -31,7 +31,6 @@ export default function CharacterSprite({
           colorStyles="bg-medieval-blood"
           size="sm"
           showValues={hover}
-          label={hover ? 'HP' : undefined}
         />
         <Bar
           maxValue={character.maxEnergy}
@@ -39,7 +38,6 @@ export default function CharacterSprite({
           colorStyles="bg-medieval-arcane"
           size="sm"
           showValues={hover}
-          label={hover ? 'EP' : undefined}
         />
       </div>
       <Sprite
