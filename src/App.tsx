@@ -5,11 +5,11 @@ function App() {
   return (
     <div className="flex h-screen flex-col">
       <header className="h-16 w-screen bg-blue-300/30"></header>
-      <div className="flex flex-grow items-center justify-center bg-medieval-parchment">
+      <div className="flex flex-grow items-center justify-center bg-gray-400">
         <div className="relative">
           <ParticleContextProvider>
             <Game />
-          </ParticleContextProvider>{' '}
+          </ParticleContextProvider>
         </div>
       </div>
       <footer className="h-8 bg-medieval-wood"></footer>

@@ -4,10 +4,9 @@ import { useGameStore } from '@/store';
 import { createAvailableCharacters } from '@/defaults';
 import { GameClock } from '@/model/gameClock';
 import { Grid } from '@/model/grid';
-import { FireMage } from '@/model/entities/character';
-import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
+import ParticleContextProvider from '@/context/ParticleContextProvider';
 
-const withGameStore = (
+const withGameAndParticlesContext = (
   Story: StoryFn<typeof CharacterScreen>,
   props: {},
   context: Parameters<StoryFn<typeof CharacterScreen>>[1],
@@ -15,6 +14,7 @@ const withGameStore = (
 ) => {
   const clock = new GameClock();
   clock.start();
+
   useGameStore.setState({
     gameClock: clock,
     grid: new Grid(9, 5, 128),
@@ -23,20 +23,25 @@ const withGameStore = (
       pos1: null,
       pos2: null,
       pos3: null,
-      pos4: new FireMage('test', 'Existing Mage', createFireMageAnimations()),
+      pos4: null,
     },
     availableCharacters: createAvailableCharacters(),
     ...initialState,
   });
 
-  return Story({}, context);
+  return (
+    <ParticleContextProvider>
+      <Story {...props} {...context} />
+    </ParticleContextProvider>
+  );
 };
 
 const meta = {
   title: 'Character Screen',
   component: CharacterScreen,
   decorators: [
-    (Story, context) => withGameStore(Story, context.args as {}, context),
+    (Story, context) =>
+      withGameAndParticlesContext(Story, context.args as {}, context),
   ],
   parameters: {
     layout: 'centered',

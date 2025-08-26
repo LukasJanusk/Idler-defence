@@ -1,8 +1,7 @@
-import { v4 } from 'uuid';
-
+let particleId = 0;
 export type ParticleType = 'blood' | 'ember';
 export class Particle {
-  id: string;
+  id: number;
   x: number;
   y: number;
   vx: number;
@@ -21,7 +20,7 @@ export class Particle {
     color: string,
     gravity = 0,
   ) {
-    this.id = v4();
+    this.id = particleId++;
     this.x = x;
     this.y = y;
     this.vx = vx;
@@ -41,6 +40,7 @@ export class Particle {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
+    if (this.radius <= 0) return;
     ctx.globalAlpha = Math.max(this.alpha, 0);
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -61,11 +61,11 @@ export class BloodParticle extends Particle {
     super(x, y, vx, vy, Math.random() * 5, 'red', 150);
   }
 }
-export class EmberParticles extends Particle {
+export class EmberParticle extends Particle {
   constructor(x: number, y: number) {
     const vx = (Math.random() - 0.5) * 300;
     const vy = (Math.random() - 1) * 300;
-    super(x, y, vx, vy, Math.random() * 5, getRandomEmberColor(), 150);
+    super(x, y, vx, vy, Math.random() * 5, getRandomEmberColor(), 10);
     this.radius = Math.random() * 3;
   }
 }
@@ -74,7 +74,7 @@ export function splashBlood(x: number, y: number, nParticle: number) {
   return Array.from({ length: nParticle }).map(() => new BloodParticle(x, y));
 }
 export function splashEmbers(x: number, y: number, nParticle: number) {
-  return Array.from({ length: nParticle }).map(() => new EmberParticles(x, y));
+  return Array.from({ length: nParticle }).map(() => new EmberParticle(x, y));
 }
 function getRandomEmberColor() {
   const colors = ['#FFA500', '#FFD700', '#FF4500'];

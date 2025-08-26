@@ -51,7 +51,10 @@ export type CharacterAction =
 export class Character<T extends string> {
   id: string;
   name: string;
-  health: number = 2000;
+  health: number = 100;
+  maxHealth: number = 100;
+  energy: number = 100;
+  maxEnergy: number = 100;
   animations: SpriteAnimations<T>;
   actions: T[];
   state: T;

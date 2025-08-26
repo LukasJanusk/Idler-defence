@@ -28,7 +28,7 @@ export const lightningMageSkills: Skill[] = [
   {
     id: 'LightningMage-ChargedBolts',
     name: 'Charged Bolts',
-    description: 'Shoot small moving particles of electricity to zap.',
+    description: 'Shoot small moving particles of electricity.',
     url: '',
     damage: 60,
     duration: 0.4,
@@ -38,7 +38,7 @@ export const lightningMageSkills: Skill[] = [
   },
   {
     id: 'LightningMage-LightningStream',
-    name: 'Lightning Stream',
+    name: 'Discharge',
     description: 'Release continous stream of electricity to closeby enemies.',
     url: '',
     damage: 40,

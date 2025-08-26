@@ -55,7 +55,7 @@ export default function SkillContainer({
           </div>
         </div>
       </div>
-      <div className="font-semi-bold text-md m-2 flex-grow overflow-auto border-2 border-medieval-parchment bg-medieval-wood px-2 text-medieval-silver">
+      <div className="font-semi-bold border-box m-2 flex-grow overflow-auto border-2 border-medieval-parchment bg-medieval-wood px-2 text-sm text-medieval-silver">
         {selectedSkill?.description}
       </div>
       <div className="flex w-full flex-row items-center justify-start gap-1 bg-medieval-stone p-2">

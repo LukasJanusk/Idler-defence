@@ -2,6 +2,8 @@ import { useHover } from '@/hooks/useHover';
 import PositionChangeButton from './PositionChangeButton';
 import Sprite from '../reusable/Sprite';
 import type { AnyCharacter, PartyPositionName } from '@/types';
+import Bar from '../reusable/Bar';
+import { useGameStore } from '@/store';
 
 export type CharacterSpriteProps = {
   position: PartyPositionName;
@@ -12,9 +14,34 @@ export default function CharacterSprite({
   position,
 }: CharacterSpriteProps) {
   const [divRef, hover] = useHover<HTMLDivElement>();
+  const selectedPosition = useGameStore((store) => store.selectedPosition);
 
   return (
     <div className={`relative`} ref={divRef}>
+      <div
+        className={`absolute -top-8 left-1/2 flex w-full -translate-x-1/2 flex-col items-center gap-1 px-4 ${selectedPosition === position ? 'opacity-100' : 'opacity-50'}`}
+      >
+        {' '}
+        <div className="rounded bg-medieval-stoneLight/50 px-2 font-bold text-medieval-dark">
+          {character.name}
+        </div>
+        <Bar
+          maxValue={character.maxHealth}
+          value={character.health}
+          colorStyles="bg-medieval-blood"
+          size="sm"
+          showValues={hover}
+          label={hover ? 'HP' : undefined}
+        />
+        <Bar
+          maxValue={character.maxEnergy}
+          value={character.energy}
+          colorStyles="bg-medieval-arcane"
+          size="sm"
+          showValues={hover}
+          label={hover ? 'EP' : undefined}
+        />
+      </div>
       <Sprite
         animation={
           character.animations[
