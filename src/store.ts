@@ -200,6 +200,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ grid });
   },
   getGameClock: () => get().gameClock,
+  getEnemies: () => {
+    return get()
+      .grid.grid.flat()
+      .flatMap((area) => Array.from(area.enemies));
+  },
   selectPosition: (pos) =>
     set((store) => ({ ...store, selectedPosition: pos })),
 }));

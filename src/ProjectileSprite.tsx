@@ -1,35 +1,19 @@
 import type { Projectile } from './model/entities/projectile';
-import { useProjectileAnimation } from './hooks/useProjectileAnimation';
-import useUpdateProjectilePosition from './hooks/useUpdateProjectilePosition';
+import Sprite from './components/reusable/Sprite';
 
 type ProjectileProps = {
   projectile: Projectile;
 };
 
 export default function ProjectileSprite({ projectile }: ProjectileProps) {
-  const frame = useProjectileAnimation(projectile.animation);
-  const position = useUpdateProjectilePosition(projectile);
-  const animation = projectile.animation;
-  const width = projectile.rect.width;
-  const height = projectile.rect.height;
   return (
     <>
-      <img
-        style={{
-          zIndex: 30,
-          position: 'absolute',
-          left: position.x - width / 2,
-          top: position.y - height / 2,
-          width: width,
-          height: height,
-          objectFit: 'none',
-          transform: `rotate(${position.rotation}deg)`,
-          objectPosition: `-${frame * width}px 0`,
-          border: '2px solid blue',
-        }}
-        src={animation.sheet.img.src}
-        alt={animation.name}
-      />
+      <div
+        className="absolute"
+        style={{ left: projectile.rect.x, top: projectile.rect.y }}
+      >
+        <Sprite animation={projectile.animation} entity={projectile.source} />
+      </div>
     </>
   );
 }

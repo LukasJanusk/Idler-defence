@@ -1,3 +1,4 @@
+import { collideRect } from '@/utils';
 import type { BaseAction } from './character';
 import type { Rect } from '@/types';
 
@@ -20,6 +21,7 @@ export class Attack {
   multiplier: number;
   duration: number = 100;
   elapsed: number = 0;
+  hitEntities: string[] = [];
 
   constructor(
     id: string,
@@ -42,17 +44,23 @@ export class Attack {
     this.didHit = false;
   }
 
-  hit(target: { health: number; state: unknown | BaseAction }) {
-    if (!this.didHit) {
+  hit(target: {
+    id: string;
+    health: number;
+    state: unknown | BaseAction;
+    rect: Rect;
+  }) {
+    if (this.hitEntities.some((e) => e === target.id)) return;
+    if (collideRect(this.rect, target.rect)) {
       target.health -= this.damage;
       target.state = 'hit';
-      this.didHit = true;
+      this.hitEntities.push(target.id);
       this.onHit?.(target);
     }
   }
   update(dt: number) {
     this.elapsed += dt;
-    if (!this.didHit && this.elapsed >= this.duration) {
+    if (this.elapsed >= this.duration) {
       this.didHit = true;
     }
   }

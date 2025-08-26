@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { useGameClock } from '../context/useGameClock';
 import type { ProjectileAnimation } from '../model/entities/projectile';
+import { useGameStore } from '@/store';
 
 export function useProjectileAnimation(animation: ProjectileAnimation) {
   const [frame, setFrame] = useState<number>(animation.frame);
-  const gameClock = useGameClock();
+  const gameClock = useGameStore((store) => store.gameClock);
   const animationRef = useRef(animation);
 
   useEffect(() => {

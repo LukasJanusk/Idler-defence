@@ -1,15 +1,13 @@
 import type { Attributes, Rect, Skill, SpriteAnimations } from '@/types';
-import {
-  createFireWizardFireballAttack,
-  createFireWizardFlameJetAttack,
-  createFireWizardStabAttack,
-} from '../characterAttacks/fireWizardAttacks';
+import { initFireWizardAttacks } from '../characterAttacks/fireWizardAttacks';
 import { type Grid } from '../grid';
-import { GRID_AREA_SIZE } from '@/constants';
+import { UPDATE_RATE } from '@/constants';
 import { FireMageSkills } from './skills/fireMageSkills';
 import { wizardSkills } from './skills/wizardSkills';
 import { lightningMageSkills } from './skills/LightningMageSkills';
 import { KnightSkills } from './skills/knightSkills';
+import { setupDeathResurrect } from '@/utils';
+import { createFireMageAnimations } from '../animations/fireWizardAnimations';
 
 export type BaseAction =
   | 'idle'
@@ -66,6 +64,11 @@ export class Character<T extends string> {
   attributes: Attributes;
   skills: Skill[] = [];
   className = 'Hero';
+  healthRecovery = 1;
+  energyRecovery = 1;
+
+  private elapsed = 0;
+  private interval = UPDATE_RATE;
 
   constructor(
     id: string,
@@ -84,6 +87,28 @@ export class Character<T extends string> {
       intelligence: 10,
       vitality: 10,
     };
+  }
+  getCurrentSkill() {
+    return this.skills.find((skill) => skill.action === this.state);
+  }
+  update(dt: number) {
+    if (this.state === 'death' || this.state === 'dead') return;
+    this.elapsed += dt;
+    if (this.elapsed >= this.interval) {
+      const ticks = Math.floor(this.elapsed / this.interval);
+      this.elapsed %= this.interval;
+      this.health = Math.min(
+        this.health + ticks * this.healthRecovery,
+        this.maxHealth,
+      );
+      this.energy = Math.min(
+        this.energy + ticks * this.energyRecovery,
+        this.maxEnergy,
+      );
+    }
+    this.health = Math.max(this.health, 0);
+    this.energy = Math.max(this.energy, 0);
+    if (this.health === 0 && 'death' in this.actions) this.state = 'death' as T;
   }
 }
 
@@ -108,14 +133,7 @@ export class Warrior extends Character<WarriorAction> {
   ) {
     super(id, name, animations, actions);
 
-    this.animations['death'].onFrame(
-      this.animations.death.nFrame - 1,
-      () => (this.state = 'dead'),
-    );
-    this.animations['resurrect'].onFrame(
-      this.animations.resurrect.nFrame - 1,
-      () => (this.state = 'idle'),
-    );
+    setupDeathResurrect(this.animations, (state) => (this.state = state));
     this.attributes = {
       strength: 20,
       dexterity: 15,
@@ -139,7 +157,7 @@ export class FireMage extends Character<FireMageAction> {
   constructor(
     id: string,
     name: string,
-    animations: SpriteAnimations<FireMageAction>,
+    animations: SpriteAnimations<FireMageAction> = createFireMageAnimations(),
     actions: FireMageAction[] = [
       'idle',
       'attack',
@@ -152,13 +170,7 @@ export class FireMage extends Character<FireMageAction> {
   ) {
     super(id, name, animations, actions);
     this.actions = actions;
-    this.animations['death'].onFrame(this.animations.death.nFrame, () => {
-      console.log('On Death trigger');
-    });
-    this.animations['resurrect'].onFrame(
-      this.animations.resurrect.nFrame - 1,
-      () => (this.state = 'idle'),
-    );
+    setupDeathResurrect(this.animations, (state) => (this.state = state));
     this.attributes = {
       strength: 10,
       dexterity: 15,
@@ -173,67 +185,7 @@ export class FireMage extends Character<FireMageAction> {
       console.warn(`${this.name} tried to initAttacks without pos set`);
       return;
     }
-    this.animations.attack.onFrame(3, () => {
-      const attack = createFireWizardStabAttack(this.rect.x, this.rect.y, 1);
-      attack.rect.x = this.rect.x + attack.range * GRID_AREA_SIZE;
-      if (this.pos !== 'pos1') return;
-      grid.grid[3][4].registerEntity(attack);
-    });
-    const createJet = () => {
-      const attack = createFireWizardFlameJetAttack(
-        this.rect.x,
-        this.rect.y,
-        1,
-      );
-      attack.rect.x = this.rect.x + attack.range * GRID_AREA_SIZE;
-      if (this.pos !== 'pos1') return;
-      grid.grid[3][4].registerEntity(attack);
-    };
-    this.animations.flamejet.onFrame(3, createJet);
-    this.animations.flamejet.onFrame(4, createJet);
-    this.animations.flamejet.onFrame(5, createJet);
-    const generateEmbers = (stepX: number) => {
-      grid.generateParticles(
-        'ember',
-        this.rect.x + stepX,
-        this.rect.y + 76,
-        10,
-      );
-    };
-    this.animations.flamejet.onFrame(2, () => generateEmbers(138));
-    this.animations.flamejet.onFrame(3, () => generateEmbers(178));
-    this.animations.flamejet.onFrame(4, () => generateEmbers(198));
-    this.animations.flamejet.onFrame(5, () => generateEmbers(228));
-    this.animations.flamejet.onFrame(6, () => generateEmbers(258));
-    this.animations.flamejet.onFrame(7, () => generateEmbers(288));
-    this.animations.flamejet.onFrame(8, () => generateEmbers(318));
-    this.animations.flamejet.onFrame(9, () => generateEmbers(348));
-
-    this.animations.fireball.onFrame(6, () => {
-      const projectile = createFireWizardFireballAttack(
-        this.rect.x + GRID_AREA_SIZE,
-        this.rect.y,
-        1,
-      );
-
-      switch (this.pos) {
-        case 'pos1':
-          grid.grid[3][4].registerEntity(projectile);
-          return;
-        case 'pos2':
-          grid.grid[3][3].registerEntity(projectile);
-          return;
-        case 'pos3':
-          grid.grid[3][2].registerEntity(projectile);
-          return;
-        case 'pos4':
-          grid.grid[3][1].registerEntity(projectile);
-          return;
-        default:
-          return;
-      }
-    });
-    this.attacksLoaded = true;
+    initFireWizardAttacks(grid, this);
   }
 }
 
@@ -258,14 +210,7 @@ export class Knight extends Character<KnightAction> {
     ],
   ) {
     super(id, name, animations, actions);
-    this.animations['death'].onFrame(
-      this.animations.death.nFrame - 1,
-      () => (this.state = 'dead'),
-    );
-    this.animations['resurrect'].onFrame(
-      this.animations.resurrect.nFrame - 1,
-      () => (this.state = 'idle'),
-    );
+    setupDeathResurrect(this.animations, (state) => (this.state = state));
     this.attributes = {
       strength: 15,
       dexterity: 10,
@@ -297,14 +242,9 @@ export class Wizard extends Character<WizardAction> {
     ],
   ) {
     super(id, name, animations, actions);
-    this.animations['death'].onFrame(
-      this.animations.death.nFrame - 1,
-      () => (this.state = 'dead'),
-    );
-    this.animations['resurrect'].onFrame(
-      this.animations.resurrect.nFrame - 1,
-      () => (this.state = 'idle'),
-    );
+
+    setupDeathResurrect(this.animations, (state) => (this.state = state));
+
     this.attributes = {
       strength: 10,
       dexterity: 10,

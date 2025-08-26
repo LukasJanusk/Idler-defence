@@ -6,7 +6,6 @@ import {
   Wizard,
 } from './model/entities/character';
 import type { AnyCharacter, GameState } from './types';
-import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { createKnightAnimations } from '@/model/animations/knightAnimations';
 import { createLightningMageAnimations } from '@/model/animations/lightningMageAnimations';
@@ -83,13 +82,7 @@ export const createAvailableCharacters = () => {
       createKnightAnimations(),
     ),
   );
-  available.add(
-    new FireMage(
-      `FireMage${v4()}`,
-      pickRandomName(namesMale),
-      createFireMageAnimations(),
-    ),
-  );
+  available.add(new FireMage(`FireMage${v4()}`, pickRandomName(namesMale)));
   return available;
 };
 export function initializeGameState(): GameState {
@@ -104,7 +97,7 @@ export const createZombieOne = () => {
   const zombie = new Enemy(
     `ZombieOne-${v4()}`,
     1000,
-    1,
+    0,
     20,
     100,
     createZombieOneAnimations(),
@@ -112,7 +105,7 @@ export const createZombieOne = () => {
     createBasicAttack(0, 0, 0, 1),
   );
   zombie.attack = createBasicAttack(
-    zombie.rect.x + 128,
+    zombie.rect.x - 128,
     zombie.rect.y,
     zombie.damage,
   );

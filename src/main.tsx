@@ -7,10 +7,6 @@ import { GameContextProvider } from './context/GameContextProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <GameClockProvider>
-      <GameContextProvider>
-        <App />
-      </GameContextProvider>
-    </GameClockProvider>
+    <App />
   </StrictMode>,
 );

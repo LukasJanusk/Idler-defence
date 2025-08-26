@@ -26,7 +26,7 @@ export const deathAnimation = () => createAnimation(deathUrl, 5, 100, 'death');
 
 export const deadAnimation = () => createAnimation(deadUrl, 1, 100, 'death');
 
-export const moveAnimation = () => createAnimation(moveUrl, 6, 100, 'move');
+export const moveAnimation = () => createAnimation(moveUrl, 10, 100, 'move');
 
 export const ressurrectAnimation = () =>
   createAnimation(idleUrl, 6, 100, 'resurrect');

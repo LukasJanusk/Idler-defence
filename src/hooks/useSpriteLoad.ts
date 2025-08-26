@@ -3,29 +3,29 @@ import { Animation } from '@/model/animations/animation';
 import type { ProjectileAnimation } from '@/model/entities/projectile';
 
 export default function useSpriteLoad(
-  current: Animation | ProjectileAnimation | undefined,
+  animation: Animation | ProjectileAnimation | undefined,
 ) {
   const [size, setSize] = useState<{ width: number; height: number } | null>(
     null,
   );
   useEffect(() => {
-    if (!current) return;
-    if (current.sheet.img.complete && current.sheet.img.naturalWidth) {
+    if (!animation) return;
+    if (animation.sheet.img.complete && animation.sheet.img.naturalWidth) {
       setSize({
-        width: current.sheet.img.naturalWidth / current.nFrame,
-        height: current.sheet.img.naturalHeight,
+        width: animation.sheet.img.naturalWidth / animation.nFrame,
+        height: animation.sheet.img.naturalHeight,
       });
     } else {
       const onLoad = () => {
         setSize({
-          width: current.sheet.img.naturalWidth / current.nFrame,
-          height: current.sheet.img.naturalHeight,
+          width: animation.sheet.img.naturalWidth / animation.nFrame,
+          height: animation.sheet.img.naturalHeight,
         });
       };
-      current.sheet.img.addEventListener('load', onLoad);
-      return () => current.sheet.img.removeEventListener('load', onLoad);
+      animation.sheet.img.addEventListener('load', onLoad);
+      return () => animation.sheet.img.removeEventListener('load', onLoad);
     }
-  }, [current]);
+  }, [animation]);
 
   return size;
 }

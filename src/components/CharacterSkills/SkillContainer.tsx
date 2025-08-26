@@ -41,6 +41,9 @@ export default function SkillContainer({
               selected={selectedSkill ? skill === selectedSkill : false}
               onClick={() => handleSelectSkill(skill)}
               size="md"
+              disabled={
+                state === 'dead' || state === 'death' || state === 'hit'
+              }
             />
           </div>
         ))}

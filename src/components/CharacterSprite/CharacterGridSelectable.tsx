@@ -10,7 +10,7 @@ export type CharacterGridSelectableProps = {
 function SelectedIndicator() {
   return (
     <div
-      className={`absolute bottom-[0px] left-0 z-20 h-1 w-full animate-pulse bg-medieval-stoneCrimson px-8`}
+      className={`absolute bottom-[0px] left-0 z-20 h-1 w-full animate-pulse bg-medieval-emerald px-8`}
     />
   );
 }

@@ -52,7 +52,7 @@ const isAttack = (entity: unknown): entity is Attack => {
   }
   return false;
 };
-class Area {
+export class Area {
   id: string;
   width: number;
   height: number;
@@ -103,10 +103,6 @@ class Area {
     const index = this.projectiles.findIndex((p) => p.id === projectile.id);
     if (index !== -1) this.projectiles.splice(index, 1);
   }
-  unRegisterParticle(particle: Particle) {
-    const index = this.projectiles.findIndex((p) => p.id === particle.id);
-    if (index !== -1) this.projectiles.splice(index, 1);
-  }
   cleanup() {
     for (const enemy of this.enemies) {
       if (enemy.state === 'dead') {
@@ -137,7 +133,6 @@ export class Grid {
           new Area(areaSize, areaSize, row, col, `area-${row}-${col}`),
       ),
     );
-    // init rect for each area
     this.grid.forEach((row, rowIndex) =>
       row.forEach(
         (area, colIndex) =>
@@ -217,9 +212,9 @@ export class Grid {
     area.characters.forEach((character) => attack.hit(character));
   }
   private handleAreaAttacks(area: Area, dt: number) {
+    if (area.attacks.length <= 0) return;
     area.attacks.forEach((attack) => {
       attack.update(dt);
-      if (attack.didHit) return;
       if (attack.source === 'player') {
         this.handlePlayerAttacks(attack, area);
       } else if (attack.source === 'enemy') {
@@ -233,10 +228,12 @@ export class Grid {
   private handlePlayerProjectile(projectile: Projectile, area: Area) {
     area.enemies.forEach((enemy) => projectile.hit(enemy));
   }
-  private handleAreaProjectiles(area: Area) {
+  private handleAreaProjectiles(area: Area, dt: number) {
+    if (area.projectiles.length <= 0) return;
     area.projectiles.forEach((proj) => {
+      proj.update(dt);
       if (proj.didHit) return;
-      if (proj.source === 'player') {
+      if (proj.source === 'character') {
         this.handlePlayerProjectile(proj, area);
       } else if (proj.source === 'enemy') {
         this.handleEnemyProjectile(proj, area);
@@ -246,14 +243,14 @@ export class Grid {
 
   private getAdjacentAreas(area: Area): Area[] {
     const dirs = [
-      [0, 1], // right
-      [0, -1], // left
-      [1, 0], // down
-      [-1, 0], // up
-      [1, 1], // diagonal down-right
-      [1, -1], // diagonal down-left
-      [-1, 1], // diagonal up-right
-      [-1, -1], // diagonal up-left
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, -1],
     ];
 
     const neighbors: Area[] = [];
@@ -269,32 +266,29 @@ export class Grid {
     return neighbors;
   }
 
-  private caharacterIsInRange(area: Area): boolean {
+  caharacterIsInRange(area: Area): boolean {
     return this.getAdjacentAreas(area).some((adj) => adj.characters.length > 0);
   }
 
   private setAreaEntitiesStates(area: Area, dt: number) {
     area.enemies.forEach((e) => {
       e.update(dt);
-      if (this.caharacterIsInRange(area)) {
+      if (this.grid[area.row][area.column - e.range].characters.length) {
         e.setAttack();
       } else {
         e.setDefaultAction();
       }
     });
     area.characters.forEach((c) => {
-      if (c.health <= 0) {
-        c.state = 'death';
-      }
+      c.update(dt);
     });
   }
   update(dt: number) {
     this.registerEntitiesToArea();
     this.grid.forEach((row) =>
       row.forEach((area) => {
-        if (area.attacks.length === 0 && area.projectiles.length === 0) return;
         this.handleAreaAttacks(area, dt);
-        this.handleAreaProjectiles(area);
+        this.handleAreaProjectiles(area, dt);
         this.setAreaEntitiesStates(area, dt);
       }),
     );
@@ -302,5 +296,23 @@ export class Grid {
   }
   cleanup() {
     this.grid.forEach((row) => row.forEach((area) => area.cleanup()));
+  }
+  getEnemies() {
+    return this.grid.flat().flatMap((area) => [...area.enemies]);
+  }
+  getProjectiles() {
+    return this.grid.flat().flatMap((area) => [...area.projectiles]);
+  }
+  addEnemies(row: number, col: number, enemies: Enemy<EnemyAction>[]) {
+    if (row >= this.vertical || col >= this.horizontal) return;
+    enemies.forEach((enemy) => {
+      const area = this.grid[row][col];
+      enemy.rect = {
+        ...enemy.rect,
+        x: area.rect.x + area.width / 2 - enemy.rect.width / 2,
+        y: area.rect.y + area.height / 2 - enemy.rect.height / 2,
+      };
+      area.registerEntity(enemy);
+    });
   }
 }

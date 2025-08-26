@@ -1,8 +1,9 @@
 import { v4 } from 'uuid';
-import { Sheet } from '@/model/animations/animation';
+import { createAnimation, Sheet } from '@/model/animations/animation';
 import type { Rect } from '@/types';
 import { collideRect, getRectMiddle } from '@/utils';
 import fireball from '@/assets/Fire_Wizard/Charge.png';
+import { Animation } from '@/model/animations/animation';
 
 export class ProjectileAnimation {
   id: string = 'ProjAnim' + v4();
@@ -38,11 +39,8 @@ export class ProjectileAnimation {
   }
   updateFrame() {
     if (this.didHit) {
-      this.frame++;
-      if (this.frame >= this.nFrame) {
-        this.alive = false;
-        return;
-      }
+      this.frame = Math.min(this.frame + 1, this.nFrame - 1);
+      if (this.frame >= this.nFrame - 1) this.alive = false;
     } else {
       this.frame = (this.frame + 1) % this.hitFrame;
     }
@@ -103,9 +101,9 @@ export function createProjectileAnimation(
 export class Projectile {
   id: string;
   name: string;
-  animation: ProjectileAnimation;
+  animation: Animation;
   damage: number;
-  source: 'player' | 'enemy';
+  source: 'character' | 'enemy';
   targetRect: Rect;
   targetId: string | null;
   speed: number;
@@ -113,14 +111,16 @@ export class Projectile {
   gravity: number;
   didHit: boolean;
   isAlive: boolean;
+  rotation: number = 0;
   onHit?: () => void;
+  private hitEntities: string[] = [];
 
   constructor(
     id: string,
     name: string,
-    animation: ProjectileAnimation,
+    animation: Animation,
     damage: number,
-    source: 'player' | 'enemy',
+    source: 'character' | 'enemy',
     rect: Rect,
     targetRect: Rect,
     speed: number,
@@ -142,54 +142,37 @@ export class Projectile {
     this.didHit = false;
     this.isAlive = true;
     this.onHit = onHit ? () => onHit(this) : undefined;
+    const projMiddle = getRectMiddle(this.rect);
+    const targetMiddle = getRectMiddle(this.targetRect);
+    const dx = targetMiddle.x - projMiddle.x;
+    const dy = targetMiddle.y - projMiddle.y;
+    this.rotation = (Math.atan2(dy, dx) * 180) / Math.PI;
   }
   update(dt: number) {
-    if (!this.didHit && collideRect(this.rect, this.targetRect)) {
-      this.didHit = true;
-      this.animation.didHit = true;
-      if (this.animation.onHit) {
-        this.animation.onHit();
-      }
-      if (this.onHit) {
-        this.onHit();
-      }
-      setTimeout(() => {
-        this.isAlive = false;
-      }, 1000);
-      this.didHit = true;
-      this.animation.didHit = true;
-      return;
-    }
-
+    if (!this.isAlive) return;
     const projMiddle = getRectMiddle(this.rect);
     const targetMiddle = getRectMiddle(this.targetRect);
     const dx = targetMiddle.x - projMiddle.x;
     const dy = targetMiddle.y - projMiddle.y;
     const length = Math.hypot(dx, dy);
     if (length === 0) return;
-
     const velX = (dx / length) * this.speed;
     const velY = (dy / length) * this.speed;
-
     this.rect.x += velX * 0.001 * dt;
     this.rect.y += velY * 0.001 * dt;
   }
-  hit(target: { rect: Rect; health: number }) {
-    if (!this.didHit && collideRect(this.rect, target.rect)) {
-      this.didHit = true;
-      this.animation.didHit = true;
+  hit(target: { id: string; rect: Rect; health: number }) {
+    if (this.hitEntities.some((e) => e === target.id)) return;
+    if (collideRect(this.rect, target.rect)) {
       target.health -= this.damage;
-      if (this.animation.onHit) {
-        this.animation.onHit();
-      }
+      if (this.didHit) return;
       if (this.onHit) {
         this.onHit();
       }
-      setTimeout(() => {
+      this.animation.onFrame(this.animation.nFrame - 1, () => {
         this.isAlive = false;
-      }, 1000);
+      });
       this.didHit = true;
-      return;
     }
   }
 }
@@ -202,19 +185,13 @@ export const createFireBall = (
   onHit?: (proj: Projectile) => void,
 ) => {
   const fireballUrl = new URL(fireball, import.meta.url).href;
-  const fireBallAnimation = createProjectileAnimation(
-    fireballUrl,
-    12,
-    5,
-    100,
-    'fireball',
-  );
+  const fireBallAnimation = createAnimation(fireballUrl, 12, 100, 'fireball');
   const fireBallProjectile = new Projectile(
     `test-${v4()}`,
     'Firebal Projectile',
     fireBallAnimation,
     60,
-    'player',
+    'character',
     {
       x,
       y,

@@ -49,10 +49,10 @@ export class Enemy<T extends string = never> {
     ];
     this.state = state || 'idle';
     // automate state change to 'dead' once death animation finished
-    this.animations.death.onFrame(
-      this.animations.death.nFrame,
-      () => (this.state = 'dead'),
-    );
+    this.animations.death.onFrame(this.animations.death.nFrame - 1, () => {
+      this.state = 'dead';
+      console.log('enemy died');
+    });
   }
   registerOnDeath(fn: () => void) {
     this.onDeath.add(fn);
@@ -72,25 +72,28 @@ export class Enemy<T extends string = never> {
   }
   checkIfDead() {
     if (this.state === 'dead') {
-      this.onDead.forEach((fn) => fn());
-      this.onDead.clear();
+      // this.onDead.forEach((fn) => fn());
+      // this.onDead.clear();
       return;
     }
-    if (this.state === 'death') return;
     if (this.health <= 0) {
+      console.log(this.state);
       this.state = 'death';
       this.onDeath.forEach((fn) => fn());
       this.onDeath.clear();
     }
   }
   setAttack() {
-    if (this.state === 'attack') return;
-    this.state = 'attack';
+    if (this.state === 'dead' && this.state === 'death') {
+      if (this.state === 'attack') return;
+      this.state = 'attack';
+    }
   }
   setDefaultAction() {
-    this.state = 'move';
+    if (this.state !== 'dead' && this.state !== 'death') this.state = 'move';
   }
   update(dt: number) {
+    if (this.health <= 0) this.health = 0;
     this.checkIfDead();
     this.checkStun(dt);
     if (this.state === 'move') {

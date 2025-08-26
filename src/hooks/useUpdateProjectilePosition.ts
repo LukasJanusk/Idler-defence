@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Projectile } from '../model/entities/projectile';
-import { useGameClock } from '../context/useGameClock';
+import { useGameStore } from '@/store';
 
 export default function useUpdateProjectilePosition(projectile: Projectile) {
   const [position, setPosition] = useState({
@@ -9,7 +9,7 @@ export default function useUpdateProjectilePosition(projectile: Projectile) {
     rotation: 0,
   });
   const prevPos = useRef(position);
-  const gameClock = useGameClock();
+  const gameClock = useGameStore((store) => store.gameClock);
 
   useEffect(() => {
     const tick = (dt: number) => {

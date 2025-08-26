@@ -12,3 +12,13 @@ export function collideRect(a: Rect, b: Rect): boolean {
     a.y > b.y + b.height
   );
 }
+
+export function setupDeathResurrect<T extends { death: any; resurrect: any }>(
+  animations: T,
+  setState: (state: 'idle' | 'dead') => void,
+) {
+  animations.death.onFrame(animations.death.nFrame - 1, () => setState('dead'));
+  animations.resurrect.onFrame(animations.resurrect.nFrame - 1, () =>
+    setState('idle'),
+  );
+}

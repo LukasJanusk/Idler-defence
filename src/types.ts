@@ -12,12 +12,14 @@ import type {
   WizardAction,
   LightningMage,
   LightningMageAction,
+  EnemyAction,
 } from './model/entities/character';
 import type { GameReducerAction } from './gameReducer';
 import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
 import type { Particle } from './model/entities/particles';
 import type { GameClock } from './model/gameClock';
+import type { Enemy } from './model/entities/enemy';
 
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
@@ -99,4 +101,5 @@ export type GameStore = {
   ) => void;
   getGameClock: () => GameClock;
   selectPosition: (pos: PartyPositionName) => void;
+  getEnemies: () => Enemy<EnemyAction>[];
 };

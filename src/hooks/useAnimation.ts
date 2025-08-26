@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Animation } from '@/model/animations/animation';
 import { useGameStore } from '@/store';
+import type { ProjectileAnimation } from '@/model/entities/projectile';
 
-export function useAnimation(animation: Animation | undefined | null) {
-  const [frame, setFrame] = useState<number | null>(0);
+export function useAnimation(
+  animation: Animation | ProjectileAnimation | undefined | null,
+) {
+  const [frame, setFrame] = useState<number>(0);
   const gameClock = useGameStore((store) => store.gameClock);
 
   useEffect(() => {
     if (!animation) {
-      setFrame(null);
+      setFrame(0);
       return;
     }
     setFrame(0);
