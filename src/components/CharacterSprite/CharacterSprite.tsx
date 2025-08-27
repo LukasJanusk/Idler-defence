@@ -49,7 +49,7 @@ export default function CharacterSprite({
         entity="character"
       />
 
-      {hover && (
+      {hover && character.health > 0 && (
         <div className="absolute bottom-1 left-0 flex w-full flex-row justify-between">
           <PositionChangeButton
             position={position}

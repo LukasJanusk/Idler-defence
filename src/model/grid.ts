@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import type { AnyCharacter, Rect } from '@/types';
+import type { AnyCharacter, PartyPositionName, Rect } from '@/types';
 import { Projectile } from '@/model/entities/projectile';
 import {
   FireMage,
@@ -18,6 +18,7 @@ import {
   splashEmbers,
   type ParticleType,
 } from './entities/particles';
+import { PARTY_POSITIO_ROW } from '@/constants';
 
 const isCharacter = (entity: unknown): entity is AnyCharacter => {
   if (
@@ -82,6 +83,7 @@ export class Area {
       if (this.characters.length > 0) {
         return false;
       }
+      entity.rect = { ...entity.rect, x: this.rect.x, y: this.rect.y };
       this.characters.push(entity);
       return true;
     } else if (isProjectile(entity)) {
@@ -103,13 +105,18 @@ export class Area {
     const index = this.projectiles.findIndex((p) => p.id === projectile.id);
     if (index !== -1) this.projectiles.splice(index, 1);
   }
+  getCharacter() {
+    const character = this.characters[0];
+    if (!character) return null;
+    return character;
+  }
   cleanup() {
     for (const enemy of this.enemies) {
       if (enemy.state === 'dead') {
         this.enemies.delete(enemy);
       }
     }
-    this.characters = this.characters.filter((c) => c.state !== 'dead');
+    // this.characters = this.characters.filter((c) => c.state !== 'dead');
     this.projectiles = this.projectiles.filter((p) => p.isAlive);
     this.attacks = this.attacks.filter((a) => !a.didHit);
   }
@@ -218,7 +225,6 @@ export class Grid {
       if (attack.source === 'player') {
         this.handlePlayerAttacks(attack, area);
       } else if (attack.source === 'enemy') {
-        console.log(area);
         this.handleEnemyAttacks(attack, area);
       }
     });
@@ -274,14 +280,22 @@ export class Grid {
   private setAreaEntitiesStates(area: Area, dt: number) {
     area.enemies.forEach((e) => {
       e.update(dt, this);
-      if (this.grid[area.row][area.column - e.range].characters.length) {
+      if (
+        this.grid[area.row][area.column - e.range].characters.length &&
+        this.grid[area.row][area.column - e.range].characters[0].state !==
+          'dead'
+      ) {
         e.setAttack();
       } else {
         e.setDefaultAction();
       }
     });
     area.characters.forEach((c) => {
-      c.update(dt);
+      try {
+        c.update(dt);
+      } catch (err) {
+        console.error('Failed updating character', c, err);
+      }
     });
   }
   update(dt: number) {
@@ -307,15 +321,63 @@ export class Grid {
   getCharacters() {
     return this.grid.flat().flatMap((area) => [...area.characters]);
   }
+  getCharacterFromArea(area: Area) {
+    return area.characters.length > 0 ? area.characters[0] : null;
+  }
   getParty() {
-    const getCharacter = (area: Area) =>
-      area.characters.length > 0 ? area.characters[0] : null;
     return {
-      pos1: getCharacter(this.grid[2][3]),
-      pos2: getCharacter(this.grid[2][2]),
-      pos3: getCharacter(this.grid[2][1]),
-      pos4: getCharacter(this.grid[2][0]),
+      pos1: this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][3]),
+      pos2: this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][2]),
+      pos3: this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][1]),
+      pos4: this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][0]),
     };
+  }
+  getAreaFromPos(pos: PartyPositionName) {
+    switch (pos) {
+      case 'pos1':
+        return this.grid[PARTY_POSITIO_ROW][3];
+      case 'pos2':
+        return this.grid[PARTY_POSITIO_ROW][2];
+      case 'pos3':
+        return this.grid[PARTY_POSITIO_ROW][1];
+      case 'pos4':
+        return this.grid[PARTY_POSITIO_ROW][0];
+    }
+  }
+  setCharacterToPosition(position: PartyPositionName, character: AnyCharacter) {
+    const area = this.getAreaFromPos(position);
+    area.registerEntity(character);
+  }
+  getCharacterFromPosition(position: PartyPositionName) {
+    switch (position) {
+      case 'pos1':
+        return this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][3]);
+      case 'pos2':
+        return this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][2]);
+      case 'pos3':
+        return this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][1]);
+      case 'pos4':
+        return this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][0]);
+    }
+  }
+  removeCharactersFromPosition(position: PartyPositionName) {
+    const area = this.getAreaFromPos(position);
+    const character = area.characters[0];
+    if (!character) return null;
+    area.characters = [];
+    return character;
+  }
+  moveCharacter(from: PartyPositionName, to: PartyPositionName) {
+    const fromArea = this.getAreaFromPos(from);
+    const toArea = this.getAreaFromPos(to);
+    const toCharacter = this.removeCharactersFromPosition(to);
+    const fromCharacer = this.removeCharactersFromPosition(from);
+    if (toCharacter) {
+      fromArea.registerEntity(toCharacter);
+    }
+    if (fromCharacer) {
+      toArea.registerEntity(fromCharacer);
+    }
   }
   addEnemies(row: number, col: number, enemies: Enemy<EnemyAction>[]) {
     if (row >= this.vertical || col >= this.horizontal) return;

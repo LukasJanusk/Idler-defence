@@ -15,7 +15,6 @@ export default function PositionChangeButton({
   size,
 }: PositionChangeButtonProps) {
   const moveCharacter = useGameStore((store) => store.moveCharacter);
-  const setSelectedPosition = useGameStore((store) => store.selectPosition);
 
   const moveLeft = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -25,7 +24,6 @@ export default function PositionChangeButton({
         ? 'pos1'
         : (`pos${Number(position.slice(-1)) + 1}` as PartyPositionName);
     moveCharacter(from, to);
-    setSelectedPosition(to);
   };
   const moveRight = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -36,10 +34,9 @@ export default function PositionChangeButton({
         : (`pos${Number(position.slice(-1)) - 1}` as PartyPositionName);
 
     moveCharacter(from, to);
-    setSelectedPosition(to);
   };
 
-  const colorStyles = `bg-medieval-stone hover:bg-medieval-green-800 border-medieval-silver text-medieval-silver hover:border-medieval-gold hover:text-medieval-gold`;
+  const colorStyles = `bg-medieval-stone hover:bg-medieval-green-800 border-medieval-parchment text-medieval-parchment hover:border-medieval-gold hover:text-medieval-gold`;
   const sizeStyles = `${size === 'sm' ? 'w-[28px] h-[28px] border-2' : size === 'md' ? 'w-[40px] h-[40px] border-4' : 'w-[64px] h-[64px] border-4'}`;
   return (
     <>

@@ -14,10 +14,10 @@ export default function EnemyComponent({ enemies }: Props) {
         return (
           <div
             key={enemy.id}
-            className="absolute z-20"
+            className="absolute z-10"
             style={{
               left: enemy.rect.x,
-              top: enemy.rect.y,
+              top: enemy.rect.y - 10,
               width: enemy.rect.width,
               height: enemy.rect.height,
             }}

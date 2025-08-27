@@ -1,5 +1,5 @@
 import type { Rect } from './types';
-
+import type { Animation } from './model/animations/animation';
 export function getRectMiddle(rect: Rect): { x: number; y: number } {
   return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
 }
@@ -13,12 +13,13 @@ export function collideRect(a: Rect, b: Rect): boolean {
   );
 }
 
-export function setupDeathResurrect<T extends { death: any; resurrect: any }>(
-  animations: T,
+export function setupDeathResurrect(
+  deathAnimation: Animation,
+  resurrectAnimation: Animation,
   setState: (state: 'idle' | 'dead') => void,
 ) {
-  animations.death.onFrame(animations.death.nFrame - 1, () => setState('dead'));
-  animations.resurrect.onFrame(animations.resurrect.nFrame - 1, () =>
+  deathAnimation.onFrame(deathAnimation.nFrame - 1, () => setState('dead'));
+  resurrectAnimation.onFrame(resurrectAnimation.nFrame - 1, () =>
     setState('idle'),
   );
 }

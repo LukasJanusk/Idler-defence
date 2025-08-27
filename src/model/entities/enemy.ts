@@ -2,6 +2,7 @@ import type { Rect, SpriteAnimations } from '@/types';
 import type { Attack } from './attack';
 import type { EnemyAction } from './character';
 import type { Grid } from '../grid';
+import { createBasicAttack } from '../enemyAttacks/basicAttack';
 
 export class Enemy<T extends string = never> {
   id: string;
@@ -15,6 +16,9 @@ export class Enemy<T extends string = never> {
   attack: Attack;
   actions: (EnemyAction | T)[];
   state: EnemyAction | T;
+  bounty: number = 10;
+  experience: number = 10;
+  score: number = 10;
 
   stunRecovery = 300;
   stunDuration = 0;
@@ -62,9 +66,8 @@ export class Enemy<T extends string = never> {
 
     this.animations.attack.onFrame(this.animations.attack.nFrame - 1, () => {
       const attackArea = grid.getClosestArea(this.rect);
-      console.log(this.attack.rect);
       grid.grid[attackArea.row][attackArea.column - this.range].registerEntity(
-        this.attack,
+        createBasicAttack(this.rect.x - 64, this.rect.y, this.damage, 1, 1),
       );
     });
     this.attacksInit = true;
@@ -115,7 +118,11 @@ export class Enemy<T extends string = never> {
   update(dt: number, grid: Grid) {
     if (this.health <= 0) this.health = 0;
     this.initAttacks(grid);
-    this.attack.rect = { ...this.attack.rect, x: this.rect.x - this.range };
+    this.attack.rect = {
+      ...this.attack.rect,
+      x: this.rect.x - this.range,
+      y: this.rect.y,
+    };
     this.checkIfDead();
     this.checkStun(dt);
     if (this.state === 'move') {

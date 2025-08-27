@@ -14,7 +14,6 @@ export function useEnemies() {
       elapsed.current += dt;
       if (elapsed.current >= UPDATE_RATE) {
         const currentEnemies = grid.getEnemies();
-
         setEnemies(currentEnemies);
         elapsed.current %= UPDATE_RATE;
       }

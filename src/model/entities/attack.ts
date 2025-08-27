@@ -53,7 +53,17 @@ export class Attack {
     if (this.hitEntities.some((e) => e === target.id)) return;
     if (collideRect(this.rect, target.rect)) {
       target.health -= this.damage;
-      target.state = 'hit';
+      if (target.health < 0) {
+        target.health = 0;
+        return;
+      }
+      if (
+        target.state !== 'death' &&
+        target.state !== 'dead' &&
+        this.source === 'player'
+      ) {
+        target.state = 'hit';
+      }
       this.hitEntities.push(target.id);
       this.onHit?.(target);
     }

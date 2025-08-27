@@ -8,6 +8,9 @@ import { lightningMageSkills } from './skills/LightningMageSkills';
 import { KnightSkills } from './skills/knightSkills';
 import { setupDeathResurrect } from '@/utils';
 import { createFireMageAnimations } from '../animations/fireWizardAnimations';
+import { createKnightAnimations } from '../animations/knightAnimations';
+import { createLightningMageAnimations } from '../animations/lightningMageAnimations';
+import { createWizardAnimations } from '../animations/wizardAnimations';
 
 const AUTOMATE = true;
 export type BaseAction =
@@ -91,6 +94,12 @@ export class Character<T extends string> {
       vitality: 10,
     };
   }
+  isDead() {
+    return this.state === 'dead';
+  }
+  isDeath() {
+    return this.state === 'death';
+  }
   getCurrentSkill() {
     return this.skills.find((skill) => skill.action === this.state);
   }
@@ -122,39 +131,60 @@ export class Character<T extends string> {
       });
     });
   }
-  update(dt: number) {
-    if (this.state === 'death' || this.state === 'dead') return;
-    this.elapsed += dt;
-    if (this.elapsed >= this.interval) {
-      const ticks = Math.floor(this.elapsed / this.interval);
-      this.elapsed %= this.interval;
-      this.health = Math.min(
-        this.health + ticks * this.healthRecovery,
-        this.maxHealth,
-      );
-      this.energy = Math.min(
-        this.energy + ticks * this.energyRecovery,
-        this.maxEnergy,
-      );
-      if (
-        AUTOMATE &&
-        this.lastAction &&
-        this.skills.some((s) => s.action === this.lastAction)
-      ) {
-        const action = this.skills.find((s) => s.action === this.lastAction);
-        if (action) this.state = action.action as T;
-      }
+  updateHealth(ticks: number) {
+    if (this.health <= 0) {
+      this.state = 'death' as T;
+      this.health = 0;
+      return;
     }
+    this.health = Math.min(
+      this.health + ticks * this.healthRecovery,
+      this.maxHealth,
+    );
 
     this.health = Math.max(this.health, 0);
+  }
+  updateEnergy(ticks: number) {
+    if (this.isDead() || this.isDeath()) return;
+    this.energy = Math.min(
+      this.energy + ticks * this.energyRecovery,
+      this.maxEnergy,
+    );
     this.energy = Math.max(this.energy, 0);
-    if (this.health === 0 && 'death' in this.actions) this.state = 'death' as T;
+  }
+  useLastAction() {
+    if (
+      AUTOMATE &&
+      this.lastAction &&
+      this.skills.some((s) => s.action === this.lastAction)
+    ) {
+      if (this.isDead() || this.isDeath()) return;
+      const action = this.skills.find((s) => s.action === this.lastAction);
+      if (action) {
+        this.state = action.action as T;
+        this.lastAction = null;
+      }
+    }
+  }
+  setLastAction() {
     const skill = this.getCurrentSkill();
 
     if (!skill) return;
     if (this.energy <= skill.cost) {
       this.lastAction = this.state;
       this.state = 'idle' as T;
+    }
+  }
+  update(dt: number) {
+    if (this.isDead() || this.isDeath()) return;
+    this.elapsed += dt;
+    if (this.elapsed >= this.interval) {
+      const ticks = Math.floor(this.elapsed / this.interval);
+      this.elapsed %= this.interval;
+      this.updateHealth(ticks);
+      this.updateEnergy(ticks);
+      this.useLastAction();
+      this.setLastAction();
     }
   }
 }
@@ -179,8 +209,11 @@ export class Warrior extends Character<WarriorAction> {
     ],
   ) {
     super(id, name, animations, actions);
-
-    setupDeathResurrect(this.animations, (state) => (this.state = state));
+    setupDeathResurrect(
+      this.animations.death,
+      this.animations.resurrect,
+      (state) => (this.state = state),
+    );
     this.attributes = {
       strength: 20,
       dexterity: 15,
@@ -217,7 +250,11 @@ export class FireMage extends Character<FireMageAction> {
   ) {
     super(id, name, animations, actions);
     this.actions = actions;
-    setupDeathResurrect(this.animations, (state) => (this.state = state));
+    setupDeathResurrect(
+      this.animations.death,
+      this.animations.resurrect,
+      (state) => (this.state = state),
+    );
     this.attributes = {
       strength: 10,
       dexterity: 15,
@@ -244,7 +281,7 @@ export class Knight extends Character<KnightAction> {
   constructor(
     id: string,
     name: string,
-    animations: SpriteAnimations<KnightAction>,
+    animations: SpriteAnimations<KnightAction> = createKnightAnimations(),
     actions: KnightAction[] = [
       'idle',
       'attack',
@@ -257,7 +294,11 @@ export class Knight extends Character<KnightAction> {
     ],
   ) {
     super(id, name, animations, actions);
-    setupDeathResurrect(this.animations, (state) => (this.state = state));
+    setupDeathResurrect(
+      this.animations.death,
+      this.animations.resurrect,
+      (state) => (this.state = state),
+    );
     this.attributes = {
       strength: 15,
       dexterity: 10,
@@ -289,7 +330,7 @@ export class Wizard extends Character<WizardAction> {
   constructor(
     id: string,
     name: string,
-    animations: SpriteAnimations<WizardAction>,
+    animations: SpriteAnimations<WizardAction> = createWizardAnimations(),
     actions: WizardAction[] = [
       'idle',
       'hit',
@@ -302,7 +343,11 @@ export class Wizard extends Character<WizardAction> {
   ) {
     super(id, name, animations, actions);
 
-    setupDeathResurrect(this.animations, (state) => (this.state = state));
+    setupDeathResurrect(
+      this.animations.death,
+      this.animations.resurrect,
+      (state) => (this.state = state),
+    );
 
     this.attributes = {
       strength: 10,
@@ -323,7 +368,7 @@ export class LightningMage extends Character<LightningMageAction> {
   constructor(
     id: string,
     name: string,
-    animations: SpriteAnimations<LightningMageAction>,
+    animations: SpriteAnimations<LightningMageAction> = createLightningMageAnimations(),
     actions: LightningMageAction[] = [
       'idle',
       'hit',
@@ -334,13 +379,10 @@ export class LightningMage extends Character<LightningMageAction> {
     ],
   ) {
     super(id, name, animations, actions);
-    this.animations['death'].onFrame(
-      this.animations.death.nFrame - 1,
-      () => (this.state = 'dead'),
-    );
-    this.animations['resurrect'].onFrame(
-      this.animations.resurrect.nFrame - 1,
-      () => (this.state = 'idle'),
+    setupDeathResurrect(
+      this.animations.death,
+      this.animations.resurrect,
+      (state) => (this.state = state),
     );
     this.attributes = {
       strength: 15,

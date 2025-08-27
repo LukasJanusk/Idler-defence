@@ -83,7 +83,6 @@ export type GameContextType = {
 
 export type GameStore = {
   gameClock: GameClock;
-  party: Party;
   selectedPosition: null | PartyPositionName;
   grid: Grid;
   particles: Particle[];
@@ -94,7 +93,7 @@ export type GameStore = {
   // actions
 
   addCharacterToParty: (pos: PartyPositionName, id: string) => void;
-  removeCharacterFromParty: (pos?: PartyPositionName) => void;
+  removeCharacterFromParty: () => void;
   moveCharacter: (from: PartyPositionName, to: PartyPositionName) => void;
   updateCharacterState: (
     position: PartyPositionName,
@@ -103,4 +102,5 @@ export type GameStore = {
   getGameClock: () => GameClock;
   selectPosition: (pos: PartyPositionName) => void;
   getEnemies: () => Enemy<EnemyAction>[];
+  addGold: (n: number) => void;
 };

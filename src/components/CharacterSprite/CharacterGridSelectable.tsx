@@ -20,11 +20,9 @@ export default function CharacterGridSelectable({
   position,
   character,
 }: CharacterGridSelectableProps) {
-  // const character = useGameStore((store) => store.party[position]);
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const selectPosition = useGameStore((store) => store.selectPosition);
-  // const { characters } = useGrid();
-  // const character = characters.find((c) => c.pos === position);
+
   if (!character)
     return (
       <div
