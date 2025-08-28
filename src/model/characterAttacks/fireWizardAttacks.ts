@@ -20,7 +20,6 @@ export const createFireWizardStabAttack = (
     { x, y, width: 128, height: 128 },
 
     'player',
-    1,
   );
   attack.onHit = (entity: { health: number }) => {
     entity.health -= attack.damage;
@@ -80,7 +79,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       ),
     [3],
     fireWizard.animations.attack,
-    1,
+    0,
   );
   registerAttackToGrid(
     grid,

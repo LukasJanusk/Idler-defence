@@ -27,7 +27,7 @@ export const KnightSkills: Skill[] = [
     speed: 1,
     action: 'attack',
     level: 1,
-    cost: 15,
+    cost: 5,
     multiplier: 1,
   },
   {
@@ -57,7 +57,7 @@ export const KnightSkills: Skill[] = [
     speed: 1,
     action: 'protect',
     level: 1,
-    cost: 2,
+    cost: 1,
     multiplier: 1,
     armor: 50,
   },

@@ -1,4 +1,10 @@
-import type { Attributes, Rect, Skill, SpriteAnimations } from '@/types';
+import type {
+  Attribute,
+  Attributes,
+  Rect,
+  Skill,
+  SpriteAnimations,
+} from '@/types';
 import { initFireWizardAttacks } from '../characterAttacks/fireWizardAttacks';
 import { Animation } from '../animations/animation';
 import { type Grid } from '../grid';
@@ -57,9 +63,9 @@ export type CharacterAction =
 export abstract class Character<T extends string> {
   id: string;
   name: string;
-  health: number = 0;
+  health: number = 100;
   maxHealth: number = 100;
-  energy: number = 0;
+  energy: number = 100;
   maxEnergy: number = 100;
   animations: SpriteAnimations<T>;
   actions: T[];
@@ -67,6 +73,10 @@ export abstract class Character<T extends string> {
   stunRecovery: number = 200;
   characterClass: string = 'base';
   icon: string = '👤';
+  availableAttributes: number = 0;
+  level: number = 1;
+  experience: number = 222220;
+  experienceToNext = 100;
   rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
   pos: 'pos1' | 'pos2' | 'pos3' | 'pos4' | null = null;
   attributes: Attributes;
@@ -100,6 +110,7 @@ export abstract class Character<T extends string> {
       intelligence: 10,
       vitality: 10,
     };
+    this.health = this.maxHealth;
   }
   isDead() {
     return this.state === 'dead';
@@ -216,16 +227,28 @@ export abstract class Character<T extends string> {
 
     toRemove.forEach((b) => this.debuffs.delete(b));
   }
+  levelUp() {
+    this.level += 1;
+    this.experience -= this.experienceToNext;
+    this.experienceToNext += 100;
+    this.availableAttributes += 1;
+  }
+  spendAttribute(attribute: Attribute) {
+    this.attributes[attribute] += 1;
+    this.availableAttributes -= 1;
+    this.initAttributes();
+  }
   initAttributes() {
-    this.health = this.attributes.vitality * 10;
+    // this.health = this.attributes.vitality * 10;
     this.energy = this.attributes.intelligence * 10;
     this.maxHealth = this.attributes.vitality * 10;
     this.maxEnergy = this.attributes.intelligence * 10;
-    this.energyRecovery = this.attributes.intelligence * 0.001;
-    this.healthRecovery = this.attributes.vitality * 0.001;
+    this.energyRecovery = this.attributes.intelligence * 0.0025;
+    this.healthRecovery = this.attributes.vitality * 0.0025;
     this.actions.forEach(
       (action) =>
-        (this.animations[action].frameDuration -= this.attributes.dexterity),
+        (this.animations[action].frameDuration =
+          this.animations[action].baseDuration - this.attributes.dexterity),
     );
     this.skills.forEach((skill) => {
       if (skill.damage > 0) {
@@ -239,6 +262,12 @@ export abstract class Character<T extends string> {
           skill.duration = Number(((frames * frameDuration) / 1000).toFixed(2));
         }
       });
+    });
+    Object.keys(this.animations).forEach((key) => {
+      const animation = this.animations[key as T];
+      if (animation.frameDuration < 20) {
+        animation.frameDuration = 20;
+      }
     });
   }
 
@@ -299,6 +328,7 @@ export abstract class Character<T extends string> {
       this.setLastAction();
       this.updateBuffs(dt);
       this.updateDebuffs(dt);
+      if (this.experience >= this.experienceToNext) this.levelUp();
     }
   }
 }
@@ -307,7 +337,9 @@ export class Warrior extends Character<WarriorAction> {
   characterClass = 'Warrior';
   icon = '⚔️';
   stunRecovery = 100;
-  armor = 30;
+  armor = 10;
+  health: number = 150;
+  maxHealth: number = 150;
 
   constructor(
     id: string,
@@ -330,10 +362,10 @@ export class Warrior extends Character<WarriorAction> {
       (state) => (this.state = state),
     );
     this.attributes = {
-      strength: 20,
+      strength: 15,
       dexterity: 15,
       intelligence: 10,
-      vitality: 10,
+      vitality: 15,
     };
     this.skills = KnightSkills;
   }
@@ -394,6 +426,8 @@ export class Knight extends Character<KnightAction> {
   stunRecovery = 100;
   attacksLoaded: boolean = false;
   armor = 20;
+  health: number = 200;
+  maxHealth: number = 200;
 
   constructor(
     id: string,
@@ -454,6 +488,8 @@ export class Wizard extends Character<WizardAction> {
   characterClass: string = 'Wizard';
   icon = '🧙';
   stunRecovery = 400;
+  health: number = 100;
+  maxHealth: number = 100;
   constructor(
     id: string,
     name: string,
@@ -504,6 +540,8 @@ export class LightningMage extends Character<LightningMageAction> {
   characterClass: string = 'Lightning mage';
   icon = '⚡';
   stunRecovery = 400;
+  health: number = 100;
+  maxHealth: number = 100;
   constructor(
     id: string,
     name: string,

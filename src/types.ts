@@ -22,6 +22,8 @@ import type { GameClock } from './model/gameClock';
 import type { Enemy } from './model/entities/enemy';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
 
+export type EnemyType = 'zombieOne' | 'zombieTwo' | 'zombieThree';
+export type Attribute = 'strength' | 'dexterity' | 'vitality' | 'intelligence';
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
 export type PartyPositionName = 'pos1' | 'pos2' | 'pos3' | 'pos4';

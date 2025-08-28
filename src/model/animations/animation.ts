@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import type { AnyAction } from '@/model/entities/character';
+import { ANIMATION_FRAMETIME } from '@/constants';
 
 export class Sheet {
   src: string;
@@ -38,6 +39,7 @@ export class Animation {
   nFrame: number;
   frameDuration: number;
   sheet: Sheet;
+  baseDuration: number = ANIMATION_FRAMETIME;
 
   private frameCallbacks: Map<number, Set<() => void>> = new Map();
   private triggeredThisLoop: Set<number> = new Set();

@@ -59,6 +59,16 @@ export default {
           hover: '#E6DAC8', // lighter parchment
         },
       },
+      keyframes: {
+        pop: {
+          '0%': { transform: 'scale(1)' },
+          '30%': { transform: 'scale(1.5)' },
+          '100%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        pop: 'pop 0.6s ease',
+      },
     },
   },
   plugins: [],

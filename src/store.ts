@@ -96,6 +96,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.levelEventHandler.registerLevel(currentLevel);
       store.gameClock.start();
       store.levelEventHandler.start();
+      const characters = grid.getCharacters();
+      characters.forEach((c) => {
+        c.initAttributes();
+        c.health = c.maxHealth;
+      });
 
       return store;
     }),

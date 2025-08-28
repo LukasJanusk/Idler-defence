@@ -86,6 +86,8 @@ export const createZombieOne = () => {
     { x: 768, y: 0, width: 128, height: 128 },
     createBasicAttack(0, 0, 0, 1),
   );
+  zombie.bounty = 40;
+  zombie.experience = 50;
   return zombie;
 };
 

@@ -2,6 +2,8 @@ import { createZombieOne } from '@/defaults';
 import type { Grid } from '@/model/grid';
 import { LevelEventHandler, type LevelEvent } from '@/model/levelEventHandler';
 import type { Enemy } from '../enemy';
+import type { EnemyAction } from '../character';
+import type { EnemyType } from '@/types';
 
 export const createLevelEvents = (
   interval: number,
@@ -28,16 +30,39 @@ export const attachCallbackToEvent = (
   });
 };
 
+const createEnemy = (
+  type: EnemyType,
+  grid: Grid,
+  onEnemyDeath?: (enemy: Enemy<EnemyAction>) => void,
+) => {
+  let enemy = createZombieOne();
+  if (type === 'zombieOne') {
+    enemy = createZombieOne();
+  }
+  if (onEnemyDeath) {
+    const onDeath = () => onEnemyDeath(enemy);
+    enemy.registerOnDeath(onDeath);
+  }
+
+  const giveExperience = () => {
+    const characters = grid.getCharacters();
+    characters.forEach(
+      (character) =>
+        (character.experience += enemy.experience / characters.length),
+    );
+  };
+
+  enemy.registerOnDeath(giveExperience);
+  return enemy;
+};
 export const createTestLevel = (
   grid: Grid,
   onEnemyDeath: (enemy?: Enemy) => void,
 ) => {
   const createZombie = () => {
-    const zombie = createZombieOne();
-    const onDeath = () => onEnemyDeath(zombie);
-    zombie.registerOnDeath(onDeath);
+    const zombie = createEnemy('zombieOne', grid, onEnemyDeath);
     grid.addEnemies(2, 8, [zombie]);
   };
-  const events = createLevelEvents(10000, 10, createZombie);
+  const events = createLevelEvents(10000, 20, createZombie);
   return events;
 };

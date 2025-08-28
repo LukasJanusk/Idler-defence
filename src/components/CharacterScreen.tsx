@@ -75,7 +75,6 @@ export default function CharacterScreen({ party }: Props) {
                   ) ||
                   null
                 }
-                availableAttributes={0}
                 onHire={hireCharacter}
               />
             </>
