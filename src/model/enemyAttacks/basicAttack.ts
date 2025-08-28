@@ -12,7 +12,6 @@ export const createBasicAttack = (
     `basicAttack-${v4()}`,
     damage,
     { x, y, width: 128 * size, height: 128 * size },
-    1,
     'enemy',
   );
   attack.multiplier = multiplier;

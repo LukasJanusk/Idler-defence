@@ -1,7 +1,7 @@
 import { collideRect } from '@/utils';
-import type { BaseAction } from './character';
-import type { Rect } from '@/types';
-
+import type { EnemyAction } from './character';
+import type { AnyCharacter, Rect } from '@/types';
+import type { Enemy } from './enemy';
 // Range explanation:
 
 // 0: grid area of occupant
@@ -13,55 +13,59 @@ export class Attack {
   id: string;
   damage: number;
   rect: Rect;
-  triggerFrame: number;
   didHit: boolean;
   source: 'player' | 'enemy';
   range: number;
-  onHit?: ({ health }: { health: number }) => void;
+  onHit?: (target: Enemy<EnemyAction> | AnyCharacter) => void;
   multiplier: number;
   duration: number = 100;
   elapsed: number = 0;
   hitEntities: string[] = [];
+  stun: boolean = true;
 
   constructor(
     id: string,
     damage: number,
     rect: Rect,
-    triggerFrame: number,
     source: 'player' | 'enemy',
     range?: number,
-    onHit?: ({ health }: { health: number }) => void,
+    onHit?: (target: Enemy<EnemyAction> | AnyCharacter) => void,
     multiplier?: number,
   ) {
     this.id = id;
     this.damage = damage;
     this.rect = rect;
-    this.triggerFrame = triggerFrame;
     this.source = source;
     this.range = range || 1;
     this.onHit = onHit;
     this.multiplier = multiplier || 1;
     this.didHit = false;
   }
-
-  hit(target: {
-    id: string;
-    health: number;
-    state: unknown | BaseAction;
-    rect: Rect;
-  }) {
+  shouldStun(target: Enemy<EnemyAction> | AnyCharacter) {
+    return (
+      target.state !== 'death' &&
+      target.state !== 'dead' &&
+      this.source === 'player' &&
+      this.stun
+    );
+  }
+  hit(target: Enemy<EnemyAction> | AnyCharacter) {
     if (this.hitEntities.some((e) => e === target.id)) return;
     if (collideRect(this.rect, target.rect)) {
-      target.health -= this.damage;
+      if (target.armor) {
+        const damage = Math.max(
+          Math.round((this.damage * (100 - target.armor)) / 100),
+          0,
+        );
+        target.health -= damage;
+      } else {
+        target.health -= this.damage;
+      }
       if (target.health < 0) {
         target.health = 0;
         return;
       }
-      if (
-        target.state !== 'death' &&
-        target.state !== 'dead' &&
-        this.source === 'player'
-      ) {
+      if (this.shouldStun(target)) {
         target.state = 'hit';
       }
       this.hitEntities.push(target.id);

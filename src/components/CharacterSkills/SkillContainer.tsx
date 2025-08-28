@@ -64,9 +64,17 @@ export default function SkillContainer({
       </div>
       <div className="flex w-full flex-row items-center justify-start gap-1 bg-medieval-stone p-2">
         <Indicator
-          icon="⚔️"
-          value={selectedSkill?.damage || 0}
-          info={'Damage dealt by the skill.'}
+          icon={selectedSkill?.armor ? '🛡️' : '⚔️'}
+          value={
+            selectedSkill?.armor
+              ? selectedSkill?.armor
+              : selectedSkill?.damage || 0
+          }
+          info={
+            selectedSkill?.armor
+              ? 'Armor provided by skill'
+              : 'Damage dealt by the skill'
+          }
         />
         <Indicator
           icon="🔵"

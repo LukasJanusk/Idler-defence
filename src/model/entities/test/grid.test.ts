@@ -10,14 +10,35 @@ describe('getAreaFromPos', () => {
     const area3 = grid.getAreaFromPos('pos3');
     const area4 = grid.getAreaFromPos('pos4');
 
-    expect(area1.row).toBe(2);
-    expect(area2.row).toBe(2);
-    expect(area3.row).toBe(2);
-    expect(area4.row).toBe(2);
-    expect(area1.column).toBe(3);
-    expect(area2.column).toBe(2);
-    expect(area3.column).toBe(1);
-    expect(area4.column).toBe(0);
+    expect(area1).not.toBeNull();
+    expect(area2).not.toBeNull();
+    expect(area3).not.toBeNull();
+    expect(area4).not.toBeNull();
+    expect(area1!.row).toBe(2);
+    expect(area2!.row).toBe(2);
+    expect(area3!.row).toBe(2);
+    expect(area4!.row).toBe(2);
+    expect(area1!.column).toBe(3);
+    expect(area2!.column).toBe(2);
+    expect(area3!.column).toBe(1);
+    expect(area4!.column).toBe(0);
+  });
+  it('returns position with range', () => {
+    const grid = createDefaultGrid();
+    const area = grid.getAreaFromPos('pos1', 4);
+    expect(area!.row).toBe(2);
+    expect(area!.column).toBe(7);
+  });
+  it('returns null when area out of bounds', () => {
+    const grid = createDefaultGrid();
+    const area1 = grid.getAreaFromPos('pos4', 9);
+    expect(area1).toBeNull();
+    const area2 = grid.getAreaFromPos('pos3', 8);
+    expect(area2).toBeNull();
+    const area3 = grid.getAreaFromPos('pos2', 7);
+    expect(area3).toBeNull();
+    const area4 = grid.getAreaFromPos('pos1', 6);
+    expect(area4).toBeNull();
   });
 });
 

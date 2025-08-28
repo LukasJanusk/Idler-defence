@@ -17,7 +17,6 @@ export default function CharacterScreen({ party }: Props) {
     (store) => store.availableCharacters,
   );
   const selectedPosition = useGameStore((store) => store.selectedPosition);
-  // const party = useGameStore((store) => store.party);
   const selectedCharacter = selectedPosition ? party[selectedPosition] : null;
   const addCharacter = useGameStore((store) => store.addCharacterToParty);
   const hireCharacter = (id: string) => {

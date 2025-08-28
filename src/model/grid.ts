@@ -93,6 +93,7 @@ export class Area {
       this.enemies.add(entity);
       return true;
     } else if (isAttack(entity)) {
+      entity.rect = { ...entity.rect, x: this.rect.x, y: this.rect.y };
       this.attacks.push(entity);
       return true;
     }
@@ -332,20 +333,32 @@ export class Grid {
       pos4: this.getCharacterFromArea(this.grid[PARTY_POSITIO_ROW][0]),
     };
   }
-  getAreaFromPos(pos: PartyPositionName) {
+  getAreaFromPos(pos: PartyPositionName, range: number = 0) {
     switch (pos) {
       case 'pos1':
-        return this.grid[PARTY_POSITIO_ROW][3];
+        return range >= this.horizontal - 3
+          ? null
+          : this.grid[PARTY_POSITIO_ROW][3 + range];
       case 'pos2':
-        return this.grid[PARTY_POSITIO_ROW][2];
+        return range >= this.horizontal - 2
+          ? null
+          : this.grid[PARTY_POSITIO_ROW][2 + range];
       case 'pos3':
-        return this.grid[PARTY_POSITIO_ROW][1];
+        return range >= this.horizontal - 1
+          ? null
+          : this.grid[PARTY_POSITIO_ROW][1 + range];
       case 'pos4':
-        return this.grid[PARTY_POSITIO_ROW][0];
+        return range >= this.horizontal
+          ? null
+          : this.grid[PARTY_POSITIO_ROW][0 + range];
     }
   }
   setCharacterToPosition(position: PartyPositionName, character: AnyCharacter) {
     const area = this.getAreaFromPos(position);
+    if (!area) {
+      console.error('Area out of bounds');
+      return;
+    }
     area.registerEntity(character);
   }
   getCharacterFromPosition(position: PartyPositionName) {
@@ -362,6 +375,10 @@ export class Grid {
   }
   removeCharactersFromPosition(position: PartyPositionName) {
     const area = this.getAreaFromPos(position);
+    if (!area) {
+      console.error('Area out of bounds');
+      return;
+    }
     const character = area.characters[0];
     if (!character) return null;
     area.characters = [];
@@ -370,13 +387,19 @@ export class Grid {
   moveCharacter(from: PartyPositionName, to: PartyPositionName) {
     const fromArea = this.getAreaFromPos(from);
     const toArea = this.getAreaFromPos(to);
+    if (!fromArea || !toArea) {
+      console.error('Area out of bounds');
+      return;
+    }
     const toCharacter = this.removeCharactersFromPosition(to);
     const fromCharacer = this.removeCharactersFromPosition(from);
     if (toCharacter) {
       fromArea.registerEntity(toCharacter);
+      toCharacter.pos = from;
     }
     if (fromCharacer) {
       toArea.registerEntity(fromCharacer);
+      fromCharacer.pos = to;
     }
   }
   addEnemies(row: number, col: number, enemies: Enemy<EnemyAction>[]) {

@@ -20,6 +20,7 @@ import type { Grid } from './model/grid';
 import type { Particle } from './model/entities/particles';
 import type { GameClock } from './model/gameClock';
 import type { Enemy } from './model/entities/enemy';
+import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
 
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
@@ -29,12 +30,15 @@ export type Skill = {
   name: string;
   description: string;
   url: string;
+  baseDamage: number;
   damage: number;
   duration: number;
   speed: number;
   action: AnyAction;
   level: number;
   cost: number;
+  multiplier: number;
+  armor?: number;
 };
 export type Attributes = {
   strength: number;
@@ -81,6 +85,9 @@ export type GameContextType = {
   dispatch: Dispatch<GameReducerAction>;
 };
 
+export type Settings = {
+  automateSkillCast: boolean;
+};
 export type GameStore = {
   gameClock: GameClock;
   selectedPosition: null | PartyPositionName;
@@ -89,6 +96,10 @@ export type GameStore = {
   availableCharacters: Set<AnyCharacter>;
   gold: number;
   score: number;
+  settings: Settings;
+  levelEventHandler: LevelEventHandler;
+  currentLevel: number;
+  levels: Array<Set<LevelEvent>>;
 
   // actions
 
@@ -103,4 +114,8 @@ export type GameStore = {
   selectPosition: (pos: PartyPositionName) => void;
   getEnemies: () => Enemy<EnemyAction>[];
   addGold: (n: number) => void;
+  setSettings: (patch: Partial<Settings>) => void;
+  nextLevel: () => void;
+  play: () => void;
+  pause: () => void;
 };

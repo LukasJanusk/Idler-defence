@@ -6,18 +6,21 @@ import { GRID_AREA_SIZE } from '@/constants';
 import { createAnimation } from '../animations/animation';
 import type { FireMage } from '../entities/character';
 import type { Grid } from '../grid';
+import { registerAttackToGrid } from '@/utils';
 
 export const createFireWizardStabAttack = (
   x: number,
   y: number,
   multiplier: number = 1,
+  damage: number = 60,
 ) => {
   const attack = new Attack(
     `fireWizardStab-${v4()}`,
-    60,
+    damage,
     { x, y, width: 128, height: 128 },
-    3,
+
     'player',
+    1,
   );
   attack.onHit = (entity: { health: number }) => {
     entity.health -= attack.damage;
@@ -30,17 +33,16 @@ export const createFireWizardFlameJetAttack = (
   x: number,
   y: number,
   multiplier: number = 1,
+  damage: number = 30,
 ) => {
   const attack = new Attack(
     `fireWizardFlameJet-${v4()}`,
-    30,
+    damage,
     { x, y, width: 128, height: 128 },
-    3,
+
     'player',
+    2,
   );
-  attack.onHit = (entity: { health: number }) => {
-    entity.health -= attack.damage;
-  };
   attack.multiplier = multiplier;
   return attack;
 };
@@ -66,35 +68,34 @@ export const createFireWizardFireballAttack = (
 };
 
 export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
-  fireWizard.animations.attack.onFrame(3, () => {
-    const attack = createFireWizardStabAttack(
-      fireWizard.rect.x,
-      fireWizard.rect.y,
-      1,
-    );
-    attack.rect.x = fireWizard.rect.x + attack.range * GRID_AREA_SIZE;
-    if (fireWizard.pos !== 'pos1') return;
-    grid.grid[2][4].registerEntity(attack);
-  });
-  const createJet = () => {
-    const attack = createFireWizardFlameJetAttack(
-      fireWizard.rect.x,
-      fireWizard.rect.y,
-      1,
-    );
-    const attack2 = createFireWizardFlameJetAttack(
-      fireWizard.rect.x,
-      fireWizard.rect.y,
-      1,
-    );
-    attack.rect.x = fireWizard.rect.x + GRID_AREA_SIZE;
-    if (fireWizard.pos !== 'pos1') return;
-    grid.grid[2][4].registerEntity(attack);
-    grid.grid[2][5].registerEntity(attack2);
-  };
-  fireWizard.animations.flamejet.onFrame(3, createJet);
-  fireWizard.animations.flamejet.onFrame(4, createJet);
-  fireWizard.animations.flamejet.onFrame(5, createJet);
+  registerAttackToGrid(
+    grid,
+    fireWizard,
+    () =>
+      createFireWizardStabAttack(
+        fireWizard.rect.x,
+        fireWizard.rect.y,
+        fireWizard.skills.find((s) => s.action === 'attack')?.multiplier,
+        fireWizard.skills.find((s) => s.action === 'attack')?.damage,
+      ),
+    [3],
+    fireWizard.animations.attack,
+    1,
+  );
+  registerAttackToGrid(
+    grid,
+    fireWizard,
+    () =>
+      createFireWizardFlameJetAttack(
+        fireWizard.rect.x,
+        fireWizard.rect.y,
+        fireWizard.skills.find((s) => s.action === 'flamejet')?.multiplier,
+        fireWizard.skills.find((s) => s.action === 'flamejet')?.damage,
+      ),
+    [6, 7, 8, 9],
+    fireWizard.animations.flamejet,
+    2,
+  );
   const generateEmbers = (stepX: number) => {
     grid.generateParticles(
       'ember',
@@ -112,7 +113,6 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
   fireWizard.animations.flamejet.onFrame(7, () => generateEmbers(288));
   fireWizard.animations.flamejet.onFrame(8, () => generateEmbers(318));
   fireWizard.animations.flamejet.onFrame(9, () => generateEmbers(348));
-
   fireWizard.animations.fireball.onFrame(6, () => {
     const projectile = createFireWizardFireballAttack(
       fireWizard.rect.x,
@@ -132,26 +132,16 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       projectile.animation.frame = 6;
     };
     projectile.animation.onFrame(
-      projectile.animation.nFrame,
+      projectile.animation.nFrame - 1,
       () => (projectile.isAlive = false),
     );
-    switch (fireWizard.pos) {
-      case 'pos1':
-        grid.grid[3][4].registerEntity(projectile);
-        return;
-      case 'pos2':
-        grid.grid[3][3].registerEntity(projectile);
-        return;
-      case 'pos3':
-        grid.grid[3][2].registerEntity(projectile);
-        return;
-      case 'pos4':
-        grid.grid[3][1].registerEntity(projectile);
-        return;
-      default:
-        return;
-    }
+    const pos = fireWizard.pos;
+    if (!pos) return;
+    const area = grid.getAreaFromPos(pos);
+    area?.registerEntity(projectile);
   });
+
+  // Init skill cost
   fireWizard.animations.idle.onFrame(0, () => {
     fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
   });

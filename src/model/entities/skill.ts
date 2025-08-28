@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import fire from './assets/Fire_Wizard/Charge.png';
+import fire from '@/assets/Fire_Wizard/Charge.png';
 import { createProjectileAnimation } from '@/model/entities/projectile';
 
 export class Skill {

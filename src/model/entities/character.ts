@@ -1,5 +1,6 @@
 import type { Attributes, Rect, Skill, SpriteAnimations } from '@/types';
 import { initFireWizardAttacks } from '../characterAttacks/fireWizardAttacks';
+import { Animation } from '../animations/animation';
 import { type Grid } from '../grid';
 import { UPDATE_RATE } from '@/constants';
 import { FireMageSkills } from './skills/fireMageSkills';
@@ -11,8 +12,11 @@ import { createFireMageAnimations } from '../animations/fireWizardAnimations';
 import { createKnightAnimations } from '../animations/knightAnimations';
 import { createLightningMageAnimations } from '../animations/lightningMageAnimations';
 import { createWizardAnimations } from '../animations/wizardAnimations';
+import { defaultSettings } from '@/defaults';
+import { initKnightAttacks } from '../characterAttacks/knightAttacks';
+import type { Debuff } from './debuff';
+import type { Buff } from './buff';
 
-const AUTOMATE = true;
 export type BaseAction =
   | 'idle'
   | 'attack'
@@ -24,7 +28,7 @@ export type EnemyAction = BaseAction | 'move';
 export type WarriorAction = BaseAction | 'combo';
 export type KnightAction = BaseAction | 'guard' | 'protect';
 export type FireMageAction = BaseAction | 'flamejet' | 'fireball';
-export type LightningMageAction = BaseAction | 'chargedBolts';
+export type LightningMageAction = BaseAction | 'chargedBolts' | 'discharge';
 export type WizardAction =
   | 'idle'
   | 'hit'
@@ -50,7 +54,7 @@ export type CharacterAction =
   | KnightAction
   | LightningMageAction;
 
-export class Character<T extends string> {
+export abstract class Character<T extends string> {
   id: string;
   name: string;
   health: number = 0;
@@ -68,10 +72,13 @@ export class Character<T extends string> {
   attributes: Attributes;
   skills: Skill[] = [];
   className = 'Hero';
+  armor: number = 0;
   healthRecovery = 0.1;
   energyRecovery = 0.1;
   lastAction: null | T = null;
-  private AUTOMATE = false;
+  automate = defaultSettings.automateSkillCast;
+  debuffs: Set<Debuff> = new Set();
+  buffs: Set<Buff> = new Set();
 
   private elapsed = 0;
   private interval = UPDATE_RATE;
@@ -103,16 +110,119 @@ export class Character<T extends string> {
   getCurrentSkill() {
     return this.skills.find((skill) => skill.action === this.state);
   }
-  setAutomate() {
-    this.AUTOMATE = !this.AUTOMATE;
+  setAutomate(automate: boolean) {
+    this.automate = automate;
+  }
+  registerBuff(buff: Buff) {
+    if (Array.from(this.buffs).some((b) => b.id === buff.id)) return;
+    this.buffs.add(buff);
+    if (buff.effect.armor) this.armor += buff.effect.armor;
+    if (buff.effect.damage) {
+      this.skills.forEach((skill) => {
+        if (skill.damage) {
+          skill.damage += buff.effect.damage!;
+        }
+      });
+    }
+    if (buff.effect.speed) {
+      const keys = Object.keys(this.animations);
+      keys.forEach(
+        (key) =>
+          (this.animations[key as T].frameDuration -= buff.effect.speed!),
+      );
+    }
+    if (buff.effect.healthRecovery)
+      this.healthRecovery += buff.effect.healthRecovery;
+    if (buff.effect.energyRecovery)
+      this.energyRecovery += buff.effect.energyRecovery;
+  }
+  registerDebuff(debuff: Debuff) {
+    if (Array.from(this.debuffs).some((db) => db.id === debuff.id)) return;
+    this.debuffs.add(debuff);
+    if (debuff.effect.armor) this.armor += debuff.effect.armor;
+    if (debuff.effect.damage) {
+      this.skills.forEach((skill) => {
+        if (skill.damage) {
+          skill.damage -= debuff.effect.damage!;
+        }
+      });
+    }
+    if (debuff.effect.speed) {
+      const keys = Object.keys(this.animations);
+      keys.forEach(
+        (key) =>
+          (this.animations[key as T].frameDuration += debuff.effect.speed!),
+      );
+    }
+    if (debuff.effect.healthRecovery)
+      this.healthRecovery -= debuff.effect.healthRecovery;
+    if (debuff.effect.energyRecovery)
+      this.energyRecovery -= debuff.effect.energyRecovery;
+  }
+  updateBuffs(dt: number) {
+    const toRemove: Buff[] = [];
+    this.buffs.forEach((buff) => {
+      buff.update(dt);
+      if (buff.elapsed >= buff.duration) {
+        if (buff.effect.armor) this.armor -= buff.effect.armor;
+        if (buff.effect.damage) {
+          this.skills.forEach((skill) => {
+            if (skill.damage) {
+              skill.damage -= buff.effect.damage!;
+            }
+          });
+        }
+        if (buff.effect.speed) {
+          Object.values(this.animations).forEach(
+            (animation) =>
+              ((animation as Animation).frameDuration -= buff.effect.speed!),
+          );
+        }
+        if (buff.effect.healthRecovery)
+          this.healthRecovery -= buff.effect.healthRecovery;
+        if (buff.effect.energyRecovery)
+          this.energyRecovery -= buff.effect.energyRecovery;
+
+        toRemove.push(buff);
+      }
+    });
+    toRemove.forEach((b) => this.buffs.delete(b));
+  }
+  updateDebuffs(dt: number) {
+    const toRemove: Debuff[] = [];
+    this.debuffs.forEach((db) => {
+      db.elapsed += dt;
+
+      if (db.elapsed >= db.duration) {
+        if (db.effect.armor) this.armor -= db.effect.armor;
+        if (db.effect.damage) {
+          this.skills.forEach((skill) => {
+            if (skill.damage) {
+              skill.damage += db.effect.damage!;
+            }
+          });
+        }
+        if (db.effect.speed) {
+          Object.values(this.animations as Animation).forEach(
+            (animation) => (animation.frameDuration -= db.effect.speed!),
+          );
+        }
+        if (db.effect.healthRecovery)
+          this.healthRecovery -= db.effect.healthRecovery;
+
+        toRemove.push(db);
+      }
+    });
+
+    toRemove.forEach((b) => this.debuffs.delete(b));
   }
   initAttributes() {
     this.health = this.attributes.vitality * 10;
     this.energy = this.attributes.intelligence * 10;
     this.maxHealth = this.attributes.vitality * 10;
     this.maxEnergy = this.attributes.intelligence * 10;
-    this.energyRecovery = this.attributes.intelligence * 0.01;
-    this.healthRecovery = this.attributes.vitality * 0.01;
+    this.energyRecovery = this.attributes.intelligence * 0.001;
+    this.healthRecovery = this.attributes.vitality * 0.001;
     this.actions.forEach(
       (action) =>
         (this.animations[action].frameDuration -= this.attributes.dexterity),
@@ -120,7 +230,7 @@ export class Character<T extends string> {
     this.skills.forEach((skill) => {
       if (skill.damage > 0) {
         const multiplier = (100 + this.attributes.strength) / 100;
-        skill.damage *= multiplier;
+        skill.damage = skill.baseDamage * multiplier;
       }
       this.actions.forEach((action) => {
         if (action === skill.action) {
@@ -131,6 +241,7 @@ export class Character<T extends string> {
       });
     });
   }
+
   updateHealth(ticks: number) {
     if (this.health <= 0) {
       this.state = 'death' as T;
@@ -154,7 +265,7 @@ export class Character<T extends string> {
   }
   useLastAction() {
     if (
-      AUTOMATE &&
+      this.automate &&
       this.lastAction &&
       this.skills.some((s) => s.action === this.lastAction)
     ) {
@@ -178,6 +289,7 @@ export class Character<T extends string> {
   update(dt: number) {
     if (this.isDead() || this.isDeath()) return;
     this.elapsed += dt;
+
     if (this.elapsed >= this.interval) {
       const ticks = Math.floor(this.elapsed / this.interval);
       this.elapsed %= this.interval;
@@ -185,6 +297,8 @@ export class Character<T extends string> {
       this.updateEnergy(ticks);
       this.useLastAction();
       this.setLastAction();
+      this.updateBuffs(dt);
+      this.updateDebuffs(dt);
     }
   }
 }
@@ -193,6 +307,7 @@ export class Warrior extends Character<WarriorAction> {
   characterClass = 'Warrior';
   icon = '⚔️';
   stunRecovery = 100;
+  armor = 30;
 
   constructor(
     id: string,
@@ -277,6 +392,8 @@ export class Knight extends Character<KnightAction> {
   characterClass: string = 'Knight';
   icon = '🛡️';
   stunRecovery = 100;
+  attacksLoaded: boolean = false;
+  armor = 20;
 
   constructor(
     id: string,
@@ -309,6 +426,7 @@ export class Knight extends Character<KnightAction> {
   }
   initAttacks(grid: Grid) {
     console.log('Knight attacks init', grid);
+    initKnightAttacks(grid, this);
     this.animations.idle.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
@@ -321,6 +439,15 @@ export class Knight extends Character<KnightAction> {
     this.animations.protect.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
+  }
+
+  update(dt: number) {
+    this.armor = 20;
+
+    if (this.state === 'protect') {
+      this.armor = this.getCurrentSkill()?.armor || 50;
+    }
+    super.update(dt);
   }
 }
 export class Wizard extends Character<WizardAction> {
@@ -359,6 +486,18 @@ export class Wizard extends Character<WizardAction> {
   }
   initAttacks(grid: Grid) {
     console.log('Wizard attacks init', grid);
+    this.animations.idle.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.magicArrow.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.magicBall.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.magicSphere.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
   }
 }
 export class LightningMage extends Character<LightningMageAction> {
@@ -376,6 +515,7 @@ export class LightningMage extends Character<LightningMageAction> {
       'resurrect',
       'chargedBolts',
       'attack',
+      'discharge',
     ],
   ) {
     super(id, name, animations, actions);
@@ -394,5 +534,17 @@ export class LightningMage extends Character<LightningMageAction> {
   }
   initAttacks(grid: Grid) {
     console.log('Lightning Mage attacks init', grid);
+    this.animations.idle.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.attack.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.chargedBolts.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.discharge.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
   }
 }

@@ -5,7 +5,7 @@ import {
   LightningMage,
   Wizard,
 } from './model/entities/character';
-import type { AnyCharacter, GameState } from './types';
+import type { AnyCharacter, GameState, Settings } from './types';
 
 import { Enemy } from './model/entities/enemy';
 import { createZombieOneAnimations } from './model/animations/enemies/zombieAnimations';
@@ -87,4 +87,8 @@ export const createZombieOne = () => {
     createBasicAttack(0, 0, 0, 1),
   );
   return zombie;
+};
+
+export const defaultSettings: Settings = {
+  automateSkillCast: false,
 };

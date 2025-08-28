@@ -1,5 +1,7 @@
-import type { Rect } from './types';
+import type { AnyCharacter, Rect } from './types';
 import type { Animation } from './model/animations/animation';
+import { Grid } from './model/grid';
+import type { Attack } from './model/entities/attack';
 export function getRectMiddle(rect: Rect): { x: number; y: number } {
   return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
 }
@@ -22,4 +24,27 @@ export function setupDeathResurrect(
   resurrectAnimation.onFrame(resurrectAnimation.nFrame - 1, () =>
     setState('idle'),
   );
+}
+export function registerAttackToGrid(
+  grid: Grid,
+  entity: AnyCharacter,
+  callback: () => Attack,
+  frames: number[],
+  animation: Animation,
+  range: number,
+) {
+  const registration = () => {
+    for (let i = 0; i <= range; i++) {
+      const pos = entity.pos;
+      if (!pos) return;
+      const area = grid.getAreaFromPos(pos, i);
+
+      if (!area) return;
+      area?.registerEntity(callback());
+    }
+  };
+  frames.forEach((frame) => {
+    if (frame > animation.nFrame - 1) return;
+    animation.onFrame(frame, registration);
+  });
 }

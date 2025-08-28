@@ -32,8 +32,8 @@ export const attackTwoAnimation = () =>
 export const attackThreeAnimation = () =>
   createAnimation(attackThreeUrl, 4, 100, 'attack');
 export const protectAnimation = () =>
-  createAnimation(protectUrl, 1, 100, 'attack');
-export const guardAnimation = () => createAnimation(guardUrl, 5, 100, 'attack');
+  createAnimation(protectUrl, 1, 100, 'protect');
+export const guardAnimation = () => createAnimation(guardUrl, 5, 100, 'guard');
 export const hitAnimation = () => createAnimation(hitUrl, 2, 100, 'hit');
 export const deathAnimation = () => createAnimation(deathUrl, 6, 100, 'death');
 export const deadAnimation = () => createAnimation(deadUrl, 1, 100, 'death');
