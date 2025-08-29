@@ -21,9 +21,7 @@ export const createFireWizardStabAttack = (
 
     'player',
   );
-  attack.onHit = (entity: { health: number }) => {
-    entity.health -= attack.damage;
-  };
+  attack.stun = false;
   attack.multiplier = multiplier;
   return attack;
 };
@@ -50,13 +48,14 @@ export const createFireWizardFireballAttack = (
   x: number,
   y: number,
   multiplier: number = 1,
+  damage: number = 50,
 ) => {
   const animation = createAnimation(fireballSheetImg, 12, 100, 'fireball');
   const projectile = new Projectile(
     `fireball-${v4()}`,
     'fireball',
     animation,
-    50 * multiplier,
+    damage * multiplier,
     'character',
     { x: x + 60, y: y + 38, width: 32, height: 64 },
     { x: 1280, y: y, width: GRID_AREA_SIZE, height: GRID_AREA_SIZE },
@@ -81,16 +80,26 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
     fireWizard.animations.attack,
     0,
   );
+  const flameJet = () => {
+    const jet = createFireWizardFlameJetAttack(
+      fireWizard.rect.x,
+      fireWizard.rect.y,
+      fireWizard.skills.find((s) => s.action === 'flamejet')?.multiplier,
+      fireWizard.skills.find((s) => s.action === 'flamejet')?.damage,
+    );
+    jet.onHit = () =>
+      grid.generateParticles(
+        'ember',
+        jet.rect.x + jet.rect.width / 2,
+        jet.rect.y + jet.rect.height / 2,
+        5,
+      );
+    return jet;
+  };
   registerAttackToGrid(
     grid,
     fireWizard,
-    () =>
-      createFireWizardFlameJetAttack(
-        fireWizard.rect.x,
-        fireWizard.rect.y,
-        fireWizard.skills.find((s) => s.action === 'flamejet')?.multiplier,
-        fireWizard.skills.find((s) => s.action === 'flamejet')?.damage,
-      ),
+    flameJet,
     [6, 7, 8, 9],
     fireWizard.animations.flamejet,
     2,
@@ -117,15 +126,21 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       fireWizard.rect.x,
       fireWizard.rect.y,
       1,
+      fireWizard.getCurrentSkill()?.damage,
     );
     projectile.animation.onFrame(5, () => {
       projectile.animation.frame = 0;
     });
-    projectile.onHit = () => {
+    projectile.onHit = (target) => {
       grid.generateParticles(
         'ember',
-        projectile.rect.x + projectile.rect.width / 2,
-        projectile.rect.y + projectile.rect.height / 2,
+        target
+          ? target.rect.x + target.rect.width / 2
+          : projectile.rect.x + projectile.rect.width / 2,
+
+        target
+          ? target.rect.y + target.rect.height / 2
+          : projectile.rect.y + projectile.rect.height / 2,
         10,
       );
       projectile.animation.frame = 6;
@@ -138,20 +153,6 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
     if (!pos) return;
     const area = grid.getAreaFromPos(pos);
     area?.registerEntity(projectile);
-  });
-
-  // Init skill cost
-  fireWizard.animations.idle.onFrame(0, () => {
-    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
-  });
-  fireWizard.animations.attack.onFrame(0, () => {
-    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
-  });
-  fireWizard.animations.fireball.onFrame(0, () => {
-    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
-  });
-  fireWizard.animations.flamejet.onFrame(0, () => {
-    fireWizard.energy -= fireWizard.getCurrentSkill()?.cost || 0;
   });
 
   fireWizard.attacksLoaded = true;

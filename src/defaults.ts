@@ -78,16 +78,19 @@ export function initializeGameState(): GameState {
 export const createZombieOne = () => {
   const zombie = new Enemy(
     `ZombieOne-${v4()}`,
+    'Zombie',
     1000,
     0,
     5,
-    500,
+    5,
     createZombieOneAnimations(),
     { x: 768, y: 0, width: 128, height: 128 },
     createBasicAttack(0, 0, 0, 1),
   );
   zombie.bounty = 40;
   zombie.experience = 50;
+  zombie.stunRecovery = 100;
+  zombie.description = 'Slow moving and weak.';
   return zombie;
 };
 

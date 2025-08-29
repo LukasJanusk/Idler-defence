@@ -41,7 +41,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       char.pos = pos;
       char.initAttributes();
       char.initAttacks(store.grid);
+      char.initSkillCost();
       grid.setCharacterToPosition(pos, char);
+      char.setAutomate(store.settings.automateSkillCast);
       const availableCharacters = new Set(store.availableCharacters);
       availableCharacters.delete(char);
       return {
@@ -91,10 +93,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }),
   nextLevel: () =>
     set((store) => {
+      store.grid.removeAllDeadEnemies();
       store.levelEventHandler.start();
       const currentLevel = store.levels[store.currentLevel];
       store.levelEventHandler.registerLevel(currentLevel);
       store.gameClock.start();
+      store.grid.removeAllDeadEnemies();
       store.levelEventHandler.start();
       const characters = grid.getCharacters();
       characters.forEach((c) => {

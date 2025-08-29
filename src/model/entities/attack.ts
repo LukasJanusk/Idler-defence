@@ -16,7 +16,7 @@ export class Attack {
   didHit: boolean;
   source: 'player' | 'enemy';
   range: number;
-  onHit?: (target: Enemy<EnemyAction> | AnyCharacter) => void;
+  onHit?: (target?: AnyCharacter | Enemy<EnemyAction>) => void;
   multiplier: number;
   duration: number = 100;
   elapsed: number = 0;
@@ -29,7 +29,7 @@ export class Attack {
     rect: Rect,
     source: 'player' | 'enemy',
     range?: number,
-    onHit?: (target: Enemy<EnemyAction> | AnyCharacter) => void,
+    onHit?: () => void,
     multiplier?: number,
   ) {
     this.id = id;

@@ -1,6 +1,6 @@
 import { useHover } from '@/hooks/useHover';
 
-export type IndicatorIcons = '⚔️' | '⏳' | '🔵' | '❔' | '🛡️';
+export type IndicatorIcons = '⚔️' | '⏳' | '🔵' | '❔' | '🛡️' | '💨';
 
 type IndicatorProps = {
   info: string;
@@ -21,13 +21,16 @@ export default function Indicator({ info, icon, value }: IndicatorProps) {
         return 'bg-medieval-emerald';
       case '🛡️':
         return 'bg-medieval-stoneLight';
+      case '💨':
+        return 'bg-yellow-600';
       default:
         return 'bg-medieval-emerald';
     }
   };
 
   const displayValue = () => {
-    if (icon === '⚔️' || icon === '🛡️') return Math.round(value);
+    if (icon === '⚔️' || icon === '🛡️' || icon === '💨')
+      return Math.round(value);
     else if (icon === '⏳') return `${value}s`;
     else if (icon === '🔵') return value < 0 ? `+${value * -1}` : value;
     else if (icon === '❔') return '';

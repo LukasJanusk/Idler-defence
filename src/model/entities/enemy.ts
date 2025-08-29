@@ -9,6 +9,7 @@ import { UPDATE_RATE } from '@/constants';
 
 export class Enemy<T extends string = never> {
   id: string;
+  name: string;
   health: number;
   range: number;
   damage: number;
@@ -33,8 +34,11 @@ export class Enemy<T extends string = never> {
   buffs: Set<Buff> = new Set();
   private elapsed = 0;
   private interval = UPDATE_RATE;
+  description?: string;
+
   constructor(
     id: string,
+    name: string,
     health: number,
     range: number,
     damage: number,
@@ -46,6 +50,7 @@ export class Enemy<T extends string = never> {
     state?: EnemyAction | T,
   ) {
     this.id = id;
+    this.name = name;
     this.health = health;
     this.range = range;
     this.damage = damage;
@@ -186,7 +191,7 @@ export class Enemy<T extends string = never> {
   }
   update(dt: number, grid: Grid) {
     if (this.state === 'death' || this.state === 'dead') return;
-    console.log(this.debuffs.size);
+
     this.elapsed += dt;
     if (this.elapsed >= this.interval) {
       const ticks = Math.floor(this.elapsed / this.interval);
@@ -205,7 +210,7 @@ export class Enemy<T extends string = never> {
       if (this.state === 'move') {
         this.rect = {
           ...this.rect,
-          x: this.rect.x - (this.speed + dt) * 0.001,
+          x: this.rect.x - this.speed * 0.1,
         };
       }
     }

@@ -15,7 +15,6 @@ export default function ParticleContextProvider({
   const splashEmbers = splashEmb;
   return (
     <ParticleContext.Provider value={{ splashBlood, splashEmbers }}>
-      {' '}
       <canvas
         ref={ref}
         width={GAME_WIDTH}

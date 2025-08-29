@@ -94,6 +94,7 @@ export class Area {
       return true;
     } else if (isAttack(entity)) {
       entity.rect = { ...entity.rect, x: this.rect.x, y: this.rect.y };
+
       this.attacks.push(entity);
       return true;
     }
@@ -112,14 +113,21 @@ export class Area {
     return character;
   }
   cleanup() {
+    // for (const enemy of this.enemies) {
+    //   if (enemy.state === 'dead') {
+    //     this.enemies.delete(enemy);
+    //   }
+    // }
+    // this.characters = this.characters.filter((c) => c.state !== 'dead');
+    this.projectiles = this.projectiles.filter((p) => p.isAlive);
+    this.attacks = this.attacks.filter((a) => !a.didHit);
+  }
+  removeDeadEnemies() {
     for (const enemy of this.enemies) {
       if (enemy.state === 'dead') {
         this.enemies.delete(enemy);
       }
     }
-    // this.characters = this.characters.filter((c) => c.state !== 'dead');
-    this.projectiles = this.projectiles.filter((p) => p.isAlive);
-    this.attacks = this.attacks.filter((a) => !a.didHit);
   }
 }
 
@@ -185,6 +193,13 @@ export class Grid {
       p.update(dt);
       p.draw(ctx);
     });
+  }
+  getAllAreas() {
+    return this.grid.flat().flat();
+  }
+  getColumn(index: number) {
+    if (this.horizontal - 1 < index) return;
+    return this.grid.map((row) => row[index]);
   }
   filterExpiredParticles() {
     this.particles = this.particles.filter((p) => p.isAlive());
@@ -413,5 +428,8 @@ export class Grid {
       };
       area.registerEntity(enemy);
     });
+  }
+  removeAllDeadEnemies() {
+    this.getAllAreas().forEach((area) => area.removeDeadEnemies());
   }
 }

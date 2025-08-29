@@ -7,6 +7,7 @@ export const wizardSkills: Skill[] = [
     description:
       'Wizard shares arcane knowledge with his companions to increase their Energy recovery.',
     url: '',
+    baseDamage: 0,
     damage: 0,
     duration: 0.8,
     speed: 1,
@@ -20,6 +21,7 @@ export const wizardSkills: Skill[] = [
     name: 'Magic Arrow',
     description: 'Shoots a powerful fast movig projectile toawrds an enemy.',
     url: '',
+    baseDamage: 120,
     damage: 120,
     duration: 0.9,
     speed: 1,
@@ -31,9 +33,10 @@ export const wizardSkills: Skill[] = [
   },
   {
     id: 'Wizard-MagicBall',
-    name: 'Arcane Ball',
-    description: 'Devastating ball of energy that explodes on inpact.',
+    name: 'Arcane Blast',
+    description: 'Devastating attack of energy that explodes on inpact.',
     url: '',
+    baseDamage: 60,
     damage: 60,
     duration: 0.7,
     speed: 1,
@@ -48,12 +51,13 @@ export const wizardSkills: Skill[] = [
     description:
       'Releases enourmous discharge of pure arcane energy. Only the most elite wizards can master this technique.',
     url: '',
+    baseDamage: 220,
     damage: 220,
     duration: 1.6,
     speed: 1,
     action: 'magicSphere',
     level: 1,
-    cost: 1,
+    cost: 70,
     multiplier: 30,
   },
 ];

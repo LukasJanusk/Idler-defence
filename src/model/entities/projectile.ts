@@ -1,10 +1,10 @@
 import { v4 } from 'uuid';
-import { createAnimation, Sheet } from '@/model/animations/animation';
-import type { Rect } from '@/types';
+import { Sheet } from '@/model/animations/animation';
+import type { AnyCharacter, Rect } from '@/types';
 import { collideRect, getRectMiddle } from '@/utils';
-import fireball from '@/assets/Fire_Wizard/Charge.png';
 import { Animation } from '@/model/animations/animation';
-import type { AnyAction } from './character';
+import type { EnemyAction } from './character';
+import type { Enemy } from './enemy';
 
 export class ProjectileAnimation {
   id: string = 'ProjAnim' + v4();
@@ -61,22 +61,6 @@ export class ProjectileAnimation {
       this.onEnd();
     }
   }
-  clone(): ProjectileAnimation {
-    const clone = new ProjectileAnimation(
-      this.sheet,
-      this.nFrame,
-      this.hitFrame,
-      this.frameDuration,
-      this.name,
-      this.onHit,
-    );
-    clone.frame = this.frame;
-    clone.didHit = this.didHit;
-    clone.elapsed = this.elapsed;
-    clone.alive = this.alive;
-    clone.onHitDidTrigger = this.onHitDidTrigger;
-    return clone;
-  }
 }
 
 export function createProjectileAnimation(
@@ -113,7 +97,8 @@ export class Projectile {
   didHit: boolean;
   isAlive: boolean;
   rotation: number = 0;
-  onHit?: () => void;
+  stun: boolean = true;
+  onHit?: (target?: AnyCharacter | Enemy<EnemyAction>) => void;
   private hitEntities: string[] = [];
 
   constructor(
@@ -127,7 +112,7 @@ export class Projectile {
     speed: number,
     targetId: string | null,
     gravity: number = 10,
-    onHit?: (proj: Projectile) => void,
+    onHit?: () => void,
   ) {
     this.id = id;
     this.name = name;
@@ -142,12 +127,15 @@ export class Projectile {
     this.gravity = gravity;
     this.didHit = false;
     this.isAlive = true;
-    this.onHit = onHit ? () => onHit(this) : undefined;
+    this.onHit = onHit;
     const projMiddle = getRectMiddle(this.rect);
     const targetMiddle = getRectMiddle(this.targetRect);
     const dx = targetMiddle.x - projMiddle.x;
     const dy = targetMiddle.y - projMiddle.y;
     this.rotation = (Math.atan2(dy, dx) * 180) / Math.PI;
+  }
+  shouldStun() {
+    return this.source === 'character' && this.stun;
   }
   update(dt: number) {
     if (!this.isAlive) return;
@@ -162,14 +150,17 @@ export class Projectile {
     this.rect.x += velX * 0.001 * dt;
     this.rect.y += velY * 0.001 * dt;
   }
-  hit(target: { id: string; rect: Rect; health: number; state: AnyAction }) {
+  hit(target: AnyCharacter | Enemy<EnemyAction>) {
+    if (target.state === 'dead' || target.state === 'death') return;
     if (this.hitEntities.some((e) => e === target.id)) return;
     if (collideRect(this.rect, target.rect)) {
-      target.state = 'hit';
+      if (this.shouldStun()) {
+        target.state = 'hit';
+      }
       target.health -= this.damage;
       if (this.didHit) return;
       if (this.onHit) {
-        this.onHit();
+        this.onHit(target);
       }
       this.animation.onFrame(this.animation.nFrame - 1, () => {
         this.isAlive = false;
@@ -178,38 +169,3 @@ export class Projectile {
     }
   }
 }
-
-export const createFireBall = (
-  x: number,
-  y: number,
-  targetX: number,
-  targetY: number,
-  onHit?: (proj: Projectile) => void,
-) => {
-  const fireballUrl = new URL(fireball, import.meta.url).href;
-  const fireBallAnimation = createAnimation(fireballUrl, 12, 100, 'fireball');
-  const fireBallProjectile = new Projectile(
-    `test-${v4()}`,
-    'Firebal Projectile',
-    fireBallAnimation,
-    60,
-    'character',
-    {
-      x,
-      y,
-      width: 64,
-      height: 64,
-    },
-    {
-      x: targetX,
-      y: targetY,
-      width: 64,
-      height: 64,
-    },
-    100,
-    'test-target',
-    10,
-    onHit,
-  );
-  return fireBallProjectile;
-};

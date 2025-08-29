@@ -22,6 +22,8 @@ import { defaultSettings } from '@/defaults';
 import { initKnightAttacks } from '../characterAttacks/knightAttacks';
 import type { Debuff } from './debuff';
 import type { Buff } from './buff';
+import { initWizardAttacks } from '../characterAttacks/wizardAttacks';
+import { initLightningMageAttacks } from '../characterAttacks/lightningMageAttacks';
 
 export type BaseAction =
   | 'idle'
@@ -92,6 +94,8 @@ export abstract class Character<T extends string> {
 
   private elapsed = 0;
   private interval = UPDATE_RATE;
+
+  abstract initSkillCost(): void;
 
   constructor(
     id: string,
@@ -239,7 +243,6 @@ export abstract class Character<T extends string> {
     this.initAttributes();
   }
   initAttributes() {
-    // this.health = this.attributes.vitality * 10;
     this.energy = this.attributes.intelligence * 10;
     this.maxHealth = this.attributes.vitality * 10;
     this.maxEnergy = this.attributes.intelligence * 10;
@@ -369,8 +372,11 @@ export class Warrior extends Character<WarriorAction> {
     };
     this.skills = KnightSkills;
   }
+  initSkillCost() {
+    console.log('Warrior init Skill const not implemented');
+  }
   initAttacks(grid: Grid) {
-    console.log('warrior attacks init', grid);
+    console.log('Warrior attacks not implemented', grid);
   }
 }
 
@@ -409,6 +415,20 @@ export class FireMage extends Character<FireMageAction> {
       vitality: 10,
     };
     this.skills = FireMageSkills;
+  }
+  initSkillCost() {
+    this.animations.idle.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.attack.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.fireball.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
+    this.animations.flamejet.onFrame(0, () => {
+      this.energy -= this.getCurrentSkill()?.cost || 0;
+    });
   }
   initAttacks(grid: Grid) {
     if (this.attacksLoaded === true) return;
@@ -458,9 +478,7 @@ export class Knight extends Character<KnightAction> {
     };
     this.skills = KnightSkills;
   }
-  initAttacks(grid: Grid) {
-    console.log('Knight attacks init', grid);
-    initKnightAttacks(grid, this);
+  initSkillCost() {
     this.animations.idle.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
@@ -473,6 +491,10 @@ export class Knight extends Character<KnightAction> {
     this.animations.protect.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
+  }
+  initAttacks(grid: Grid) {
+    console.log('Knight attacks init', grid);
+    initKnightAttacks(grid, this);
   }
 
   update(dt: number) {
@@ -490,6 +512,7 @@ export class Wizard extends Character<WizardAction> {
   stunRecovery = 400;
   health: number = 100;
   maxHealth: number = 100;
+  attacksLoaded = false;
   constructor(
     id: string,
     name: string,
@@ -520,8 +543,7 @@ export class Wizard extends Character<WizardAction> {
     };
     this.skills = wizardSkills;
   }
-  initAttacks(grid: Grid) {
-    console.log('Wizard attacks init', grid);
+  initSkillCost() {
     this.animations.idle.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
@@ -535,6 +557,9 @@ export class Wizard extends Character<WizardAction> {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
   }
+  initAttacks(grid: Grid) {
+    initWizardAttacks(grid, this);
+  }
 }
 export class LightningMage extends Character<LightningMageAction> {
   characterClass: string = 'Lightning mage';
@@ -542,6 +567,7 @@ export class LightningMage extends Character<LightningMageAction> {
   stunRecovery = 400;
   health: number = 100;
   maxHealth: number = 100;
+  attacksLoaded = false;
   constructor(
     id: string,
     name: string,
@@ -570,8 +596,7 @@ export class LightningMage extends Character<LightningMageAction> {
     };
     this.skills = lightningMageSkills;
   }
-  initAttacks(grid: Grid) {
-    console.log('Lightning Mage attacks init', grid);
+  initSkillCost() {
     this.animations.idle.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
@@ -584,5 +609,9 @@ export class LightningMage extends Character<LightningMageAction> {
     this.animations.discharge.onFrame(0, () => {
       this.energy -= this.getCurrentSkill()?.cost || 0;
     });
+  }
+
+  initAttacks(grid: Grid) {
+    initLightningMageAttacks(grid, this);
   }
 }

@@ -1,14 +1,10 @@
-import { useEffect, useReducer, useState } from 'react';
-import { initializeGameState } from '../defaults';
-import { gameReducer } from '@/gameReducer';
+import { useEffect } from 'react';
+
 import { GameContext } from './useGameContext';
 
 type GameContextProps = { children: React.ReactNode };
 
 export function GameContextProvider({ children }: GameContextProps) {
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [state, dispatch] = useReducer(gameReducer, null, initializeGameState);
-
   const value = {
     state,
     dispatch,
