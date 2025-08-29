@@ -1,4 +1,3 @@
-import type { Dispatch } from 'react';
 import { Animation } from '@/model/animations/animation';
 import type {
   AnyAction,
@@ -14,7 +13,6 @@ import type {
   LightningMageAction,
   EnemyAction,
 } from './model/entities/character';
-import type { GameReducerAction } from './gameReducer';
 import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
 import type { Particle } from './model/entities/particles';
@@ -77,16 +75,6 @@ export type GameState = {
   projectiles: Projectile[];
   availableCharacters: Set<AnyCharacter>;
 };
-export type PartyPosition = {
-  name: PartyPositionName;
-  rect: Rect;
-};
-
-export type GameContextType = {
-  state: GameState;
-  dispatch: Dispatch<GameReducerAction>;
-};
-
 export type Settings = {
   automateSkillCast: boolean;
 };

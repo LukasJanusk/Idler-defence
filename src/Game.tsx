@@ -9,15 +9,22 @@ import EnemyComponent from './components/EnemyComponent';
 import ProjectileComponent from './components/ProjectileComponent';
 import useGrid from './hooks/useGrid';
 import GoldDisplay from './components/GoldDisplay';
+import NextWaveButton from './components/NextWaveButton';
 
 export default function Game() {
   const [live, setLive] = useState(true);
   const [showGrid, setShowGrid] = useState(false);
-  const { splashBlood, splashEmbers } = useParticleContext();
+  const {
+    splashBlood,
+    splashEmbers,
+    splashArcane,
+    splashHealth,
+    splashMagic,
+    splashSparks,
+  } = useParticleContext();
   const setSettings = useGameStore((store) => store.setSettings);
   const play = useGameStore((store) => store.play);
   const pause = useGameStore((store) => store.pause);
-  const nextLevel = useGameStore((store) => store.nextLevel);
   const automate = useGameStore((store) => store.settings.automateSkillCast);
   const gameClock = useGameStore((store) => store.gameClock);
   const { grid, enemies, projectiles, party } = useGrid();
@@ -42,7 +49,6 @@ export default function Game() {
     play();
   };
   const gameNextLevel = () => {
-    nextLevel();
     setLive(true);
   };
   useEffect(() => {
@@ -64,13 +70,27 @@ export default function Game() {
       <EnemyComponent enemies={enemies}>
         <ProjectileComponent projectiles={projectiles}>
           <GoldDisplay />
+
           <CharacterScreen party={party} />
-          <div className="absolute left-0 top-0 flex flex-row">
+          <NextWaveButton onClick={gameNextLevel} />
+          <div className="absolute left-0 top-0 flex max-w-[512px] flex-row flex-wrap">
             <Button onClick={() => splashEmbers(600, 200, 100)}>
               Splash embers
             </Button>
             <Button onClick={() => splashBlood(500, 200, 100)}>
               Splash blood
+            </Button>
+            <Button onClick={() => splashHealth(500, 200, 100)}>
+              Splash health
+            </Button>
+            <Button onClick={() => splashArcane(500, 200, 100)}>
+              Splash arcane
+            </Button>
+            <Button onClick={() => splashMagic(500, 200, 100)}>
+              Splash magic
+            </Button>
+            <Button onClick={() => splashSparks(500, 200, 100)}>
+              Splash sparks
             </Button>
             <Button onClick={() => setShowGrid((prev) => !prev)}>
               Toggle grid
@@ -89,7 +109,7 @@ export default function Game() {
             >
               {live ? 'Pause' : 'Resume'}
             </Button>
-            <Button onClick={gameNextLevel}>Next Level</Button>
+
             <Button
               onClick={toggleAutomate}
             >{`Automate - ${automate ? 'Off' : 'On'}`}</Button>

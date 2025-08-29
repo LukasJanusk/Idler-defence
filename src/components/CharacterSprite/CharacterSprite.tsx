@@ -40,14 +40,16 @@ export default function CharacterSprite({
           showValues={hover}
         />
       </div>
-      <Sprite
-        animation={
-          character.animations[
-            character.state as keyof typeof character.animations
-          ]
-        }
-        entity="character"
-      />
+      <div className="relative -top-[8px] h-full w-full">
+        <Sprite
+          animation={
+            character.animations[
+              character.state as keyof typeof character.animations
+            ]
+          }
+          entity="character"
+        />
+      </div>
 
       {hover && character.health > 0 && (
         <div className="absolute bottom-1 left-0 flex w-full flex-row justify-between">

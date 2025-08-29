@@ -7,11 +7,23 @@ export function useParticles(
 ) {
   const gameClock = useGameStore((store) => store.gameClock);
   const grid = useGameStore((store) => store.grid);
-  const splashBl = (x: number, y: number, n: number) => {
+  const splashBlood = (x: number, y: number, n: number) => {
     grid.generateParticles('blood', x, y, n);
   };
-  const splashEmb = (x: number, y: number, n: number) => {
+  const splashEmbers = (x: number, y: number, n: number) => {
     grid.generateParticles('ember', x, y, n);
+  };
+  const splashArcane = (x: number, y: number, n: number) => {
+    grid.generateParticles('arcane', x, y, n);
+  };
+  const splashSparks = (x: number, y: number, n: number) => {
+    grid.generateParticles('spark', x, y, n);
+  };
+  const splashHealth = (x: number, y: number, n: number) => {
+    grid.generateParticles('health', x, y, n);
+  };
+  const splashMagic = (x: number, y: number, n: number) => {
+    grid.generateParticles('magic', x, y, n);
   };
   useEffect(() => {
     const onTick = (dt: number) => {
@@ -26,5 +38,12 @@ export function useParticles(
     return () => gameClock.unsubscribe(onTick);
   }, [gameClock, canvas, grid]);
 
-  return { splashBl, splashEmb };
+  return {
+    splashBlood,
+    splashEmbers,
+    splashArcane,
+    splashSparks,
+    splashHealth,
+    splashMagic,
+  };
 }

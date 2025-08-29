@@ -6,7 +6,7 @@ import { GRID_AREA_SIZE } from '@/constants';
 import { createAnimation } from '../animations/animation';
 import type { FireMage } from '../entities/character';
 import type { Grid } from '../grid';
-import { registerAttackToGrid } from '@/utils';
+import { getRandomInt, registerAttackToGrid } from '@/utils';
 
 export const createFireWizardStabAttack = (
   x: number,
@@ -155,5 +155,20 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
     area?.registerEntity(projectile);
   });
 
+  const regenerate = () => {
+    if (fireWizard.energy === fireWizard.maxEnergy) return;
+    grid.generateParticles(
+      'arcane',
+      getRandomInt(
+        fireWizard.rect.x + 30,
+        fireWizard.rect.x + GRID_AREA_SIZE - 50,
+      ),
+      fireWizard.rect.y + GRID_AREA_SIZE - 10,
+      4,
+    );
+  };
+  fireWizard.animations.idle.onFrame(1, regenerate);
+  fireWizard.animations.idle.onFrame(3, regenerate);
+  fireWizard.animations.idle.onFrame(5, regenerate);
   fireWizard.attacksLoaded = true;
 };

@@ -28,8 +28,11 @@ export const deathAnimation = () => createAnimation(deathUrl, 5, 100, 'death');
 export const deadAnimation = () => createAnimation(deadUrl, 1, 100, 'death');
 export const resurrectAnimation = () =>
   createAnimation(resurrectUrl, 5, 100, 'resurrect');
-export const dischargeAnimation = () =>
-  createAnimation(dischargeUrl, 13, 100, 'discharge');
+export const dischargeAnimation = () => {
+  const animation = createAnimation(dischargeUrl, 13, 100, 'discharge');
+  animation.id = 'Lightning-mage-discharge';
+  return animation;
+};
 
 export function createLightningMageAnimations(): SpriteAnimations<LightningMageAction> {
   return {

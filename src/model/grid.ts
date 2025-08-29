@@ -14,8 +14,12 @@ import { Enemy } from './entities/enemy';
 import { Attack } from './entities/attack';
 import {
   Particle,
+  splashArane,
   splashBlood,
   splashEmbers,
+  splashHealth,
+  splashMagic,
+  splashSparks,
   type ParticleType,
 } from './entities/particles';
 import { PARTY_POSITIO_ROW } from '@/constants';
@@ -119,7 +123,7 @@ export class Area {
     //   }
     // }
     // this.characters = this.characters.filter((c) => c.state !== 'dead');
-    this.projectiles = this.projectiles.filter((p) => p.isAlive);
+
     this.attacks = this.attacks.filter((a) => !a.didHit);
   }
   removeDeadEnemies() {
@@ -186,6 +190,14 @@ export class Grid {
         return this.particles.push(...splashBlood(x, y, n));
       case 'ember':
         return this.particles.push(...splashEmbers(x, y, n));
+      case 'arcane':
+        return this.particles.push(...splashArane(x, y, n));
+      case 'health':
+        return this.particles.push(...splashHealth(x, y, n));
+      case 'magic':
+        return this.particles.push(...splashMagic(x, y, n));
+      case 'spark':
+        return this.particles.push(...splashSparks(x, y, n));
     }
   }
   updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {
@@ -327,6 +339,13 @@ export class Grid {
   }
   cleanup() {
     this.grid.forEach((row) => row.forEach((area) => area.cleanup()));
+    this.particles.filter(
+      (p) =>
+        p.x <= this.areaSize * this.horizontal &&
+        p.y <= this.vertical * this.areaSize &&
+        p.x > 0 &&
+        p.y > 0,
+    );
   }
   getEnemies() {
     return this.grid.flat().flatMap((area) => [...area.enemies]);

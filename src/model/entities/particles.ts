@@ -1,5 +1,11 @@
 let particleId = 0;
-export type ParticleType = 'blood' | 'ember';
+export type ParticleType =
+  | 'blood'
+  | 'ember'
+  | 'arcane'
+  | 'health'
+  | 'magic'
+  | 'spark';
 export class Particle {
   id: number;
   x: number;
@@ -58,25 +64,121 @@ export class BloodParticle extends Particle {
   constructor(x: number, y: number) {
     const vx = (Math.random() - 0.5) * 100;
     const vy = (Math.random() - 1) * 100;
-    super(x, y, vx, vy, Math.random() * 5, 'red', 150);
+    super(x, y, vx, vy, Math.random() * 5, getRandomBloodColor(), 150);
+  }
+  update(dt: number) {
+    this.vy += this.gravity * 0.001 * dt;
+    this.x += this.vx * 0.001 * dt;
+    this.y += this.vy * 0.001 * dt;
+    if (this.y >= 384) this.vy = this.vy * -0.5;
+    this.alpha -= 0.001 * dt;
+    this.radius -= 0.001 * dt;
   }
 }
 export class EmberParticle extends Particle {
   constructor(x: number, y: number) {
-    const vx = (Math.random() - 0.5) * 300;
-    const vy = (Math.random() - 1) * 300;
+    const vx = (Math.random() - 0.5) * 200;
+    const vy = (Math.random() - 1) * 200;
     super(x, y, vx, vy, Math.random() * 5, getRandomEmberColor(), 10);
     this.radius = Math.random() * 3;
   }
 }
 
+export class LightningParticle extends Particle {
+  constructor(x: number, y: number) {
+    const vx = (Math.random() + 0.7) * 150;
+    const vy = (Math.random() - 0.5) * 200;
+    super(x, y, vx, vy, Math.random() * 4, getRandomLightningColor(), 10);
+    this.radius = Math.random() * 2;
+  }
+  update(dt: number) {
+    this.vy += this.gravity * 0.001 * dt;
+    this.x += this.vx * 0.001 * dt;
+    this.y += this.vy * 0.001 * dt;
+    if (this.y >= 384) {
+      this.vy = this.vy * -0.5;
+      this.vx = this.vx * (Math.random() - 0.5);
+    }
+    this.alpha -= 0.001 * dt;
+    this.radius -= 0.001 * dt;
+  }
+}
+
+export class MagicParticle extends Particle {
+  constructor(x: number, y: number) {
+    const vx = (Math.random() - 0.5) * 500;
+    const vy = (Math.random() - 1) * 500;
+    super(x, y, vx, vy, Math.random() * 4, getRandomBlueColor(), 500);
+    this.radius = Math.random() * 3;
+  }
+  update(dt: number) {
+    this.vy += this.gravity * 0.001 * dt;
+    this.x += this.vx * 0.001 * dt;
+    this.y += this.vy * 0.001 * dt;
+    if (this.y >= 384) this.vy = this.vy * -1;
+    this.alpha -= 0.001 * dt;
+    this.radius -= 0.001 * dt;
+  }
+}
+export class HealthParticle extends Particle {
+  constructor(x: number, y: number) {
+    const vx = (Math.random() - 0.5) * 50;
+    const vy = (Math.random() - 1) * 100;
+    super(x, y, vx, vy, Math.random() * 4, getRandomHealthColor(), -10);
+    this.radius = Math.random() * 3;
+  }
+}
+
+export class ArcaneParticle extends Particle {
+  constructor(x: number, y: number) {
+    const vx = (Math.random() - 0.5) * 50;
+    const vy = (Math.random() - 1) * 100;
+    super(x, y, vx, vy, Math.random() * 4, getRandomArcaneColor(), -10);
+    this.radius = Math.random() * 5;
+  }
+}
 export function splashBlood(x: number, y: number, nParticle: number) {
   return Array.from({ length: nParticle }).map(() => new BloodParticle(x, y));
 }
 export function splashEmbers(x: number, y: number, nParticle: number) {
   return Array.from({ length: nParticle }).map(() => new EmberParticle(x, y));
 }
+export function splashSparks(x: number, y: number, nParticle: number) {
+  return Array.from({ length: nParticle }).map(
+    () => new LightningParticle(x, y),
+  );
+}
+export function splashMagic(x: number, y: number, nParticle: number) {
+  return Array.from({ length: nParticle }).map(() => new MagicParticle(x, y));
+}
+export function splashHealth(x: number, y: number, nParticle: number) {
+  return Array.from({ length: nParticle }).map(() => new HealthParticle(x, y));
+}
+export function splashArane(x: number, y: number, nParticle: number) {
+  return Array.from({ length: nParticle }).map(() => new ArcaneParticle(x, y));
+}
+
 function getRandomEmberColor() {
   const colors = ['#FFA500', '#FFD700', '#FF4500'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function getRandomBloodColor() {
+  const colors = ['#FF0000', '#DC143C', '#B22222', '#FF6347', '#8B0000'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function getRandomLightningColor() {
+  const colors = ['#FFFFFF', '#FFFFE0', '#FFFACD', '#FAFAD2', '#FFFF00'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function getRandomBlueColor() {
+  const colors = ['#ADD8E6', '#87CEFA', '#4682B4', '#1E90FF', '#0000FF'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function getRandomHealthColor() {
+  const colors = ['#7A1F2E', '#8B2635', '#9C2E3C', '#AD3543', '#BE3C4A'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function getRandomArcaneColor() {
+  const colors = ['#8A2BE2', '#9400D3', '#9932CC', '#BA55D3', '#DA70D6'];
   return colors[Math.floor(Math.random() * colors.length)];
 }

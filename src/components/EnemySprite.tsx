@@ -20,6 +20,7 @@ export default function EnemySprite({ enemy, setInfo }: EnemySpriteProps) {
         top: enemy.rect.y - 10,
         width: enemy.rect.width,
         height: enemy.rect.height,
+        pointerEvents: enemy.state === 'dead' ? 'none' : 'auto',
       }}
     >
       {enemy.state !== 'death' && enemy.state !== 'dead' && (

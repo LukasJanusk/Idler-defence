@@ -44,6 +44,11 @@ export class LevelEventHandler {
   }
   tick(dt: number) {
     if (!this.running) return;
+    if (this.events.size === 0) {
+      this.onLevelEnd?.();
+      this.stop();
+      return;
+    }
     if (this.elapsed > this.duration) this.running = false;
     const toDelete: LevelEvent[] = [];
     this.elapsed += dt;

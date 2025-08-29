@@ -2,6 +2,7 @@ import { useRef, type ReactNode } from 'react';
 import { ParticleContext } from './ParticleContext';
 import { useParticles } from '@/hooks/useParticles';
 import { GAME_HEIGHT, GAME_WIDTH } from '../constants';
+import Background from '@/components/Background';
 
 type ParticleContextProps = {
   children: ReactNode;
@@ -10,16 +11,32 @@ export default function ParticleContextProvider({
   children,
 }: ParticleContextProps) {
   const ref = useRef<null | HTMLCanvasElement>(null);
-  const { splashBl, splashEmb } = useParticles(ref);
-  const splashBlood = splashBl;
-  const splashEmbers = splashEmb;
+  const {
+    splashBlood,
+    splashEmbers,
+    splashArcane,
+    splashHealth,
+    splashMagic,
+    splashSparks,
+  } = useParticles(ref);
+
   return (
-    <ParticleContext.Provider value={{ splashBlood, splashEmbers }}>
+    <ParticleContext.Provider
+      value={{
+        splashBlood,
+        splashEmbers,
+        splashArcane,
+        splashHealth,
+        splashMagic,
+        splashSparks,
+      }}
+    >
+      <Background />
       <canvas
         ref={ref}
         width={GAME_WIDTH}
         height={GAME_HEIGHT}
-        className="absolute left-0 top-0"
+        className="pointer-events-none absolute left-0 top-0 z-10"
       />
       {children}
     </ParticleContext.Provider>

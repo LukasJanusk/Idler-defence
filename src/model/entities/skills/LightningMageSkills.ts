@@ -5,7 +5,8 @@ export const lightningMageSkills: Skill[] = [
     id: 'LightningMage-Zap',
     name: 'Zap',
     description:
-      'Generates Static field of electricity periodically zapping all enemies',
+      'Generates a static field of electricity periodically, electrifying all enemies.',
+
     url: '',
     baseDamage: 5,
     damage: 5,
@@ -20,7 +21,7 @@ export const lightningMageSkills: Skill[] = [
     id: 'LightningMage-LightningStrike',
     name: 'Lightning Strike',
     description:
-      'Lightnig mage strikes summons lightning strikes to random areas on the field.',
+      'Lightnig mage attaks summon lightning strikes to random areas on the field.',
     url: '',
     baseDamage: 150,
     damage: 150,
@@ -36,8 +37,8 @@ export const lightningMageSkills: Skill[] = [
     name: 'Charged Bolts',
     description: 'Shoot small moving particles of electricity.',
     url: '',
-    baseDamage: 60,
-    damage: 60,
+    baseDamage: 30,
+    damage: 30,
     duration: 0.4,
     speed: 1,
     action: 'chargedBolts',

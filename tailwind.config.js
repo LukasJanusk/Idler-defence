@@ -65,9 +65,19 @@ export default {
           '30%': { transform: 'scale(1.5)' },
           '100%': { transform: 'scale(1)' },
         },
+        slideLeft: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0px)' },
+        },
+        slideRight: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0px)' },
+        },
       },
       animation: {
         pop: 'pop 0.6s ease',
+        slideLeft: 'slideLeft 0.1s ease',
+        slideRight: 'slideRight 0.1s ease',
       },
     },
   },

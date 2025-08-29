@@ -23,11 +23,42 @@ export const useGameStore = create<GameStore>((set, get) => ({
   settings: { automateSkillCast: false },
   levelEventHandler: levelHandler,
   levels: [
-    createTestLevel(grid, (enemy?) => {
-      if (enemy) {
-        get().addGold(enemy?.bounty);
-      }
-    }),
+    createTestLevel(
+      grid,
+      (enemy?) => {
+        if (enemy) {
+          get().addGold(enemy?.bounty);
+        }
+      },
+      10,
+    ),
+    createTestLevel(
+      grid,
+      (enemy?) => {
+        if (enemy) {
+          get().addGold(enemy?.bounty);
+        }
+      },
+      15,
+    ),
+    createTestLevel(
+      grid,
+      (enemy?) => {
+        if (enemy) {
+          get().addGold(enemy?.bounty);
+        }
+      },
+      20,
+    ),
+    createTestLevel(
+      grid,
+      (enemy?) => {
+        if (enemy) {
+          get().addGold(enemy?.bounty);
+        }
+      },
+      25,
+    ),
   ],
   currentLevel: 0,
   addCharacterToParty: (pos, id) =>
@@ -94,11 +125,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
   nextLevel: () =>
     set((store) => {
       store.grid.removeAllDeadEnemies();
-      store.levelEventHandler.start();
       const currentLevel = store.levels[store.currentLevel];
+      if (!currentLevel) {
+        alert('Thank you for Playing. No more levels currently available');
+        store.currentLevel = 0;
+        return store;
+      }
+      const onLevelEnd = () => {
+        set((store) => {
+          store.currentLevel += 1;
+          return store;
+        });
+      };
+      store.levelEventHandler.onLevelEnd = onLevelEnd;
       store.levelEventHandler.registerLevel(currentLevel);
       store.gameClock.start();
-      store.grid.removeAllDeadEnemies();
       store.levelEventHandler.start();
       const characters = grid.getCharacters();
       characters.forEach((c) => {

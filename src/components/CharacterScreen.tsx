@@ -8,10 +8,10 @@ import { useGameStore } from '@/store';
 import { useState } from 'react';
 import type { AnyCharacter, PartyPositionName } from '@/types';
 
-type Props = {
+export type CharacterScreenProps = {
   party: Record<PartyPositionName, AnyCharacter | null>;
 };
-export default function CharacterScreen({ party }: Props) {
+export default function CharacterScreen({ party }: CharacterScreenProps) {
   const [selectedId, setSelectedId] = useState<null | string>(null);
   const availableCharacters = useGameStore(
     (store) => store.availableCharacters,
@@ -23,9 +23,11 @@ export default function CharacterScreen({ party }: Props) {
     if (!selectedPosition) return;
     addCharacter(selectedPosition, id);
   };
-
+  const [showMenu, setShowMenu] = useState<boolean>(true);
   return (
     <div
+      onMouseEnter={() => setShowMenu(true)}
+      onMouseLeave={() => setShowMenu(false)}
       className="absolute left-[0px] top-[248px]"
       style={{
         height: `${GRID_AREA_SIZE * 3}px`,
@@ -44,43 +46,47 @@ export default function CharacterScreen({ party }: Props) {
         <CharacterGridSelectable position={'pos2'} character={party.pos2} />
         <CharacterGridSelectable position={'pos1'} character={party.pos1} />
       </div>
-      <Container size="lg">
-        <div className={`flex flex-row`}>
-          {selectedPosition && (
-            <>
-              <div className="grid grid-cols-2 grid-rows-1">
-                {selectedCharacter ? (
-                  <SkillContainer
-                    position={selectedPosition}
-                    state={selectedCharacter.state}
-                    skills={selectedCharacter.skills}
-                  />
-                ) : (
-                  <CharacterSelect
-                    availableCharacters={availableCharacters}
-                    selected={selectedId}
-                    setSelected={(id: string) => {
-                      setSelectedId(id);
-                    }}
-                  />
-                )}
-              </div>
+      {showMenu && (
+        <div className="animate-slideRight">
+          <Container size="lg">
+            <div className={`flex flex-row`}>
+              {selectedPosition && (
+                <>
+                  <div className="grid grid-cols-2 grid-rows-1">
+                    {selectedCharacter ? (
+                      <SkillContainer
+                        position={selectedPosition}
+                        state={selectedCharacter.state}
+                        skills={selectedCharacter.skills}
+                      />
+                    ) : (
+                      <CharacterSelect
+                        availableCharacters={availableCharacters}
+                        selected={selectedId}
+                        setSelected={(id: string) => {
+                          setSelectedId(id);
+                        }}
+                      />
+                    )}
+                  </div>
 
-              <CharacterAttributes
-                hired={party[selectedPosition] !== null}
-                character={
-                  selectedCharacter ||
-                  Array.from(availableCharacters.values()).find(
-                    (char) => char.id === selectedId,
-                  ) ||
-                  null
-                }
-                onHire={hireCharacter}
-              />
-            </>
-          )}
+                  <CharacterAttributes
+                    hired={party[selectedPosition] !== null}
+                    character={
+                      selectedCharacter ||
+                      Array.from(availableCharacters.values()).find(
+                        (char) => char.id === selectedId,
+                      ) ||
+                      null
+                    }
+                    onHire={hireCharacter}
+                  />
+                </>
+              )}
+            </div>
+          </Container>{' '}
         </div>
-      </Container>
+      )}
     </div>
   );
 }

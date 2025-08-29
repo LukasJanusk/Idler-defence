@@ -28,16 +28,13 @@ export default function Container({ children, size = 'md' }: ContainerProps) {
     >
       {size === 'lg' && (
         <LargeBorder
-          className="pointer-events-none absolute -left-2 -top-4 z-10 box-border text-medieval-parchment"
-          style={{
-            width: `${width + 16}px`,
-            height: `${height + 32}px`,
-          }}
+          className="pointer-events-none absolute inset-0 -top-2 z-30 text-medieval-parchment"
+          style={{ width: '100%', height: '100%' }}
         />
       )}
 
       <div
-        className="relative flex flex-col flex-nowrap overflow-visible bg-medieval-stone"
+        className="relative flex flex-col bg-medieval-stone"
         style={{
           width: `${width}px`,
           height: `${height}px`,
@@ -45,6 +42,7 @@ export default function Container({ children, size = 'md' }: ContainerProps) {
           minHeight: `${height}px`,
           maxWidth: `${width}px`,
           maxHeight: `${height}px`,
+          marginLeft: `${size === 'lg' ? '8px' : '0px'}`,
         }}
       >
         {children}

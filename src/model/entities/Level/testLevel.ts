@@ -58,11 +58,12 @@ const createEnemy = (
 export const createTestLevel = (
   grid: Grid,
   onEnemyDeath: (enemy?: Enemy) => void,
+  enemyCount: number,
 ) => {
   const createZombie = () => {
     const zombie = createEnemy('zombieOne', grid, onEnemyDeath);
     grid.addEnemies(2, 8, [zombie]);
   };
-  const events = createLevelEvents(10000, 20, createZombie);
+  const events = createLevelEvents(10000, enemyCount, createZombie);
   return events;
 };

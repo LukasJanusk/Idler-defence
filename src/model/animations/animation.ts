@@ -86,17 +86,6 @@ export class Animation {
     }
   }
 
-  clone(): Animation {
-    const clone = new Animation(
-      this.sheet,
-      this.nFrame,
-      this.frameDuration,
-      this.name,
-    );
-    clone.frame = this.frame;
-    clone.elapsed = this.elapsed;
-    return clone;
-  }
   reset() {
     this.frame = 0;
     this.elapsed = 0;

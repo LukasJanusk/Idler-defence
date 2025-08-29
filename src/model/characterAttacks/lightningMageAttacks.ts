@@ -114,7 +114,7 @@ const createLightning = (damage: number, grid: Grid) => {
     );
     lightning.onHit = () => {
       grid.generateParticles(
-        'blood',
+        'spark',
         lightning.rect.x + lightning.rect.width / 2,
         lightning.rect.y + lightning.rect.height / 2,
         10,
@@ -163,7 +163,7 @@ export const initLightningMageAttacks = (
         grid,
       );
       grid.generateParticles(
-        'ember',
+        'spark',
         target
           ? target.rect.x + target.rect.width / 2
           : attack.rect.x + attack.rect.width / 2,
@@ -194,7 +194,7 @@ export const initLightningMageAttacks = (
     );
     charge.onHit = (target) =>
       grid.generateParticles(
-        'ember',
+        'spark',
         target
           ? target.rect.x + target.rect.width / 2
           : charge.rect.x + charge.rect.width / 2,
@@ -220,7 +220,7 @@ export const initLightningMageAttacks = (
 
     zapAttack.onHit = () => {
       grid.generateParticles(
-        'ember',
+        'spark',
         zapAttack.rect.x + zapAttack.rect.width / 2,
         zapAttack.rect.y + zapAttack.rect.height / 2,
         5,
@@ -245,7 +245,7 @@ export const initLightningMageAttacks = (
     );
     charge.onHit = () =>
       grid.generateParticles(
-        'ember',
+        'spark',
         charge.rect.x + charge.rect.width / 2,
         charge.rect.y + charge.rect.height / 2,
         5,
@@ -262,19 +262,23 @@ export const initLightningMageAttacks = (
   );
   const generateSparks = (stepX: number) => {
     grid.generateParticles(
-      'ember',
+      'spark',
       lightningMage.rect.x + stepX,
       lightningMage.rect.y + 76,
       10,
     );
   };
 
-  lightningMage.animations.discharge.onFrame(3, () => generateSparks(178));
-  lightningMage.animations.discharge.onFrame(4, () => generateSparks(198));
-  lightningMage.animations.discharge.onFrame(5, () => generateSparks(228));
-  lightningMage.animations.discharge.onFrame(6, () => generateSparks(258));
-  lightningMage.animations.discharge.onFrame(7, () => generateSparks(288));
-  lightningMage.animations.discharge.onFrame(8, () => generateSparks(318));
+  lightningMage.animations.discharge.onFrame(3, () => generateSparks(100));
+  lightningMage.animations.discharge.onFrame(4, () => generateSparks(120));
+  lightningMage.animations.discharge.onFrame(5, () => generateSparks(140));
+  lightningMage.animations.discharge.onFrame(5, () => generateSparks(120));
+  lightningMage.animations.discharge.onFrame(6, () => generateSparks(150));
+  lightningMage.animations.discharge.onFrame(6, () => generateSparks(140));
+  lightningMage.animations.discharge.onFrame(7, () => generateSparks(160));
+  lightningMage.animations.discharge.onFrame(7, () => generateSparks(120));
+  lightningMage.animations.discharge.onFrame(7, () => generateSparks(100));
+  lightningMage.animations.discharge.onFrame(8, () => generateSparks(170));
 
   lightningMage.attacksLoaded = true;
 };

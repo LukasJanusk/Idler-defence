@@ -12,7 +12,7 @@ export type CharacterGridSelectableProps = {
 function SelectedIndicator() {
   return (
     <div
-      className={`absolute bottom-[0px] left-0 z-20 h-1 w-full animate-pulse bg-medieval-emerald px-8`}
+      className={`border-b-6 absolute bottom-[-5px] left-0 h-6 w-full animate-pulse rounded-b-xl rounded-e-md rounded-s-md rounded-t-2xl border-8 border-t-4 border-medieval-emerald`}
     />
   );
 }
@@ -57,10 +57,10 @@ export default function CharacterGridSelectable({
         aria-label={`Select character ${character.name}`}
         onClick={() => selectPosition(position)}
       >
+        {position === selectedPosition && <SelectedIndicator />}{' '}
         {character && (
           <CharacterSprite position={position} character={character} />
         )}
-        {position === selectedPosition && <SelectedIndicator />}
       </div>
     </div>
   );

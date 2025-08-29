@@ -27,6 +27,7 @@ export default function Sprite({ animation, entity, scale = 1 }: SpriteProps) {
         objectPosition: `-${frame && frame * width}px 0`,
         transform: entity === 'enemy' ? `scaleX(-1)` : `scaleX(1)`,
       }}
+      className={`${animation.id === 'Lightning-mage-discharge' ? 'ml-[32px]' : ''}`}
     />
   );
 }

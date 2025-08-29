@@ -31,7 +31,7 @@ export default function CharacterAttributes({
           return (
             <div
               key={attrKey}
-              className="flex flex-row justify-between border-2 border-transparent"
+              className="pointer flex flex-row justify-between border-2 border-transparent"
             >
               <div
                 className={`flex w-full flex-row items-center justify-between gap-1 border-2 border-medieval-parchment bg-medieval-wood text-medieval-silver transition-all duration-200`}
@@ -68,7 +68,7 @@ export default function CharacterAttributes({
         })}
       </div>
       {character.availableAttributes > 0 && (
-        <div className="text-md flex flex-row justify-center font-bold text-medieval-parchment">
+        <div className="flex flex-row justify-center text-xs font-bold text-medieval-parchment">
           {`Available points: ${character.availableAttributes}`}
         </div>
       )}

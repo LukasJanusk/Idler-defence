@@ -41,7 +41,7 @@ export default function PositionChangeButton({
   return (
     <>
       <button
-        className={`${colorStyles} ${sizeStyles} box-border p-1 transition-all duration-200 hover:scale-105 active:scale-95`}
+        className={`${colorStyles} ${sizeStyles} z-50 box-border p-1 transition-all duration-200 hover:scale-105 active:scale-95`}
         onClick={direction === 'left' ? moveLeft : moveRight}
         aria-label={`Move character ${direction} button`}
       >

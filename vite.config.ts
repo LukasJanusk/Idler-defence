@@ -14,6 +14,9 @@ export default defineConfig({
       include: '**/*.svg?react',
     }),
   ],
+  esbuild: {
+    exclude: ['**/*.story.tsx'],
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

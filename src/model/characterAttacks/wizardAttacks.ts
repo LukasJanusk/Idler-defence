@@ -2,8 +2,8 @@ import { Attack } from '@/model/entities/attack';
 import { v4 } from 'uuid';
 import type { Wizard } from '../entities/character';
 import type { Grid } from '../grid';
-import { registerAttackToGrid } from '@/utils';
-import { GRID_AREA_SIZE } from '@/constants';
+import { getRandomInt, registerAttackToGrid } from '@/utils';
+import { GRID_AREA_SIZE, PARTY_POSITIO_ROW } from '@/constants';
 import { Buff } from '../entities/buff';
 import magicSphere from '@/assets/Wanderer_Magican/Charge_1.png';
 import magicArrow from '@/assets/Wanderer_Magican/Charge_2.png';
@@ -99,14 +99,14 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
     );
     arrow.onHit = (target) =>
       grid.generateParticles(
-        'ember',
+        'magic',
         target
           ? target.rect.x + target.rect.width / 2
           : arrow.rect.x + arrow.rect.width / 2,
         target
           ? target.rect.y + target.rect.height / 2
           : arrow.rect.y + arrow.rect.height / 2,
-        10,
+        7,
       );
     const pos = wizard.pos;
     if (!pos) return;
@@ -123,7 +123,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
     );
     ball.onHit = (target) =>
       grid.generateParticles(
-        'blood',
+        'magic',
         target
           ? target.rect.x + target.rect.width / 2
           : ball.rect.x + ball.rect.width / 2,
@@ -155,14 +155,14 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
     });
     projectile.onHit = (target) => {
       grid.generateParticles(
-        'ember',
+        'magic',
         target
           ? target.rect.x + target.rect.width / 2
           : projectile.rect.x + projectile.rect.width / 2,
         target
           ? target.rect.y + target.rect.height / 2
           : projectile.rect.y + projectile.rect.height / 2,
-        10,
+        100,
       );
       projectile.animation.frame = 5;
     };
@@ -175,5 +175,35 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
     const area = grid.getAreaFromPos(pos);
     area?.registerEntity(projectile);
   });
+  const generateHealth = () => {
+    grid.generateParticles(
+      'health',
+      getRandomInt(0, GRID_AREA_SIZE * 4),
+      (PARTY_POSITIO_ROW + 1) * GRID_AREA_SIZE - 10,
+      1,
+    );
+  };
+  const generateEnergy = () => {
+    grid.generateParticles(
+      'arcane',
+      getRandomInt(0, GRID_AREA_SIZE * 4),
+      (PARTY_POSITIO_ROW + 1) * GRID_AREA_SIZE - 10,
+      1,
+    );
+  };
+  wizard.animations.idle.onFrame(1, generateEnergy);
+  wizard.animations.idle.onFrame(1, generateHealth);
+  // wizard.animations.idle.onFrame(2, generateEnergy);
+  // wizard.animations.idle.onFrame(2, generateHealth);
+  // wizard.animations.idle.onFrame(3, generateEnergy);
+  // wizard.animations.idle.onFrame(3, generateHealth);
+  // wizard.animations.idle.onFrame(4, generateEnergy);
+  // wizard.animations.idle.onFrame(4, generateHealth);
+  wizard.animations.idle.onFrame(5, generateEnergy);
+  wizard.animations.idle.onFrame(5, generateHealth);
+  // wizard.animations.idle.onFrame(6, generateEnergy);
+  // wizard.animations.idle.onFrame(6, generateHealth);
+  // wizard.animations.idle.onFrame(7, generateEnergy);
+  // wizard.animations.idle.onFrame(7, generateHealth);
   wizard.attacksLoaded = true;
 };

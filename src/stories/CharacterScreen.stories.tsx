@@ -19,12 +19,7 @@ const withGameAndParticlesContext = (
     gameClock: clock,
     grid: new Grid(9, 5, 128),
     selectedPosition: null,
-    party: {
-      pos1: null,
-      pos2: null,
-      pos3: null,
-      pos4: null,
-    },
+    party: useGrid(),
     availableCharacters: createAvailableCharacters(),
     ...initialState,
   });
@@ -40,8 +35,7 @@ const meta = {
   title: 'Character Screen',
   component: CharacterScreen,
   decorators: [
-    (Story, context) =>
-      withGameAndParticlesContext(Story, context.args as {}, context),
+    (Story, context) => withGameAndParticlesContext(Story, { ...context }),
   ],
   parameters: {
     layout: 'centered',
@@ -55,3 +49,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {},
 };
+function useGrid(): { party: any } {
+  throw new Error('Function not implemented.');
+}
