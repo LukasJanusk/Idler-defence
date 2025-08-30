@@ -194,7 +194,8 @@ export class Enemy<T extends string = never> {
 
     this.elapsed += dt;
     if (this.elapsed >= this.interval) {
-      const ticks = Math.floor(this.elapsed / this.interval);
+      let ticks = Math.floor(this.elapsed / this.interval);
+      if (ticks > 2) ticks = 2;
       this.elapsed %= this.interval;
       this.updateHealth(ticks);
       this.updateBuffs(dt);

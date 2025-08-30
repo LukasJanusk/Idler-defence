@@ -60,26 +60,32 @@ export class Animation {
       this.frameCallbacks.set(frame, new Set());
     }
     this.frameCallbacks.get(frame)!.add(callback);
+
+    return () => {
+      this.frameCallbacks.get(frame)?.delete(callback);
+      if (this.frameCallbacks.get(frame)?.size === 0) {
+        this.frameCallbacks.delete(frame);
+      }
+    };
   }
   updateFrame() {
     this.frame = (this.frame + 1) % this.nFrame;
   }
   tick(dt: number) {
     this.elapsed += dt;
-
-    if (this.elapsed >= this.frameDuration) {
+    while (this.elapsed >= this.frameDuration) {
       this.elapsed -= this.frameDuration;
-
       this.updateFrame();
-
       if (this.frame === 0) {
         this.triggeredThisLoop.clear();
       }
-
       if (!this.triggeredThisLoop.has(this.frame)) {
         const callbacks = this.frameCallbacks.get(this.frame);
         if (callbacks) {
-          callbacks.forEach((cb) => cb());
+          callbacks.forEach((cb) => {
+            cb();
+          });
+
           this.triggeredThisLoop.add(this.frame);
         }
       }

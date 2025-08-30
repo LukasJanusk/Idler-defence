@@ -49,14 +49,16 @@ export class ProjectileAnimation {
 
   tick(dt: number) {
     this.elapsed += dt;
-    if (this.elapsed >= this.frameDuration) {
-      this.updateFrame();
+
+    while (this.elapsed >= this.frameDuration) {
       this.elapsed -= this.frameDuration;
+      this.updateFrame();
     }
     if (this.didHit && !this.onHitDidTrigger && this.onHit) {
       this.onHit();
       this.onHitDidTrigger = true;
     }
+
     if (!this.alive && this.onEnd) {
       this.onEnd();
     }
@@ -99,7 +101,7 @@ export class Projectile {
   rotation: number = 0;
   stun: boolean = true;
   onHit?: (target?: AnyCharacter | Enemy<EnemyAction>) => void;
-  private hitEntities: string[] = [];
+  private hitEntities: Set<string> = new Set();
 
   constructor(
     id: string,
@@ -139,6 +141,7 @@ export class Projectile {
   }
   update(dt: number) {
     if (!this.isAlive) return;
+
     const projMiddle = getRectMiddle(this.rect);
     const targetMiddle = getRectMiddle(this.targetRect);
     const dx = targetMiddle.x - projMiddle.x;
@@ -152,21 +155,23 @@ export class Projectile {
   }
   hit(target: AnyCharacter | Enemy<EnemyAction>) {
     if (target.state === 'dead' || target.state === 'death') return;
-    if (this.hitEntities.some((e) => e === target.id)) return;
+    if (this.hitEntities.has(target.id)) return;
     if (collideRect(this.rect, target.rect)) {
+      this.hitEntities.add(target.id);
       if (this.shouldStun()) {
         target.state = 'hit';
       }
       target.health -= this.damage;
 
-      if (this.onHit) {
+      if (this.onHit && !this.didHit) {
         this.onHit(target);
       }
-      if (this.didHit) return;
-      this.animation.onFrame(this.animation.nFrame - 1, () => {
-        this.isAlive = false;
-      });
-      this.didHit = true;
+      if (!this.didHit) {
+        this.animation.onFrame(this.animation.nFrame - 1, () => {
+          this.isAlive = false;
+        });
+        this.didHit = true;
+      }
     }
   }
 }

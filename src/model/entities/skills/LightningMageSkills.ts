@@ -3,8 +3,9 @@ import zap from '@/assets/skill_icons/lightning_mage_zap_icon.png';
 import strike from '@/assets/skill_icons/lightning_mage_strike_icon.png';
 import chargedBolts from '@/assets/skill_icons/lightning_mage_charged_bolt_icon.png';
 import discharge from '@/assets/skill_icons/lightning_mage_discharge_icon.png';
+import type { LightningMageAction } from '../character';
 
-export const lightningMageSkills: Skill[] = [
+export const lightningMageSkills: Skill<LightningMageAction>[] = [
   {
     id: 'LightningMage-Zap',
     name: 'Zap',

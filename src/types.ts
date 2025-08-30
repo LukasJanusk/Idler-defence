@@ -25,7 +25,7 @@ export type Attribute = 'strength' | 'dexterity' | 'vitality' | 'intelligence';
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
 export type PartyPositionName = 'pos1' | 'pos2' | 'pos3' | 'pos4';
-export type Skill = {
+export type Skill<T extends string> = {
   id: string;
   name: string;
   description: string;
@@ -34,7 +34,7 @@ export type Skill = {
   damage: number;
   duration: number;
   speed: number;
-  action: AnyAction;
+  action: T;
   level: number;
   cost: number;
   multiplier: number;
@@ -78,6 +78,7 @@ export type GameState = {
 export type Settings = {
   automateSkillCast: boolean;
   showGrid: boolean;
+  drawParticles: boolean;
 };
 export type GameStore = {
   gameClock: GameClock;

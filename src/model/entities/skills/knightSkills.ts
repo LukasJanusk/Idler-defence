@@ -3,8 +3,9 @@ import knightStab from '@/assets/skill_icons/knight_stab_icon.png';
 import knightIntimidate from '@/assets/skill_icons/knight_intimidate_icon.png';
 import knightGuard from '@/assets/skill_icons/knight_guard_icon.png';
 import knightDefend from '@/assets/skill_icons/knight_defend_icon.png';
+import type { KnightAction } from '../character';
 
-export const KnightSkills: Skill[] = [
+export const knightSkills: Skill<KnightAction>[] = [
   {
     id: 'Knight-Intimidate',
     name: 'Intimidate',

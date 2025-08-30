@@ -51,3 +51,10 @@ export function registerAttackToGrid(
 export function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+export function removeExpired<T extends { isAlive: boolean }>(
+  entities: Set<T>,
+) {
+  for (const e of [...entities]) {
+    if (!e.isAlive) entities.delete(e);
+  }
+}

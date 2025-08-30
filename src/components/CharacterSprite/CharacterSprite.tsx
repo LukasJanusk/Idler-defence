@@ -20,7 +20,7 @@ export default function CharacterSprite({
   return (
     <div className={`relative`} ref={divRef}>
       {character.availableAttributes > 0 && (
-        <PlusIcon className="-translateY-1/2 absolute -right-2 animate-pop text-medieval-emerald" />
+        <PlusIcon className="-translateY-1/2 absolute -right-2 animate-pulse text-medieval-emerald" />
       )}
       <div
         className={`absolute -top-8 left-1/2 flex w-full -translate-x-1/2 flex-col items-center gap-1 px-4 ${selectedPosition === position ? 'opacity-100' : 'opacity-50'}`}

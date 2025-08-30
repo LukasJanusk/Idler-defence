@@ -9,7 +9,7 @@ import {
   Wizard,
   type EnemyAction,
 } from './entities/character';
-import { getRectMiddle } from '../utils';
+import { getRectMiddle, removeExpired } from '../utils';
 import { Enemy } from './entities/enemy';
 import { Attack } from './entities/attack';
 import {
@@ -22,7 +22,7 @@ import {
   splashSparks,
   type ParticleType,
 } from './entities/particles';
-import { PARTY_POSITIO_ROW } from '@/constants';
+import { MAXIMUM_PARTICLES, PARTY_POSITIO_ROW } from '@/constants';
 
 const isCharacter = (entity: unknown): entity is AnyCharacter => {
   if (
@@ -66,8 +66,8 @@ export class Area {
   rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
   characters: Array<AnyCharacter> = [];
   enemies: Set<Enemy<EnemyAction>> = new Set();
-  projectiles: Array<Projectile> = [];
-  attacks: Array<Attack> = [];
+  projectiles: Set<Projectile> = new Set();
+  attacks: Set<Attack> = new Set();
 
   constructor(
     width: number,
@@ -91,15 +91,14 @@ export class Area {
       this.characters.push(entity);
       return true;
     } else if (isProjectile(entity)) {
-      this.projectiles.push(entity);
+      this.projectiles.add(entity);
       return true;
     } else if (isEnemy(entity)) {
       this.enemies.add(entity);
       return true;
     } else if (isAttack(entity)) {
       entity.rect = { ...entity.rect, x: this.rect.x, y: this.rect.y };
-
-      this.attacks.push(entity);
+      this.attacks.add(entity);
       return true;
     }
     return false;
@@ -108,8 +107,7 @@ export class Area {
     this.enemies.delete(enemy);
   }
   unRegisterProjectile(projectile: Projectile) {
-    const index = this.projectiles.findIndex((p) => p.id === projectile.id);
-    if (index !== -1) this.projectiles.splice(index, 1);
+    this.projectiles.delete(projectile);
   }
   getCharacter() {
     const character = this.characters[0];
@@ -117,12 +115,13 @@ export class Area {
     return character;
   }
   cleanup() {
-    this.attacks = this.attacks.filter((a) => !a.didHit);
+    removeExpired(this.projectiles);
+    removeExpired(this.attacks);
   }
   removeDeadEnemies() {
     for (const enemy of this.enemies) {
       if (enemy.state === 'dead') {
-        this.enemies.delete(enemy);
+        this.unRegisterEnemy(enemy);
       }
     }
   }
@@ -134,6 +133,7 @@ export class Grid {
   vertical: number;
   areaSize: number;
   particles: Particle[] = [];
+  renderParticles: boolean = false;
 
   constructor(horizontal: number, vertical: number, areaSize: number) {
     this.horizontal = horizontal;
@@ -177,7 +177,11 @@ export class Grid {
     );
     return closest;
   }
+  setRenderParticles(render: boolean) {
+    this.renderParticles = render;
+  }
   generateParticles(type: ParticleType, x: number, y: number, n: number) {
+    if (!this.renderParticles) return;
     switch (type) {
       case 'blood':
         return this.particles.push(...splashBlood(x, y, n));
@@ -194,9 +198,12 @@ export class Grid {
     }
   }
   updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {
-    this.particles.forEach((p) => {
+    if (!this.renderParticles) return;
+    this.particles.forEach((p, index) => {
       p.update(dt);
-      p.draw(ctx);
+      if (index <= MAXIMUM_PARTICLES) {
+        p.draw(ctx);
+      }
     });
   }
   getAllAreas() {
@@ -240,7 +247,7 @@ export class Grid {
     area.characters.forEach((character) => attack.hit(character));
   }
   private handleAreaAttacks(area: Area, dt: number) {
-    if (area.attacks.length <= 0) return;
+    if (area.attacks.size <= 0) return;
     area.attacks.forEach((attack) => {
       attack.update(dt);
       if (attack.source === 'player') {
@@ -257,7 +264,7 @@ export class Grid {
     area.enemies.forEach((enemy) => projectile.hit(enemy));
   }
   private handleAreaProjectiles(area: Area, dt: number) {
-    if (area.projectiles.length <= 0) return;
+    if (area.projectiles.size <= 0) return;
     area.projectiles.forEach((proj) => {
       proj.update(dt);
       if (proj.didHit) return;
@@ -337,7 +344,8 @@ export class Grid {
         p.x <= this.areaSize * this.horizontal &&
         p.y <= this.vertical * this.areaSize &&
         p.x > 0 &&
-        p.y > 0,
+        p.y > 0 &&
+        p.isAlive(),
     );
   }
   getEnemies() {

@@ -97,5 +97,6 @@ export const createZombieOne = () => {
 export const defaultSettings: Settings = {
   automateSkillCast: false,
   showGrid: false,
+  drawParticles: false,
 };
 export const defaultGold = () => 200;

@@ -3,8 +3,9 @@ import magicArrow from '@/assets/skill_icons/magic_arrow_icon.png';
 import magicSphere from '@/assets/skill_icons/magic_sphere_icon.png';
 import arcaneBlast from '@/assets/skill_icons/arcane_blast_icon.png';
 import wizardRecover from '@/assets/skill_icons/wizard_recover_icon.png';
+import type { WizardAction } from '../character';
 
-export const wizardSkills: Skill[] = [
+export const wizardSkills: Skill<WizardAction>[] = [
   {
     id: 'Wizard-Recover',
     name: 'Recover',

@@ -12,7 +12,7 @@ import { UPDATE_RATE } from '@/constants';
 import { FireMageSkills } from './skills/fireMageSkills';
 import { wizardSkills } from './skills/wizardSkills';
 import { lightningMageSkills } from './skills/LightningMageSkills';
-import { KnightSkills } from './skills/knightSkills';
+import { knightSkills } from './skills/knightSkills';
 import { setupDeathResurrect } from '@/utils';
 import { createFireMageAnimations } from '../animations/fireWizardAnimations';
 import { createKnightAnimations } from '../animations/knightAnimations';
@@ -77,12 +77,12 @@ export abstract class Character<T extends string> {
   icon: string = '👤';
   availableAttributes: number = 0;
   level: number = 1;
-  experience: number = 0;
+  experience: number = 323230;
   experienceToNext = 100;
   rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
   pos: 'pos1' | 'pos2' | 'pos3' | 'pos4' | null = null;
   attributes: Attributes;
-  skills: Skill[] = [];
+  skills: Skill<T>[] = [];
   className = 'Hero';
   armor: number = 0;
   healthRecovery = 0.1;
@@ -92,11 +92,13 @@ export abstract class Character<T extends string> {
   automate = defaultSettings.automateSkillCast;
   debuffs: Set<Debuff> = new Set();
   buffs: Set<Buff> = new Set();
+  attacksLoaded: boolean = false;
 
   private elapsed = 0;
   private interval = UPDATE_RATE;
+  private skillCostCleanups: Array<() => void> = [];
 
-  abstract initSkillCost(): void;
+  abstract initAttacks(grid: Grid): void;
 
   constructor(
     id: string,
@@ -244,6 +246,22 @@ export abstract class Character<T extends string> {
     this.availableAttributes -= 1;
     this.initAttributes();
   }
+  cleanupSkillCost() {
+    this.skillCostCleanups.forEach((unsub) => unsub());
+    this.skillCostCleanups = [];
+  }
+  initSkillCost() {
+    this.cleanupSkillCost();
+
+    const actions = this.skills.map((skill) => skill.action);
+    actions.forEach((action) => {
+      const animation = this.animations[action];
+      const unsub = animation.onFrame(0, () => {
+        this.energy -= this.getCurrentSkill()?.cost || 0;
+      });
+      this.skillCostCleanups.push(unsub);
+    });
+  }
   initAttributes() {
     this.energy = this.attributes.intelligence * 10;
     this.maxHealth = this.attributes.vitality * 10;
@@ -326,7 +344,8 @@ export abstract class Character<T extends string> {
     this.elapsed += dt;
 
     if (this.elapsed >= this.interval) {
-      const ticks = Math.floor(this.elapsed / this.interval);
+      let ticks = Math.floor(this.elapsed / this.interval);
+      if (ticks > 2) ticks = 2;
       this.elapsed %= this.interval;
       this.updateHealth(ticks);
       this.updateEnergy(ticks);
@@ -373,13 +392,11 @@ export class Warrior extends Character<WarriorAction> {
       intelligence: 10,
       vitality: 15,
     };
-    this.skills = KnightSkills;
-  }
-  initSkillCost() {
-    console.log('Warrior init Skill const not implemented');
   }
   initAttacks(grid: Grid) {
+    if (this.attacksLoaded) return;
     console.log('Warrior attacks not implemented', grid);
+    this.attacksLoaded = true;
   }
 }
 
@@ -419,27 +436,11 @@ export class FireMage extends Character<FireMageAction> {
     };
     this.skills = FireMageSkills;
   }
-  initSkillCost() {
-    this.animations.idle.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.attack.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.fireball.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.flamejet.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-  }
+
   initAttacks(grid: Grid) {
-    if (this.attacksLoaded === true) return;
-    if (!this.pos) {
-      console.warn(`${this.name} tried to initAttacks without pos set`);
-      return;
-    }
+    if (this.attacksLoaded) return;
     initFireWizardAttacks(grid, this);
+    this.attacksLoaded = true;
   }
 }
 
@@ -479,25 +480,12 @@ export class Knight extends Character<KnightAction> {
       intelligence: 10,
       vitality: 20,
     };
-    this.skills = KnightSkills;
-  }
-  initSkillCost() {
-    this.animations.idle.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.attack.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.guard.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.protect.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
+    this.skills = knightSkills;
   }
   initAttacks(grid: Grid) {
-    console.log('Knight attacks init', grid);
+    if (this.attacksLoaded) return;
     initKnightAttacks(grid, this);
+    this.attacksLoaded = true;
   }
 
   update(dt: number) {
@@ -546,22 +534,10 @@ export class Wizard extends Character<WizardAction> {
     };
     this.skills = wizardSkills;
   }
-  initSkillCost() {
-    this.animations.idle.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.magicArrow.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.magicBall.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.magicSphere.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-  }
   initAttacks(grid: Grid) {
+    if (this.attacksLoaded) return;
     initWizardAttacks(grid, this);
+    this.attacksLoaded = true;
   }
 }
 export class LightningMage extends Character<LightningMageAction> {
@@ -599,22 +575,9 @@ export class LightningMage extends Character<LightningMageAction> {
     };
     this.skills = lightningMageSkills;
   }
-  initSkillCost() {
-    this.animations.idle.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.attack.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.chargedBolts.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-    this.animations.discharge.onFrame(0, () => {
-      this.energy -= this.getCurrentSkill()?.cost || 0;
-    });
-  }
-
   initAttacks(grid: Grid) {
+    if (this.attacksLoaded) return;
     initLightningMageAttacks(grid, this);
+    this.attacksLoaded = true;
   }
 }

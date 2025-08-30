@@ -3,7 +3,11 @@ import type { GameStore } from './types';
 import { Grid } from './model/grid';
 import { GameClock } from './model/gameClock';
 import { enableMapSet } from 'immer';
-import { createAvailableCharacters, defaultGold } from './defaults';
+import {
+  createAvailableCharacters,
+  defaultGold,
+  defaultSettings,
+} from './defaults';
 import { LevelEventHandler } from './model/levelEventHandler';
 import { createTestLevel } from './model/entities/Level/testLevel';
 
@@ -20,7 +24,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   availableCharacters: createAvailableCharacters(),
   gold: defaultGold(),
   score: 0,
-  settings: { automateSkillCast: false, showGrid: false },
+  settings: defaultSettings,
   levelEventHandler: levelHandler,
   gameOver: false,
   levels: [
@@ -138,10 +142,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
       const onLevelEnd = () => {
         set((store) => {
-          store.currentLevel += 1;
+          if (store.currentLevel < store.levels.length - 1)
+            store.currentLevel += 1;
           return store;
         });
       };
+      store.levelEventHandler.reset();
       store.levelEventHandler.onLevelEnd = onLevelEnd;
       store.levelEventHandler.registerLevel(currentLevel);
       store.gameClock.start();
@@ -185,7 +191,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const characters = store.grid.getCharacters();
         characters.forEach((c) => c.setAutomate(patch.automateSkillCast!));
       }
+
       store.settings = { ...prev, ...patch };
+      store.grid.setRenderParticles(store.settings.drawParticles);
       return store;
     }),
 }));

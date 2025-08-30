@@ -118,7 +118,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       'ember',
       fireWizard.rect.x + stepX,
       fireWizard.rect.y + 76,
-      10,
+      6,
     );
   };
 
@@ -157,7 +157,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
         target
           ? target.rect.y + target.rect.height / 2
           : projectile.rect.y + projectile.rect.height / 2,
-        10,
+        4,
       );
       projectile.animation.frame = 6;
     };
@@ -180,7 +180,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
         fireWizard.rect.x + GRID_AREA_SIZE - 50,
       ),
       fireWizard.rect.y + GRID_AREA_SIZE - 10,
-      4,
+      3,
     );
   };
   fireWizard.animations.idle.onFrame(1, regenerate);

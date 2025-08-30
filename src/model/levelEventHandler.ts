@@ -33,10 +33,11 @@ export class LevelEventHandler {
     this.running = false;
   }
   start() {
+    if (this.running) return;
     this.running = true;
   }
   reset() {
-    this.running = false;
+    this.stop();
     this.events = new Set();
     this.duration = 3000000;
     this.onLevelEnd = () => {};

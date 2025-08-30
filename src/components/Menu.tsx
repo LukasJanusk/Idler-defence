@@ -39,17 +39,6 @@ export default function Menu() {
           <div
             className={`flex ${leaving ? 'animate-leaveRight' : 'animate-slideLeft'} border-medieval-parchement z-50 w-full flex-col gap-2 border-2 bg-medieval-wood p-2`}
           >
-            {' '}
-            <Button
-              onClick={() => setSettings({ showGrid: !settings.showGrid })}
-            >
-              {`Grid - ${settings.showGrid ? 'Off' : 'On'}`}
-            </Button>
-            <Button
-              onClick={() =>
-                setSettings({ automateSkillCast: !settings.automateSkillCast })
-              }
-            >{`Automate - ${settings.automateSkillCast ? 'Off' : 'On'}`}</Button>
             <Button
               onClick={() => {
                 if (live) {
@@ -61,6 +50,23 @@ export default function Menu() {
             >
               {live ? 'Pause' : 'Resume'}
             </Button>
+            <Button
+              onClick={() => setSettings({ showGrid: !settings.showGrid })}
+            >
+              {`Grid - ${settings.showGrid ? 'Off' : 'On'}`}
+            </Button>
+            <Button
+              onClick={() =>
+                setSettings({ drawParticles: !settings.drawParticles })
+              }
+            >
+              {`Particles - ${settings.drawParticles ? 'Off' : 'On'}`}
+            </Button>
+            <Button
+              onClick={() =>
+                setSettings({ automateSkillCast: !settings.automateSkillCast })
+              }
+            >{`Autocast - ${settings.automateSkillCast ? 'Off' : 'On'}`}</Button>
             <Button
               onClick={() => {
                 alert('Not yet implemented');

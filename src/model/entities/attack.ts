@@ -2,26 +2,21 @@ import { collideRect } from '@/utils';
 import type { EnemyAction } from './character';
 import type { AnyCharacter, Rect } from '@/types';
 import type { Enemy } from './enemy';
-// Range explanation:
-
-// 0: grid area of occupant
-// 1: adjesent area
-// 2: one after adjesent area
-// ...
 
 export class Attack {
   id: string;
   damage: number;
   rect: Rect;
-  didHit: boolean;
   source: 'player' | 'enemy';
-  range: number;
+  range: number = 0;
   onHit?: (target?: AnyCharacter | Enemy<EnemyAction>) => void;
-  multiplier: number;
+  multiplier: number = 1;
   duration: number = 100;
   elapsed: number = 0;
-  hitEntities: string[] = [];
+  hitEntities: Set<string> = new Set();
   stun: boolean = true;
+  isAlive: boolean = true;
+  didHit: boolean = false;
 
   constructor(
     id: string,
@@ -36,10 +31,9 @@ export class Attack {
     this.damage = damage;
     this.rect = rect;
     this.source = source;
-    this.range = range || 1;
+    this.range = range || 0;
     this.onHit = onHit;
     this.multiplier = multiplier || 1;
-    this.didHit = false;
   }
   shouldStun(target: Enemy<EnemyAction> | AnyCharacter) {
     return (
@@ -50,8 +44,9 @@ export class Attack {
     );
   }
   hit(target: Enemy<EnemyAction> | AnyCharacter) {
-    if (this.hitEntities.some((e) => e === target.id)) return;
+    if (this.hitEntities.has(target.id)) return;
     if (collideRect(this.rect, target.rect)) {
+      this.hitEntities.add(target.id);
       if (target.armor) {
         const damage = Math.max(
           Math.round((this.damage * (100 - target.armor)) / 100),
@@ -68,14 +63,17 @@ export class Attack {
       if (this.shouldStun(target)) {
         target.state = 'hit';
       }
-      this.hitEntities.push(target.id);
-      this.onHit?.(target);
+      if (this.didHit) return;
+      if (this.onHit && !this.didHit) {
+        this.onHit?.(target);
+        this.didHit = true;
+      }
     }
   }
   update(dt: number) {
     this.elapsed += dt;
     if (this.elapsed >= this.duration) {
-      this.didHit = true;
+      this.isAlive = false;
     }
   }
 }

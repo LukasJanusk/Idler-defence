@@ -109,7 +109,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
         target
           ? target.rect.y + target.rect.height / 2
           : arrow.rect.y + arrow.rect.height / 2,
-        7,
+        3,
       );
     const pos = wizard.pos;
     if (!pos) return;
@@ -133,7 +133,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
         target
           ? target.rect.y + target.rect.height / 2
           : ball.rect.y + ball.rect.height / 2,
-        10,
+        4,
       );
     return ball;
   };
@@ -169,7 +169,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
         target
           ? target.rect.y + target.rect.height / 2
           : projectile.rect.y + projectile.rect.height / 2,
-        100,
+        50,
       );
       projectile.animation.frame = 5;
     };
