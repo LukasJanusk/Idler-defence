@@ -42,7 +42,7 @@ export const lightningMageSkills: Skill[] = [
     description: 'Shoot small moving particles of electricity.',
     url: new URL(chargedBolts, import.meta.url).href,
     baseDamage: 20,
-    damage: 20,
+    damage: 25,
     duration: 0.4,
     speed: 1,
     action: 'chargedBolts',
@@ -61,7 +61,7 @@ export const lightningMageSkills: Skill[] = [
     speed: 1,
     action: 'discharge',
     level: 1,
-    cost: 25,
+    cost: 20,
     multiplier: 1,
   },
 ];

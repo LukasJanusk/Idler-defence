@@ -87,6 +87,7 @@ export type GameStore = {
   availableCharacters: Set<AnyCharacter>;
   gold: number;
   score: number;
+  gameOver: boolean;
   settings: Settings;
   levelEventHandler: LevelEventHandler;
   currentLevel: number;
@@ -109,4 +110,6 @@ export type GameStore = {
   nextLevel: () => void;
   play: () => void;
   pause: () => void;
+  handleGameOver: () => void;
+  setGameOver: () => void;
 };

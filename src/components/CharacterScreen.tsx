@@ -25,12 +25,16 @@ export default function CharacterScreen({
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const selectedCharacter = selectedPosition ? party[selectedPosition] : null;
   const addCharacter = useGameStore((store) => store.addCharacterToParty);
+  const multiplier =
+    Object.keys(party).filter((key) => party[key as PartyPositionName] !== null)
+      .length + 1;
   const hireCharacter = (id: string) => {
     if (!selectedPosition) return;
     const price = Array.from(availableCharacters).find(
       (c) => c.id === selectedId,
     )?.price;
-    if (!price || price > gold) {
+
+    if (!price || price * multiplier > gold) {
       onAlert?.('Not enough gold!');
       return;
     }

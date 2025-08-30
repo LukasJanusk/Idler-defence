@@ -37,10 +37,10 @@ export const createFireWizardFlameJetAttack = (
     `fireWizardFlameJet-${v4()}`,
     damage,
     { x, y, width: 128, height: 128 },
-
     'player',
     2,
   );
+  attack.source = 'player';
   attack.multiplier = multiplier;
   return attack;
 };
@@ -88,13 +88,21 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       fireWizard.skills.find((s) => s.action === 'flamejet')?.multiplier,
       fireWizard.skills.find((s) => s.action === 'flamejet')?.damage,
     );
-    jet.onHit = (target) => target?.registerDebuff(createBurnDebuff(2, 5000));
-    grid.generateParticles(
-      'ember',
-      jet.rect.x + jet.rect.width / 2,
-      jet.rect.y + jet.rect.height / 2,
-      5,
-    );
+    jet.onHit = (target) => {
+      target?.registerDebuff(
+        createBurnDebuff(
+          (fireWizard.getCurrentSkill()?.damage || 60) * 0.1,
+          5000,
+        ),
+      );
+      grid.generateParticles(
+        'ember',
+        jet.rect.x + jet.rect.width / 2,
+        jet.rect.y + jet.rect.height / 2,
+        5,
+      );
+    };
+
     return jet;
   };
   registerAttackToGrid(
@@ -134,7 +142,12 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
     });
 
     projectile.onHit = (target) => {
-      target?.registerDebuff(createBurnDebuff(2, 3000));
+      target?.registerDebuff(
+        createBurnDebuff(
+          (fireWizard.getCurrentSkill()?.damage || 30) * 0.1,
+          3000,
+        ),
+      );
       grid.generateParticles(
         'ember',
         target

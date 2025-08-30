@@ -36,11 +36,11 @@ export class Debuff {
   }
 }
 
-export const createBurnDebuff = (dps: number, duration: number = 2000) => {
+export const createBurnDebuff = (damage: number, duration: number = 2000) => {
   const debuff = new Debuff(
     'Burn-' + Math.random(),
     'player',
-    { healthRecovery: -0.02 * dps },
+    { healthRecovery: -0.02 * damage },
     duration,
   );
   return debuff;

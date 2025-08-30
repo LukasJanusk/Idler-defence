@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useGameStore } from './store';
 import CharacterScreen from './components/CharacterScreen';
 import { GAME_HEIGHT, GAME_WIDTH } from './constants';
-
 import EnemyComponent from './components/EnemyComponent';
 import ProjectileComponent from './components/ProjectileComponent';
 import useGrid from './hooks/useGrid';
@@ -11,20 +10,14 @@ import NextWaveButton from './components/NextWaveButton';
 import Menu from './components/Menu';
 import WaveDisplay from './components/WaveDisplay';
 import Alert from './components/reusable/Alert';
+import GameOver from './components/GameOver';
 
 export default function Game() {
   const settings = useGameStore((store) => store.settings);
-  const gameClock = useGameStore((store) => store.gameClock);
   const [alert, setAlert] = useState<null | string>(null);
   const { enemies, projectiles, party } = useGrid();
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
-  useEffect(() => {
-    gameClock.start();
-    return () => {
-      gameClock.stop();
-    };
-  }, [gameClock]);
 
   return (
     <div
@@ -38,6 +31,7 @@ export default function Game() {
     >
       <GoldDisplay />
       <WaveDisplay />
+      <GameOver />
       <Menu />
       {alert && (
         <Alert

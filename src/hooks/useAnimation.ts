@@ -16,7 +16,7 @@ export function useAnimation(
     }
     setFrame(0);
     function onTick(dt: number) {
-      if (!animation) return;
+      if (!animation || !gameClock.running) return;
       const prev = animation.frame;
       animation.tick(dt);
 

@@ -31,13 +31,7 @@ export const createKnightIntimidateAttack = (
   multiplier: number = 0,
   damage: number = 0,
 ) => {
-  const debuff = new Debuff(
-    'Knight-intimidate',
-    'player',
-    { speed: -1 },
-    9,
-    600,
-  );
+  const debuff = new Debuff('Knight-intimidate', 'player', { speed: -1 }, 600);
   const applyDebuff = (target?: Enemy<EnemyAction> | AnyCharacter) => {
     target?.registerDebuff(debuff);
   };

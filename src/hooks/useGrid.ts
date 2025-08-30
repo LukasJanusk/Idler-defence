@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGameStore } from '@/store';
-import { UPDATE_RATE } from '@/constants';
+import { GRID_AREA_SIZE, UPDATE_RATE } from '@/constants';
 
 export default function useGrid() {
   const gameClock = useGameStore((store) => store.gameClock);
   const grid = useGameStore((store) => store.grid);
   const elapsed = useRef(0);
+  const setGameOver = useGameStore((store) => store.setGameOver);
   const interval = UPDATE_RATE;
   const [enemies, setEnemies] = useState(grid.getEnemies());
   const [projectiles, setProjectiles] = useState(grid.getProjectiles());
@@ -15,6 +16,11 @@ export default function useGrid() {
   useEffect(() => {
     function onTick(dt: number) {
       elapsed.current += dt;
+      if (enemies.some((e) => e.rect.x < 0 - GRID_AREA_SIZE)) {
+        setGameOver();
+        gameClock.stop();
+        return;
+      }
       if (elapsed.current >= interval) {
         grid.update(dt);
         setEnemies(grid.getEnemies());
@@ -27,7 +33,7 @@ export default function useGrid() {
     gameClock.subscribe(onTick);
 
     return () => gameClock.unsubscribe(onTick);
-  }, [gameClock, grid, interval]);
+  }, [gameClock, grid, interval, enemies, setGameOver]);
 
   return { grid, enemies, projectiles, characters, party };
 }

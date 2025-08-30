@@ -77,7 +77,7 @@ export abstract class Character<T extends string> {
   icon: string = '👤';
   availableAttributes: number = 0;
   level: number = 1;
-  experience: number = 222220;
+  experience: number = 0;
   experienceToNext = 100;
   rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
   pos: 'pos1' | 'pos2' | 'pos3' | 'pos4' | null = null;
@@ -252,8 +252,9 @@ export abstract class Character<T extends string> {
     this.healthRecovery = this.attributes.vitality * 0.0025;
     this.actions.forEach(
       (action) =>
-        (this.animations[action].frameDuration =
-          this.animations[action].baseDuration - this.attributes.dexterity),
+        (this.animations[action].frameDuration = Math.floor(
+          this.animations[action].baseDuration - this.attributes.dexterity / 2,
+        )),
     );
     this.skills.forEach((skill) => {
       if (skill.damage > 0) {

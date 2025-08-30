@@ -1,3 +1,4 @@
+import { useGameStore } from '@/store';
 import type { AnyCharacter } from '../../types';
 import Container from '../reusable/Container';
 
@@ -15,6 +16,7 @@ export default function CharacterSelect({
   const handleSelectCharacter = (charId: string) => {
     setSelected(charId);
   };
+  const grid = useGameStore((store) => store.grid);
   const isSelected = (id: string) => id === selected;
 
   if (availableCharacters.size < 1)
@@ -50,7 +52,7 @@ export default function CharacterSelect({
               <span className="pl-2">{char.icon}</span>
               <span className="font-semibold">{char.name}</span>
               <span className="pr-2 font-bold text-medieval-gold">
-                {char.price}
+                {char.price * (grid.getCharacters().length + 1)}
                 {` 🪙`}
               </span>
             </button>

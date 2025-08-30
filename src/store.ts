@@ -22,6 +22,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   score: 0,
   settings: { automateSkillCast: false, showGrid: false },
   levelEventHandler: levelHandler,
+  gameOver: false,
   levels: [
     createTestLevel(
       grid,
@@ -152,6 +153,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
 
       return store;
+    }),
+  handleGameOver: () =>
+    set((store) => {
+      // To reset Game state
+      alert('Not yet implemented');
+      return store;
+    }),
+  setGameOver: () =>
+    set((store) => {
+      store.gameOver = true;
+      store.levelEventHandler.stop();
+      return { ...store, gameOver: true };
     }),
   getGameClock: () => get().gameClock,
   getEnemies: () => {
