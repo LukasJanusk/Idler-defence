@@ -1,4 +1,5 @@
 import type { Skill } from '@/types';
+import magicArrow from '@/assets/magic_arrow_icon.png';
 
 export const wizardSkills: Skill[] = [
   {
@@ -20,7 +21,7 @@ export const wizardSkills: Skill[] = [
     id: 'Wizard-MagicArrow',
     name: 'Magic Arrow',
     description: 'Shoots a powerful fast movig projectile toawrds an enemy.',
-    url: '',
+    url: new URL(magicArrow, import.meta.url).href,
     baseDamage: 80,
     damage: 80,
     duration: 0.9,
