@@ -3,7 +3,7 @@ import type { GameStore } from './types';
 import { Grid } from './model/grid';
 import { GameClock } from './model/gameClock';
 import { enableMapSet } from 'immer';
-import { createAvailableCharacters } from './defaults';
+import { createAvailableCharacters, defaultGold } from './defaults';
 import { LevelEventHandler } from './model/levelEventHandler';
 import { createTestLevel } from './model/entities/Level/testLevel';
 
@@ -18,9 +18,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   grid: grid,
   particles: [],
   availableCharacters: createAvailableCharacters(),
-  gold: 0,
+  gold: defaultGold(),
   score: 0,
-  settings: { automateSkillCast: false },
+  settings: { automateSkillCast: false, showGrid: false },
   levelEventHandler: levelHandler,
   levels: [
     createTestLevel(
@@ -68,6 +68,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       );
 
       if (!char) return store;
+      if (char.price > store.gold) {
+        return store;
+      }
+      store.gold -= char.price;
       const grid = store.grid;
       char.pos = pos;
       char.initAttributes();

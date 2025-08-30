@@ -45,47 +45,6 @@ export const createLightningStrikeAttack = (
   return attack;
 };
 
-// export const createWizardMagicSphereAttack = (
-//   x: number,
-//   y: number,
-//   multiplier: number = 1,
-//   damage: number,
-// ) => {
-//   const animation = createAnimation(magicSphere, 9, 100, 'magicSphere');
-//   const projectile = new Projectile(
-//     `magicSphere-${v4()}`,
-//     'Magic Sphere',
-//     animation,
-//     damage * multiplier,
-//     'character',
-//     { x: x + 64, y: y + 42, width: 32, height: 64 },
-//     { x: 1280, y: y, width: GRID_AREA_SIZE, height: GRID_AREA_SIZE },
-//     150,
-//     null,
-//   );
-//   return projectile;
-// };
-// export const createWizardMagicArrowAttack = (
-//   x: number,
-//   y: number,
-//   multiplier: number = 1,
-//   damage: number = 120,
-// ) => {
-//   const animation = createAnimation(magicArrow, 5, 100, 'magicSphere');
-//   const projectile = new Projectile(
-//     `magicSphere-${v4()}`,
-//     'Magic Sphere',
-//     animation,
-//     damage * multiplier,
-//     'character',
-//     { x: x + 64, y: y + 42, width: 16, height: 64 },
-//     { x: 1280, y: y, width: GRID_AREA_SIZE, height: GRID_AREA_SIZE },
-//     350,
-//     null,
-//   );
-//   projectile.stun = false;
-//   return projectile;
-// };
 const createZapAttack = (
   x: number,
   y: number,
@@ -189,8 +148,8 @@ export const initLightningMageAttacks = (
     const charge = createLightningChargeAttack(
       lightningMage.rect.x,
       lightningMage.rect.y,
-      lightningMage.skills.find((s) => s.action === 'attack')?.multiplier,
-      lightningMage.skills.find((s) => s.action === 'attack')?.damage,
+      lightningMage.skills.find((s) => s.action === 'chargedBolts')?.multiplier,
+      lightningMage.skills.find((s) => s.action === 'chargedBolts')?.damage,
     );
     charge.onHit = (target) =>
       grid.generateParticles(

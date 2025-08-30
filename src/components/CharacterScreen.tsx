@@ -10,17 +10,30 @@ import type { AnyCharacter, PartyPositionName } from '@/types';
 
 export type CharacterScreenProps = {
   party: Record<PartyPositionName, AnyCharacter | null>;
+  onAlert?: (message: string | null) => void;
 };
-export default function CharacterScreen({ party }: CharacterScreenProps) {
+export default function CharacterScreen({
+  party,
+  onAlert,
+}: CharacterScreenProps) {
   const [selectedId, setSelectedId] = useState<null | string>(null);
+
   const availableCharacters = useGameStore(
     (store) => store.availableCharacters,
   );
+  const gold = useGameStore((store) => store.gold);
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const selectedCharacter = selectedPosition ? party[selectedPosition] : null;
   const addCharacter = useGameStore((store) => store.addCharacterToParty);
   const hireCharacter = (id: string) => {
     if (!selectedPosition) return;
+    const price = Array.from(availableCharacters).find(
+      (c) => c.id === selectedId,
+    )?.price;
+    if (!price || price > gold) {
+      onAlert?.('Not enough gold!');
+      return;
+    }
     addCharacter(selectedPosition, id);
   };
   const [showMenu, setShowMenu] = useState<boolean>(true);
@@ -47,7 +60,7 @@ export default function CharacterScreen({ party }: CharacterScreenProps) {
         <CharacterGridSelectable position={'pos1'} character={party.pos1} />
       </div>
       {showMenu && (
-        <div className="animate-slideRight">
+        <div className="animate-enterRight">
           <Container size="lg">
             <div className={`flex flex-row`}>
               {selectedPosition && (

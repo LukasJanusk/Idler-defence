@@ -50,7 +50,7 @@ export default function CharacterSelect({
               <span className="pl-2">{char.icon}</span>
               <span className="font-semibold">{char.name}</span>
               <span className="pr-2 font-bold text-medieval-gold">
-                {'200'}
+                {char.price}
                 {` 🪙`}
               </span>
             </button>

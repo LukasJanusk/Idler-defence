@@ -3,7 +3,7 @@ import { ArrowRightFromLine } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type NextWaveButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
 };
 export default function NextWaveButton({ onClick }: NextWaveButtonProps) {
   const [show, setShow] = useState<boolean>(true);
@@ -23,7 +23,7 @@ export default function NextWaveButton({ onClick }: NextWaveButtonProps) {
         setPulse(false);
         setTimeout(() => {
           setShow(false);
-          onClick();
+          onClick?.();
           setTimeout(() => nextWave(), 200);
         }, 500);
       }}

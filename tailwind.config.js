@@ -69,15 +69,20 @@ export default {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0px)' },
         },
-        slideRight: {
+        enterRight: {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0px)' },
+        },
+        leaveRight: {
+          '0%': { transform: 'translateX(0px)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       animation: {
         pop: 'pop 0.6s ease',
         slideLeft: 'slideLeft 0.1s ease',
-        slideRight: 'slideRight 0.1s ease',
+        enterRight: 'enterRight 0.1s ease',
+        leaveRight: 'leaveRight 0.1s ease',
       },
     },
   },

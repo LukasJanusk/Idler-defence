@@ -1,4 +1,8 @@
 import type { Skill } from '@/types';
+import knightStab from '@/assets/skill_icons/knight_stab_icon.png';
+import knightIntimidate from '@/assets/skill_icons/knight_intimidate_icon.png';
+import knightGuard from '@/assets/skill_icons/knight_guard_icon.png';
+import knightDefend from '@/assets/skill_icons/knight_defend_icon.png';
 
 export const KnightSkills: Skill[] = [
   {
@@ -6,7 +10,7 @@ export const KnightSkills: Skill[] = [
     name: 'Intimidate',
     description:
       'Knight presence strikes fear into enemies hearts slowing them down.',
-    url: '',
+    url: new URL(knightIntimidate, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
     duration: 0.7,
@@ -20,7 +24,7 @@ export const KnightSkills: Skill[] = [
     id: 'Knight-PowerfulStab',
     name: 'Powerful Stab',
     description: 'A powerful attack thant penetrates light armour.',
-    url: '',
+    url: new URL(knightStab, import.meta.url).href,
     baseDamage: 80,
     damage: 80,
     duration: 0.4,
@@ -35,7 +39,7 @@ export const KnightSkills: Skill[] = [
     name: 'Guard Allies',
     description:
       'Knight shields his allies with large shield, increasing their defensive abilities.',
-    url: '',
+    url: new URL(knightGuard, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
     duration: 0.5,
@@ -50,7 +54,7 @@ export const KnightSkills: Skill[] = [
     id: 'Knight-Defend',
     name: 'Defend',
     description: 'Knight stands still blocking most damage from enemy attacks',
-    url: '',
+    url: new URL(knightDefend, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
     duration: 0.1,

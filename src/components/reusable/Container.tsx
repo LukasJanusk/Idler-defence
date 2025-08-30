@@ -28,7 +28,7 @@ export default function Container({ children, size = 'md' }: ContainerProps) {
     >
       {size === 'lg' && (
         <LargeBorder
-          className="pointer-events-none absolute inset-0 -top-2 z-30 text-medieval-parchment"
+          className="pointer-events-none absolute inset-0 -top-2 z-10 text-medieval-parchment"
           style={{ width: '100%', height: '100%' }}
         />
       )}

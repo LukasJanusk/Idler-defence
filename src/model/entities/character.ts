@@ -88,6 +88,7 @@ export abstract class Character<T extends string> {
   healthRecovery = 0.1;
   energyRecovery = 0.1;
   lastAction: null | T = null;
+  price: number = 0;
   automate = defaultSettings.automateSkillCast;
   debuffs: Set<Debuff> = new Set();
   buffs: Set<Buff> = new Set();
@@ -114,6 +115,7 @@ export abstract class Character<T extends string> {
       intelligence: 10,
       vitality: 10,
     };
+    this.price = 200 + (this.level - 1) * 100;
     this.health = this.maxHealth;
   }
   isDead() {

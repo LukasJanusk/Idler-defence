@@ -1,5 +1,8 @@
 import type { Skill } from '@/types';
-import magicArrow from '@/assets/magic_arrow_icon.png';
+import magicArrow from '@/assets/skill_icons/magic_arrow_icon.png';
+import magicSphere from '@/assets/skill_icons/magic_sphere_icon.png';
+import arcaneBlast from '@/assets/skill_icons/arcane_blast_icon.png';
+import wizardRecover from '@/assets/skill_icons/wizard_recover_icon.png';
 
 export const wizardSkills: Skill[] = [
   {
@@ -7,7 +10,7 @@ export const wizardSkills: Skill[] = [
     name: 'Recover',
     description:
       'Wizard shares arcane knowledge with his companions to increase their Energy recovery.',
-    url: '',
+    url: new URL(wizardRecover, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
     duration: 0.8,
@@ -36,7 +39,7 @@ export const wizardSkills: Skill[] = [
     id: 'Wizard-MagicBall',
     name: 'Arcane Blast',
     description: 'Devastating attack of energy that explodes on inpact.',
-    url: '',
+    url: new URL(arcaneBlast, import.meta.url).href,
     baseDamage: 60,
     damage: 60,
     duration: 0.7,
@@ -51,7 +54,7 @@ export const wizardSkills: Skill[] = [
     name: 'Magic Sphere',
     description:
       'Releases enourmous discharge of pure arcane energy. Only the most elite wizards can master this technique.',
-    url: '',
+    url: new URL(magicSphere, import.meta.url).href,
     baseDamage: 220,
     damage: 220,
     duration: 1.6,

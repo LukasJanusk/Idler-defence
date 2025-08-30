@@ -9,7 +9,7 @@ import magicSphere from '@/assets/Wanderer_Magican/Charge_1.png';
 import magicArrow from '@/assets/Wanderer_Magican/Charge_2.png';
 import { Projectile } from '../entities/projectile';
 import { createAnimation } from '../animations/animation';
-import { Debuff } from '../entities/debuff';
+import { createKnockbackDebuff } from '../entities/debuff';
 
 export const createWizardMagicBallAttack = (
   x: number,
@@ -33,13 +33,6 @@ export const createWizardMagicSphereAttack = (
   multiplier: number = 1,
   damage: number,
 ) => {
-  const debuff = new Debuff(
-    'Magic-Sphere-Pushback',
-    'player',
-    { speed: -150 },
-    3,
-    200,
-  );
   const animation = createAnimation(magicSphere, 9, 100, 'magicSphere');
   const projectile = new Projectile(
     `magicSphere-${v4()}`,
@@ -52,7 +45,8 @@ export const createWizardMagicSphereAttack = (
     150,
     null,
   );
-  projectile.onHit = (target) => target?.registerDebuff(debuff);
+  projectile.onHit = (target) =>
+    target?.registerDebuff(createKnockbackDebuff(100, 200));
   return projectile;
 };
 export const createWizardMagicArrowAttack = (
@@ -206,17 +200,8 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
   };
   wizard.animations.idle.onFrame(1, generateEnergy);
   wizard.animations.idle.onFrame(1, generateHealth);
-  // wizard.animations.idle.onFrame(2, generateEnergy);
-  // wizard.animations.idle.onFrame(2, generateHealth);
-  // wizard.animations.idle.onFrame(3, generateEnergy);
-  // wizard.animations.idle.onFrame(3, generateHealth);
-  // wizard.animations.idle.onFrame(4, generateEnergy);
-  // wizard.animations.idle.onFrame(4, generateHealth);
   wizard.animations.idle.onFrame(5, generateEnergy);
   wizard.animations.idle.onFrame(5, generateHealth);
-  // wizard.animations.idle.onFrame(6, generateEnergy);
-  // wizard.animations.idle.onFrame(6, generateHealth);
-  // wizard.animations.idle.onFrame(7, generateEnergy);
-  // wizard.animations.idle.onFrame(7, generateHealth);
+
   wizard.attacksLoaded = true;
 };

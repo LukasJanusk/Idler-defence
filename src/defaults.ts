@@ -96,4 +96,6 @@ export const createZombieOne = () => {
 
 export const defaultSettings: Settings = {
   automateSkillCast: false,
+  showGrid: false,
 };
+export const defaultGold = () => 200;

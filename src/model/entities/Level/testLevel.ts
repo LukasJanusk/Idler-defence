@@ -39,6 +39,12 @@ const createEnemy = (
   if (type === 'zombieOne') {
     enemy = createZombieOne();
   }
+  // if (type === 'zombieTwo') {
+  //   enemy = createZombieTwo();
+  // }
+  // if (type === 'zombieThree') {
+  //   enemy = createZombieThree();
+  // }
   if (onEnemyDeath) {
     const onDeath = () => onEnemyDeath(enemy);
     enemy.registerOnDeath(onDeath);

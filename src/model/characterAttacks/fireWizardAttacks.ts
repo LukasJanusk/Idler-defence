@@ -7,6 +7,7 @@ import { createAnimation } from '../animations/animation';
 import type { FireMage } from '../entities/character';
 import type { Grid } from '../grid';
 import { getRandomInt, registerAttackToGrid } from '@/utils';
+import { createBurnDebuff } from '../entities/debuff';
 
 export const createFireWizardStabAttack = (
   x: number,
@@ -87,13 +88,13 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
       fireWizard.skills.find((s) => s.action === 'flamejet')?.multiplier,
       fireWizard.skills.find((s) => s.action === 'flamejet')?.damage,
     );
-    jet.onHit = () =>
-      grid.generateParticles(
-        'ember',
-        jet.rect.x + jet.rect.width / 2,
-        jet.rect.y + jet.rect.height / 2,
-        5,
-      );
+    jet.onHit = (target) => target?.registerDebuff(createBurnDebuff(2, 5000));
+    grid.generateParticles(
+      'ember',
+      jet.rect.x + jet.rect.width / 2,
+      jet.rect.y + jet.rect.height / 2,
+      5,
+    );
     return jet;
   };
   registerAttackToGrid(
@@ -131,7 +132,9 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
     projectile.animation.onFrame(5, () => {
       projectile.animation.frame = 0;
     });
+
     projectile.onHit = (target) => {
+      target?.registerDebuff(createBurnDebuff(2, 3000));
       grid.generateParticles(
         'ember',
         target

@@ -77,6 +77,7 @@ export type GameState = {
 };
 export type Settings = {
   automateSkillCast: boolean;
+  showGrid: boolean;
 };
 export type GameStore = {
   gameClock: GameClock;

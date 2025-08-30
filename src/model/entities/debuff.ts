@@ -1,6 +1,5 @@
 export class Debuff {
   id: string;
-  range: number;
   didHit: boolean;
   source: 'player' | 'enemy';
   duration: number = 5000;
@@ -23,12 +22,11 @@ export class Debuff {
       speed?: number;
       damage?: number;
     },
-    range?: number,
+
     duration?: number,
   ) {
     this.id = id;
     this.source = source;
-    this.range = range || 1;
     this.didHit = false;
     this.effect = effect;
     this.duration = duration || 5000;
@@ -37,3 +35,25 @@ export class Debuff {
     this.elapsed += dt;
   }
 }
+
+export const createBurnDebuff = (dps: number, duration: number = 2000) => {
+  const debuff = new Debuff(
+    'Burn-' + Math.random(),
+    'player',
+    { healthRecovery: -0.02 * dps },
+    duration,
+  );
+  return debuff;
+};
+export const createKnockbackDebuff = (
+  stregth: number,
+  duration: number = 500,
+) => {
+  const debuff = new Debuff(
+    'Knockbnack-' + Math.random(),
+    'player',
+    { speed: -1 * stregth },
+    duration,
+  );
+  return debuff;
+};

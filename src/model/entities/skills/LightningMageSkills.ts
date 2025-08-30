@@ -1,4 +1,8 @@
 import type { Skill } from '@/types';
+import zap from '@/assets/skill_icons/lightning_mage_zap_icon.png';
+import strike from '@/assets/skill_icons/lightning_mage_strike_icon.png';
+import chargedBolts from '@/assets/skill_icons/lightning_mage_charged_bolt_icon.png';
+import discharge from '@/assets/skill_icons/lightning_mage_discharge_icon.png';
 
 export const lightningMageSkills: Skill[] = [
   {
@@ -7,9 +11,9 @@ export const lightningMageSkills: Skill[] = [
     description:
       'Generates a static field of electricity periodically, electrifying all enemies.',
 
-    url: '',
-    baseDamage: 5,
-    damage: 5,
+    url: new URL(zap, import.meta.url).href,
+    baseDamage: 4,
+    damage: 4,
     duration: 0.7,
     speed: 1,
     action: 'idle',
@@ -22,7 +26,7 @@ export const lightningMageSkills: Skill[] = [
     name: 'Lightning Strike',
     description:
       'Lightnig mage attaks summon lightning strikes to random areas on the field.',
-    url: '',
+    url: new URL(strike, import.meta.url).href,
     baseDamage: 150,
     damage: 150,
     duration: 1,
@@ -36,9 +40,9 @@ export const lightningMageSkills: Skill[] = [
     id: 'LightningMage-ChargedBolts',
     name: 'Charged Bolts',
     description: 'Shoot small moving particles of electricity.',
-    url: '',
-    baseDamage: 30,
-    damage: 30,
+    url: new URL(chargedBolts, import.meta.url).href,
+    baseDamage: 20,
+    damage: 20,
     duration: 0.4,
     speed: 1,
     action: 'chargedBolts',
@@ -50,7 +54,7 @@ export const lightningMageSkills: Skill[] = [
     id: 'LightningMage-LightningStream',
     name: 'Discharge',
     description: 'Release continous stream of electricity to closeby enemies.',
-    url: '',
+    url: new URL(discharge, import.meta.url).href,
     baseDamage: 40,
     damage: 40,
     duration: 1.3,
