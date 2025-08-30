@@ -1,7 +1,6 @@
 import AddNewCharacterButton from './AddNewCharacterButton';
 import CharacterSprite from './CharacterSprite';
 import { GRID_AREA_SIZE } from '@/constants';
-
 import { useGameStore } from '@/store';
 import type { AnyCharacter, PartyPositionName } from '@/types';
 

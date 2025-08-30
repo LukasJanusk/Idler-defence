@@ -117,13 +117,6 @@ export class Area {
     return character;
   }
   cleanup() {
-    // for (const enemy of this.enemies) {
-    //   if (enemy.state === 'dead') {
-    //     this.enemies.delete(enemy);
-    //   }
-    // }
-    // this.characters = this.characters.filter((c) => c.state !== 'dead');
-
     this.attacks = this.attacks.filter((a) => !a.didHit);
   }
   removeDeadEnemies() {

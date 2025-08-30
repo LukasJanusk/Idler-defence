@@ -51,17 +51,17 @@ export default function CharacterSprite({
         />
       </div>
 
-      {hover && character.health > 0 && (
+      {hover && !character.isDead() && !character.isDeath() && (
         <div className="absolute bottom-1 left-0 flex w-full flex-row justify-between">
           <PositionChangeButton
             position={position}
             direction="left"
-            size="md"
+            size="sm"
           />
           <PositionChangeButton
             position={position}
             direction="right"
-            size="md"
+            size="sm"
           />
         </div>
       )}

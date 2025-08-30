@@ -158,10 +158,11 @@ export class Projectile {
         target.state = 'hit';
       }
       target.health -= this.damage;
-      if (this.didHit) return;
+
       if (this.onHit) {
         this.onHit(target);
       }
+      if (this.didHit) return;
       this.animation.onFrame(this.animation.nFrame - 1, () => {
         this.isAlive = false;
       });
