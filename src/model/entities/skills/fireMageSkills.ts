@@ -1,10 +1,9 @@
 import type { Skill } from '@/types';
-import fireball from '@/assets/fireball_icon.svg';
-import fireMageIdle from '@/assets/fire_wizard_idle_icon.svg';
-import fireMageStab from '@/assets/fire_wizard_stab_icon.svg';
-import flamejet from '@/assets/flamejet_icon.svg';
-import type { FireMageAction } from '../character';
-export const FireMageSkills: Skill<FireMageAction>[] = [
+import fireball from '@/assets/skill_icons/fire_wizard_fireball_icon.png';
+import fireMageIdle from '@/assets/skill_icons/fire_mage_recovery_icon.png';
+import fireMageStab from '@/assets/skill_icons/fire_wizard_stab_icon.png';
+import flamejet from '@/assets/skill_icons/firewizard_flamejet_icon.png';
+export const FireMageSkills: Skill[] = [
   {
     id: `FireMage-Regenerate`,
     name: 'Regenerate',

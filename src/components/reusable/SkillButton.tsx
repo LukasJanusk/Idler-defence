@@ -1,6 +1,7 @@
 import { ReactComponent as SkillBorder } from '@/assets/skill_border.svg?react';
 import { useHover } from '@/hooks/useHover';
-import { ReactComponent as MissingSkill } from '@/assets/missing_skill.svg?react';
+// import { ReactComponent as MissingSkill } from '@/assets/missing_skill.svg?react';
+import missing from '@/assets/skill_icons/no_skill_icon.png';
 
 type SkillButtonProps = {
   url: string;
@@ -60,7 +61,8 @@ export default function SkillButton({
             draggable={false}
           />
         ) : (
-          <MissingSkill
+          <img
+            src={new URL(missing, import.meta.url).href}
             className={`absolute left-0 top-0 z-10 text-medieval-silver ${sizeStyles}`}
           />
         )}
