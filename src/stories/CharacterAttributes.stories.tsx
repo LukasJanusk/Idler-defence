@@ -17,8 +17,10 @@ const meta = {
       'Vadim',
       createFireMageAnimations(),
     ),
-    availableAttributes: 0,
     hired: true,
+    onHire: (id: string) => {
+      console.log('onHire ran with ' + id);
+    },
   },
 } satisfies Meta<typeof CharacterAttributes>;
 
@@ -34,7 +36,6 @@ export const Default: Story = {
       'Vadim',
       createFireMageAnimations(),
     ),
-    availableAttributes: 0,
   },
 };
 export const HiredAvailablePoints: Story = {
@@ -44,7 +45,6 @@ export const HiredAvailablePoints: Story = {
       'Vadim',
       createFireMageAnimations(),
     ),
-    availableAttributes: 10,
     hired: true,
   },
 };
@@ -55,7 +55,7 @@ export const HiredNoAvailablePoints: Story = {
       'Vadim',
       createFireMageAnimations(),
     ),
-    availableAttributes: 0,
+
     hired: true,
   },
 };
@@ -66,10 +66,8 @@ export const ToHire: Story = {
       'Vadim',
       createFireMageAnimations(),
     ),
-    availableAttributes: 0,
     hired: false,
-
-    onHire: (id: string) => {
+    onHire: (id) => {
       console.log(`Hire character with id: ${id}`);
     },
   },

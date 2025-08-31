@@ -26,10 +26,5 @@
     "paths": { "@/*": ["src/*"] }
   },
   "include": ["src", "src/svg.d.ts"],
-  "exclude": [
-    "node_modules",
-    "**/*.stories.tsx",
-    "**/*.story.tsx",
-    ".storybook"
-  ]
+  "exclude": ["node_modules", ".storybook"]
 }

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import fireball from '@/assets/fireball_icon.svg';
-import fireMageIdle from '@/assets/fire_wizard_idle_icon.svg';
-import fireMageStab from '@/assets/fire_wizard_stab_icon.svg';
-import flamejet from '@/assets/flamejet_icon.svg';
+import fireball from '@/assets/skill_icons/fire_wizard_fireball_icon.png';
+import fireMageIdle from '@/assets/skill_icons/fire_mage_recovery_icon.png';
+import fireMageStab from '@/assets/skill_icons/fire_wizard_stab_icon.png';
+import flamejet from '@/assets/skill_icons/firewizard_flamejet_icon.png';
 import { fn } from 'storybook/test';
 import SkillButton from '@/components/reusable/SkillButton';
 
