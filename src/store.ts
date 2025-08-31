@@ -27,9 +27,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
   levelEventHandler: levelHandler,
   gameOver: false,
   levels: [
-    createLevelOne(grid, (enemy?: Enemy<EnemyAction>) =>
-      get().addGold(enemy?.bounty || 0),
-    ),
+    createLevelOne(grid, (enemy?: Enemy<EnemyAction>) => {
+      const store = get();
+      store.addGold(enemy?.bounty ?? 0);
+      const isLastWave =
+        store.levels[store.currentLevel].waves.length - 1 === store.currentWave;
+      const noMoreEvents = store.levelEventHandler.events.size === 0;
+      const isLastEnemy =
+        store.grid
+          .getEnemies()
+          .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
+      if (isLastWave && noMoreEvents && isLastEnemy) {
+        store.setGameOver();
+      }
+    }),
   ],
   currentLevel: 0,
   currentWave: 0,
@@ -106,18 +117,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const currentWave =
         store.levels[store.currentLevel].waves[store.currentWave];
       if (!currentWave) {
-        alert('Thank you for Playing. No more levels currently available');
-        store.currentLevel = 0;
-        store.currentWave = 0;
-        store.levelEventHandler.reset();
-        store.gameOver = true;
-        store.score =
-          store.gold +
-          store.grid
-            .getCharacters()
-            .map((c) => c.level)
-            .reduce((p, c) => p + c, 0) *
-            1000;
         return store;
       }
       const onWaveEnd = () => {
@@ -127,9 +126,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             store.levels[store.currentLevel].waves.length - 1
           )
             store.currentWave += 1;
-          else {
-            store.gameOver = true;
-          }
           return store;
         });
       };
@@ -151,13 +147,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const grid = store.grid;
       grid.reset();
       store.levelEventHandler.reset();
-
+      store.gameClock.start();
       return {
         ...store,
         levels: [
-          createLevelOne(grid, (enemy?: Enemy<EnemyAction>) =>
-            get().addGold(enemy?.bounty || 0),
-          ),
+          createLevelOne(grid, (enemy?: Enemy<EnemyAction>) => {
+            const store = get();
+            store.addGold(enemy?.bounty ?? 0);
+            const isLastWave =
+              store.levels[store.currentLevel].waves.length - 1 ===
+              store.currentWave;
+            const noMoreEvents = store.levelEventHandler.events.size === 0;
+            const isLastEnemy =
+              store.grid
+                .getEnemies()
+                .filter((e) => e.state !== 'dead' && e.state !== 'death')
+                .length < 1;
+            if (isLastWave && noMoreEvents && isLastEnemy) {
+              store.setGameOver();
+            }
+          }),
         ],
         availableCharacters: createAvailableCharacters(),
         gameOver: false,
@@ -171,6 +180,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((store) => {
       store.gameOver = true;
       store.levelEventHandler.stop();
+      store.gameClock.stop();
       store.score =
         store.gold +
         store.grid

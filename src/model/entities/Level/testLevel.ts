@@ -129,7 +129,7 @@ export const waveThreeEventsData: CreateEnemyEventData[] = [
 
 export const createLevelOne = (
   grid: Grid,
-  onEnemyDeath?: (enemy?: Enemy) => void,
+  onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
 ): Level => {
   const waveOne = createEnemyWaveEvents(waveOneEventsData, grid, onEnemyDeath);
   const waveTwo = createEnemyWaveEvents(waveTwoEventsData, grid, onEnemyDeath);
@@ -138,7 +138,6 @@ export const createLevelOne = (
     grid,
     onEnemyDeath,
   );
-
   return {
     id: 'Level-1',
     name: 'Level 1',

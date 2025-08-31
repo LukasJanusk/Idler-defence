@@ -22,7 +22,9 @@ export default function GameOver() {
             </p>
             <form
               className="flex flex-col gap-2 text-medieval-dark"
-              onSubmit={() => {
+              onSubmit={(e) => {
+                e.preventDefault();
+
                 // send data to server
                 handleGameOver();
               }}
