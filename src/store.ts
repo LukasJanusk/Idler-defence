@@ -2,16 +2,16 @@ import { create } from 'zustand';
 import type { GameStore } from './types';
 import { Grid } from './model/grid';
 import { GameClock } from './model/gameClock';
-import { enableMapSet } from 'immer';
 import {
   createAvailableCharacters,
   defaultGold,
   defaultSettings,
 } from './defaults';
 import { LevelEventHandler } from './model/levelEventHandler';
-import { createTestLevel } from './model/entities/Level/testLevel';
+import { createLevelOne } from './model/entities/Level/testLevel';
+import type { EnemyAction } from './model/entities/character';
+import type { Enemy } from './model/entities/enemy';
 
-enableMapSet();
 const clock = new GameClock();
 const levelHandler = new LevelEventHandler(clock);
 const grid = new Grid(9, 5, 128);
@@ -20,7 +20,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gameClock: clock,
   selectedPosition: null,
   grid: grid,
-  particles: [],
   availableCharacters: createAvailableCharacters(),
   gold: defaultGold(),
   score: 0,
@@ -28,50 +27,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
   levelEventHandler: levelHandler,
   gameOver: false,
   levels: [
-    createTestLevel(
-      grid,
-      (enemy?) => {
-        if (enemy) {
-          get().addGold(enemy?.bounty);
-        }
-      },
-      10,
-    ),
-    createTestLevel(
-      grid,
-      (enemy?) => {
-        if (enemy) {
-          get().addGold(enemy?.bounty);
-        }
-      },
-      15,
-    ),
-    createTestLevel(
-      grid,
-      (enemy?) => {
-        if (enemy) {
-          get().addGold(enemy?.bounty);
-        }
-      },
-      20,
-    ),
-    createTestLevel(
-      grid,
-      (enemy?) => {
-        if (enemy) {
-          get().addGold(enemy?.bounty);
-        }
-      },
-      25,
+    createLevelOne(grid, (enemy?: Enemy<EnemyAction>) =>
+      get().addGold(enemy?.bounty || 0),
     ),
   ],
   currentLevel: 0,
+  currentWave: 0,
   addCharacterToParty: (pos, id) =>
     set((store) => {
       const char = Array.from(store.availableCharacters).find(
         (c) => c.id === id,
       );
-
       if (!char) return store;
       if (char.price > store.gold) {
         return store;
@@ -131,25 +97,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.levelEventHandler.start();
       return store;
     }),
-  nextLevel: () =>
+  nextLevel: () => {
+    console.log('Not yet implemented');
+  },
+  nextWave: () =>
     set((store) => {
       store.grid.removeAllDeadEnemies();
-      const currentLevel = store.levels[store.currentLevel];
-      if (!currentLevel) {
+      const currentWave =
+        store.levels[store.currentLevel].waves[store.currentWave];
+      if (!currentWave) {
         alert('Thank you for Playing. No more levels currently available');
         store.currentLevel = 0;
+        store.currentWave = 0;
+        store.levelEventHandler.reset();
+        store.gameOver = true;
+        store.score =
+          store.gold +
+          store.grid
+            .getCharacters()
+            .map((c) => c.level)
+            .reduce((p, c) => p + c, 0) *
+            1000;
         return store;
       }
-      const onLevelEnd = () => {
+      const onWaveEnd = () => {
         set((store) => {
-          if (store.currentLevel < store.levels.length - 1)
-            store.currentLevel += 1;
+          if (
+            store.currentWave <
+            store.levels[store.currentLevel].waves.length - 1
+          )
+            store.currentWave += 1;
+          else {
+            store.gameOver = true;
+          }
           return store;
         });
       };
       store.levelEventHandler.reset();
-      store.levelEventHandler.onLevelEnd = onLevelEnd;
-      store.levelEventHandler.registerLevel(currentLevel);
+      store.levelEventHandler.onWaveEnd = onWaveEnd;
+      store.levelEventHandler.registerLevel(currentWave);
       store.gameClock.start();
       store.levelEventHandler.start();
       const characters = grid.getCharacters();
@@ -162,14 +148,37 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }),
   handleGameOver: () =>
     set((store) => {
-      // To reset Game state
-      alert('Not yet implemented');
-      return store;
+      const grid = store.grid;
+      grid.reset();
+      store.levelEventHandler.reset();
+
+      return {
+        ...store,
+        levels: [
+          createLevelOne(grid, (enemy?: Enemy<EnemyAction>) =>
+            get().addGold(enemy?.bounty || 0),
+          ),
+        ],
+        availableCharacters: createAvailableCharacters(),
+        gameOver: false,
+        gold: 200,
+        score: 0,
+        currentLevel: 0,
+        currentWave: 0,
+      };
     }),
   setGameOver: () =>
     set((store) => {
       store.gameOver = true;
       store.levelEventHandler.stop();
+      store.score =
+        store.gold +
+        store.grid
+          .getCharacters()
+          .map((c) => c.level)
+          .reduce((p, c) => p + c, 0) *
+          1000;
+
       return { ...store, gameOver: true };
     }),
   getGameClock: () => get().gameClock,

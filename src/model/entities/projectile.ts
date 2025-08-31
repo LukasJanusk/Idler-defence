@@ -5,6 +5,7 @@ import { collideRect, getRectMiddle } from '@/utils';
 import { Animation } from '@/model/animations/animation';
 import type { EnemyAction } from './character';
 import type { Enemy } from './enemy';
+import { GAME_HEIGHT, GAME_WIDTH } from '@/constants';
 
 export class ProjectileAnimation {
   id: string = 'ProjAnim' + v4();
@@ -141,7 +142,15 @@ export class Projectile {
   }
   update(dt: number) {
     if (!this.isAlive) return;
-
+    if (
+      this.rect.x + this.rect.width < 0 ||
+      this.rect.x > GAME_WIDTH ||
+      this.rect.y > GAME_HEIGHT + this.rect.height ||
+      this.rect.y + this.rect.height < 0
+    ) {
+      this.isAlive = false;
+      return;
+    }
     const projMiddle = getRectMiddle(this.rect);
     const targetMiddle = getRectMiddle(this.targetRect);
     const dx = targetMiddle.x - projMiddle.x;
@@ -163,7 +172,7 @@ export class Projectile {
       }
       target.health -= this.damage;
 
-      if (this.onHit && !this.didHit) {
+      if (this.onHit) {
         this.onHit(target);
       }
       if (!this.didHit) {

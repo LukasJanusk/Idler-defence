@@ -109,6 +109,9 @@ export class Area {
   unRegisterProjectile(projectile: Projectile) {
     this.projectiles.delete(projectile);
   }
+  unregisterCharacter() {
+    this.characters = [];
+  }
   getCharacter() {
     const character = this.characters[0];
     if (!character) return null;
@@ -124,6 +127,12 @@ export class Area {
         this.unRegisterEnemy(enemy);
       }
     }
+  }
+  reset() {
+    this.attacks.clear();
+    this.projectiles.clear();
+    this.enemies.clear();
+    this.characters = [];
   }
 }
 
@@ -418,6 +427,15 @@ export class Grid {
     if (!character) return null;
     area.characters = [];
     return character;
+  }
+  removeAllCharacters() {
+    const areas = this.getAllAreas();
+    areas.forEach((area) => area.unregisterCharacter());
+  }
+  reset() {
+    this.particles = [];
+    const areas = this.getAllAreas();
+    areas.forEach((a) => a.reset());
   }
   moveCharacter(from: PartyPositionName, to: PartyPositionName) {
     const fromArea = this.getAreaFromPos(from);

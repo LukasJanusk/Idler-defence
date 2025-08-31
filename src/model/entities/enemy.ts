@@ -70,6 +70,7 @@ export class Enemy<T extends string = never> {
     this.animations.death.onFrame(this.animations.death.nFrame - 1, () => {
       this.state = 'dead';
     });
+    this.maxHealth = health;
   }
   initAttacks(grid: Grid) {
     if (this.attacksInit) return;

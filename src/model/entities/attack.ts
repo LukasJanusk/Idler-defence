@@ -2,6 +2,7 @@ import { collideRect } from '@/utils';
 import type { EnemyAction } from './character';
 import type { AnyCharacter, Rect } from '@/types';
 import type { Enemy } from './enemy';
+import { GAME_HEIGHT, GAME_WIDTH } from '@/constants';
 
 export class Attack {
   id: string;
@@ -63,14 +64,22 @@ export class Attack {
       if (this.shouldStun(target)) {
         target.state = 'hit';
       }
-      if (this.didHit) return;
-      if (this.onHit && !this.didHit) {
+      if (this.onHit) {
         this.onHit?.(target);
         this.didHit = true;
       }
     }
   }
   update(dt: number) {
+    if (
+      this.rect.x + this.rect.width < 0 ||
+      this.rect.x > GAME_WIDTH ||
+      this.rect.y > GAME_HEIGHT + this.rect.height ||
+      this.rect.y + this.rect.height < 0
+    ) {
+      this.isAlive = false;
+      return;
+    }
     this.elapsed += dt;
     if (this.elapsed >= this.duration) {
       this.isAlive = false;

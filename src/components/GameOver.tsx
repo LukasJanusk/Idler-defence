@@ -22,7 +22,10 @@ export default function GameOver() {
             </p>
             <form
               className="flex flex-col gap-2 text-medieval-dark"
-              onSubmit={() => handleGameOver()}
+              onSubmit={() => {
+                // send data to server
+                handleGameOver();
+              }}
             >
               <label htmlFor="name">Name:</label>
               <input
@@ -40,7 +43,7 @@ export default function GameOver() {
             </form>
             <button
               className="absolute right-2 top-2 rounded-sm text-medieval-stoneCrimson transition-transform duration-200 hover:scale-110 hover:bg-medieval-stoneCrimson/30 active:scale-95"
-              onClick={() => alert('Reset or submit nto yet implemented')}
+              onClick={() => handleGameOver()}
             >
               <X className="h-5 w-5" />
             </button>

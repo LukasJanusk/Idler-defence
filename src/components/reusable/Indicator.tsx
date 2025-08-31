@@ -39,7 +39,7 @@ export default function Indicator({ info, icon, value }: IndicatorProps) {
   const [elRef, modalOpen] = useHover<HTMLDivElement>();
   return (
     <div
-      className={`relative flex flex-row items-center justify-between gap-1`}
+      className={`relative flex cursor-pointer flex-row items-center justify-between gap-1`}
       ref={elRef}
     >
       <div

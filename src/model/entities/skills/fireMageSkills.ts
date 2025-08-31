@@ -3,12 +3,13 @@ import fireball from '@/assets/skill_icons/fire_wizard_fireball_icon.png';
 import fireMageIdle from '@/assets/skill_icons/fire_mage_recovery_icon.png';
 import fireMageStab from '@/assets/skill_icons/fire_wizard_stab_icon.png';
 import flamejet from '@/assets/skill_icons/firewizard_flamejet_icon.png';
-export const FireMageSkills: Skill[] = [
+import type { FireMageAction } from '../character';
+export const FireMageSkills: Skill<FireMageAction>[] = [
   {
     id: `FireMage-Regenerate`,
     name: 'Regenerate',
     description:
-      'The fire mage stands ready, channeling inner flames and regenerates Mana.',
+      'Fire mage stands ready, channeling inner flames to regenerate Energy at a higher rate.',
     url: new URL(fireMageIdle, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
@@ -22,7 +23,8 @@ export const FireMageSkills: Skill[] = [
   {
     id: 'FireMage-FireBall',
     name: 'Fire ball',
-    description: 'A fiery projectile that deals damage to a single target.',
+    description:
+      'A fiery projectile that deals damage to a single target. Ignites enemies.',
     url: new URL(fireball, import.meta.url).href,
     baseDamage: 70,
     damage: 70,
@@ -37,7 +39,7 @@ export const FireMageSkills: Skill[] = [
     id: 'FireMage-FlameJet',
     name: 'Flame Jet',
     description:
-      'A continuous stream of fire that damages all enemies in its path.',
+      'A continuous stream of fire that damages all enemies in its path. Area of effect, ignites.',
     url: new URL(flamejet, import.meta.url).href,
     baseDamage: 30,
     damage: 30,

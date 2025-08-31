@@ -15,12 +15,17 @@ import type {
 } from './model/entities/character';
 import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
-import type { Particle } from './model/entities/particles';
 import type { GameClock } from './model/gameClock';
 import type { Enemy } from './model/entities/enemy';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
 
-export type EnemyType = 'zombieOne' | 'zombieTwo' | 'zombieThree';
+export type EnemyType = 'zombieOne' | 'savageZombie' | 'zombieThree';
+export type CreateEnemyEventData = {
+  enemyType: EnemyType;
+  count: number;
+  interval: number;
+  startTime: number;
+};
 export type Attribute = 'strength' | 'dexterity' | 'vitality' | 'intelligence';
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
@@ -80,19 +85,24 @@ export type Settings = {
   showGrid: boolean;
   drawParticles: boolean;
 };
+export type Level = {
+  id: string;
+  name: string;
+  waves: Array<Set<LevelEvent>>;
+};
 export type GameStore = {
   gameClock: GameClock;
   selectedPosition: null | PartyPositionName;
   grid: Grid;
-  particles: Particle[];
   availableCharacters: Set<AnyCharacter>;
   gold: number;
   score: number;
   gameOver: boolean;
   settings: Settings;
   levelEventHandler: LevelEventHandler;
+  currentWave: number;
   currentLevel: number;
-  levels: Array<Set<LevelEvent>>;
+  levels: Array<Level>;
 
   // actions
 
@@ -108,6 +118,7 @@ export type GameStore = {
   getEnemies: () => Enemy<EnemyAction>[];
   addGold: (n: number) => void;
   setSettings: (patch: Partial<Settings>) => void;
+  nextWave: () => void;
   nextLevel: () => void;
   play: () => void;
   pause: () => void;

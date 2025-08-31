@@ -9,8 +9,7 @@ export const knightSkills: Skill<KnightAction>[] = [
   {
     id: 'Knight-Intimidate',
     name: 'Intimidate',
-    description:
-      'Knight presence strikes fear into enemies hearts slowing them down.',
+    description: 'Knight presence strikes fear into enemies slowing them down.',
     url: new URL(knightIntimidate, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
@@ -24,7 +23,7 @@ export const knightSkills: Skill<KnightAction>[] = [
   {
     id: 'Knight-PowerfulStab',
     name: 'Powerful Stab',
-    description: 'A powerful attack thant penetrates light armour.',
+    description: 'A powerful and fast attack.',
     url: new URL(knightStab, import.meta.url).href,
     baseDamage: 80,
     damage: 80,
@@ -64,6 +63,6 @@ export const knightSkills: Skill<KnightAction>[] = [
     level: 1,
     cost: 1,
     multiplier: 1,
-    armor: 50,
+    armor: 70,
   },
 ];

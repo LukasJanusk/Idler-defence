@@ -10,7 +10,7 @@ export const lightningMageSkills: Skill<LightningMageAction>[] = [
     id: 'LightningMage-Zap',
     name: 'Zap',
     description:
-      'Generates a static field of electricity periodically, electrifying all enemies.',
+      'Generates a static field that periodically electrifies all enemies.',
 
     url: new URL(zap, import.meta.url).href,
     baseDamage: 4,

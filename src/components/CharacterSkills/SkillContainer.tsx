@@ -6,21 +6,21 @@ import type { PartyPositionName, Skill } from '@/types';
 import { useGameStore } from '../../store';
 import type { CharacterAction } from '../../model/entities/character';
 
-type SkillContainerProps = {
-  skills: Skill[];
+type SkillContainerProps<T extends string> = {
+  skills: Skill<T>[];
   state: CharacterAction;
   position: PartyPositionName;
 };
-export default function SkillContainer({
+export default function SkillContainer<T extends string>({
   skills,
   state,
   position,
-}: SkillContainerProps) {
+}: SkillContainerProps<T>) {
   const [selectedSkill, setSelectedSkill] = useState(
     skills.find((skill) => skill.action === state) || null,
   );
   const setCharacterState = useGameStore((store) => store.updateCharacterState);
-  const handleSelectSkill = (skill: Skill) => {
+  const handleSelectSkill = (skill: Skill<T>) => {
     setSelectedSkill(skill);
     setCharacterState(position, {
       state: skill.action as CharacterAction,

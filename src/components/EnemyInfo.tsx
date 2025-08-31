@@ -10,11 +10,11 @@ type EnemyInfoProps = {
 export default function EnemyInfo({ enemy }: EnemyInfoProps) {
   if (enemy === null || enemy.state === 'dead') return <></>;
   return (
-    <div className="animate-slideLeft absolute bottom-0 right-0 flex h-[256px] w-[256px] flex-col justify-between border-4 border-medieval-parchment bg-medieval-stone p-2">
+    <div className="absolute bottom-0 right-0 flex h-[256px] w-[256px] animate-slideLeft flex-col justify-between border-4 border-medieval-parchment bg-medieval-stone p-2">
       <div className="text-2xl font-bold text-medieval-parchment">
         {enemy.name}
       </div>
-      <div className="h-24 border-2 border-medieval-silver bg-medieval-wood px-1 text-medieval-parchment">
+      <div className="h-24 overflow-auto border-2 border-medieval-silver bg-medieval-wood px-1 text-medieval-parchment">
         {enemy.description}
       </div>
       <div className="">

@@ -5,6 +5,7 @@ import type { AnyCharacter, PartyPositionName } from '@/types';
 import Bar from '../reusable/Bar';
 import { useGameStore } from '@/store';
 import { PlusIcon } from 'lucide-react';
+import HorizontalScroll from '../reusable/HorizontalScroll';
 
 export type CharacterSpriteProps = {
   position: PartyPositionName;
@@ -18,15 +19,15 @@ export default function CharacterSprite({
   const selectedPosition = useGameStore((store) => store.selectedPosition);
 
   return (
-    <div className={`relative`} ref={divRef}>
+    <div className={`relative cursor-pointer`} ref={divRef}>
       {character.availableAttributes > 0 && (
         <PlusIcon className="-translateY-1/2 absolute -right-2 animate-pulse text-medieval-emerald" />
       )}
       <div
-        className={`absolute -top-8 left-1/2 flex w-full -translate-x-1/2 flex-col items-center gap-1 px-4 ${selectedPosition === position ? 'opacity-100' : 'opacity-50'}`}
+        className={`absolute -top-12 left-1/2 flex w-full -translate-x-1/2 flex-col items-center gap-1 px-4 ${selectedPosition === position ? 'opacity-100' : 'opacity-50'}`}
       >
-        <div className="rounded bg-medieval-stoneLight/50 px-2 font-bold text-medieval-dark">
-          {character.name}
+        <div className="w-full font-bold">
+          <HorizontalScroll> {character.name}</HorizontalScroll>
         </div>
 
         <Bar

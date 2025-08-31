@@ -11,7 +11,7 @@ export class LevelEventHandler {
   elapsed: number = 0;
   running: boolean = false;
   duration: number = 3000000;
-  onLevelEnd?: () => void;
+  onWaveEnd?: () => void;
 
   constructor(
     gameClock: GameClock,
@@ -40,13 +40,13 @@ export class LevelEventHandler {
     this.stop();
     this.events = new Set();
     this.duration = 3000000;
-    this.onLevelEnd = () => {};
+    this.onWaveEnd = () => {};
     this.elapsed = 0;
   }
   tick(dt: number) {
     if (!this.running) return;
     if (this.events.size === 0) {
-      this.onLevelEnd?.();
+      this.onWaveEnd?.();
       this.stop();
       return;
     }

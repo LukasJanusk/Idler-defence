@@ -36,7 +36,7 @@ export default function PositionChangeButton({
     moveCharacter(from, to);
   };
 
-  const colorStyles = `bg-medieval-stone hover:bg-medieval-green-800 border-medieval-parchment text-medieval-parchment hover:border-medieval-gold hover:text-medieval-gold`;
+  const colorStyles = `bg-medieval-stone hover:bg-medieval-green-800 border-medieval-parchment text-medieval-parchment hover:border-medieval-gold hover:text-medieval-gold active:bg-medieval-stoneCrimson`;
   const sizeStyles = `${size === 'sm' ? 'w-[28px] h-[28px] border-2' : size === 'md' ? 'w-[40px] h-[40px] border-4' : 'w-[64px] h-[64px] border-4'}`;
   return (
     <>

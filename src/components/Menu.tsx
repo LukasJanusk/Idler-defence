@@ -27,7 +27,7 @@ export default function Menu() {
     }, 90);
   };
   return (
-    <div className="absolute right-2 top-2 w-[256px]">
+    <div className="absolute right-2 top-4 w-[256px]">
       <div className="relative flex flex-col items-end gap-1">
         <button
           onClick={toggleMenu}

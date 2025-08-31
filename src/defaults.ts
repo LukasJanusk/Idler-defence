@@ -10,6 +10,7 @@ import type { AnyCharacter, GameState, Settings } from './types';
 import { Enemy } from './model/entities/enemy';
 import { createZombieOneAnimations } from './model/animations/enemies/zombieAnimations';
 import { createBasicAttack } from './model/enemyAttacks/basicAttack';
+import { createSavageZombieAnimations } from './model/animations/enemies/savageZombieAnimations';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);
@@ -94,6 +95,25 @@ export const createZombieOne = () => {
   return zombie;
 };
 
+export const createSavageZombie = () => {
+  const savage = new Enemy(
+    `SavageZombie-${v4()}`,
+    'Savage zombie',
+    2000,
+    0,
+    15,
+    6,
+    createSavageZombieAnimations(),
+    { x: 768, y: 0, width: 128, height: 128 },
+    createBasicAttack(0, 0, 15, 1),
+  );
+  savage.bounty = 100;
+  savage.experience = 100;
+  savage.stunRecovery = 100;
+  savage.description =
+    'Starved and aggressive zombies are knwon as Savage zombies.';
+  return savage;
+};
 export const defaultSettings: Settings = {
   automateSkillCast: false,
   showGrid: false,

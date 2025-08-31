@@ -1,6 +1,5 @@
 import { ReactComponent as SkillBorder } from '@/assets/skill_border.svg?react';
 import { useHover } from '@/hooks/useHover';
-// import { ReactComponent as MissingSkill } from '@/assets/missing_skill.svg?react';
 import missing from '@/assets/skill_icons/no_skill_icon.png';
 
 type SkillButtonProps = {

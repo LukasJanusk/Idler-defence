@@ -10,7 +10,7 @@ export const wizardSkills: Skill<WizardAction>[] = [
     id: 'Wizard-Recover',
     name: 'Recover',
     description:
-      'Wizard shares arcane knowledge with his companions to increase their Energy recovery.',
+      'Wizard shares arcane knowledge with his companions to increase their Health and Energy recovery.',
     url: new URL(wizardRecover, import.meta.url).href,
     baseDamage: 0,
     damage: 0,
@@ -33,7 +33,6 @@ export const wizardSkills: Skill<WizardAction>[] = [
     action: 'magicArrow',
     cost: 10,
     multiplier: 1,
-
     level: 1,
   },
   {
@@ -47,14 +46,14 @@ export const wizardSkills: Skill<WizardAction>[] = [
     speed: 1,
     action: 'magicBall',
     level: 1,
-    cost: 25,
+    cost: 20,
     multiplier: 1,
   },
   {
     id: 'Wizard-MagicSphere',
     name: 'Magic Sphere',
     description:
-      'Releases enourmous discharge of pure arcane energy. Only the most elite wizards can master this technique.',
+      'Releases enourmous discharge of pure arcane energy. Explosion released from impact knocks back enemies.',
     url: new URL(magicSphere, import.meta.url).href,
     baseDamage: 220,
     damage: 220,
