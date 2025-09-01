@@ -7,6 +7,6 @@ export default function WaveDisplay() {
   );
 
   return (
-    <div className="absolute left-2 top-4 rounded-md bg-medieval-dark/80 p-2 text-2xl font-bold text-medieval-parchment">{`Wave: ${currentWave > waves ? waves : currentWave + 1}/${waves}`}</div>
+    <div className="absolute left-2 top-4 rounded-md bg-medieval-dark/80 p-2 text-2xl font-bold text-medieval-parchment">{`Wave: ${currentWave > waves ? waves : currentWave}/${waves}`}</div>
   );
 }

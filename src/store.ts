@@ -11,6 +11,7 @@ import { LevelEventHandler } from './model/levelEventHandler';
 import { createLevelOne } from './model/entities/Level/testLevel';
 import type { EnemyAction } from './model/entities/character';
 import type { Enemy } from './model/entities/enemy';
+import { createStoreCallbacksForLevel } from './utils';
 
 const clock = new GameClock();
 const levelHandler = new LevelEventHandler(clock);
@@ -26,17 +27,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
   settings: defaultSettings,
   levelEventHandler: levelHandler,
   gameOver: false,
+  showNextWaveButton: true,
   levels: [
     createLevelOne(grid, (enemy?: Enemy<EnemyAction>) => {
       const store = get();
       store.addGold(enemy?.bounty ?? 0);
       const isLastWave =
-        store.levels[store.currentLevel].waves.length - 1 === store.currentWave;
+        store.levels[store.currentLevel].waves.length === store.currentWave;
       const noMoreEvents = store.levelEventHandler.events.size === 0;
       const isLastEnemy =
         store.grid
           .getEnemies()
           .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
+      console.log('Is Last Enemy - ' + isLastEnemy);
+      console.log('No More events - ' + noMoreEvents);
+      console.log('Is last wave - ' + isLastWave);
       if (isLastWave && noMoreEvents && isLastEnemy) {
         store.setGameOver();
       }
@@ -114,24 +119,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
   nextWave: () =>
     set((store) => {
       store.grid.removeAllDeadEnemies();
-      const currentWave =
+
+      const currentWaveEvents =
         store.levels[store.currentLevel].waves[store.currentWave];
-      if (!currentWave) {
+      if (!currentWaveEvents) {
         return store;
       }
       const onWaveEnd = () => {
-        set((store) => {
-          if (
-            store.currentWave <
-            store.levels[store.currentLevel].waves.length - 1
-          )
-            store.currentWave += 1;
-          return store;
-        });
+        if (
+          store.levels[store.currentLevel].waves.length === store.currentWave
+        ) {
+          return;
+        }
+        set((store) => ({ ...store, showNextWaveButton: true }));
       };
       store.levelEventHandler.reset();
       store.levelEventHandler.onWaveEnd = onWaveEnd;
-      store.levelEventHandler.registerLevel(currentWave);
+      store.levelEventHandler.registerLevel(currentWaveEvents);
       store.gameClock.start();
       store.levelEventHandler.start();
       const characters = grid.getCharacters();
@@ -139,6 +143,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         c.initAttributes();
         c.health = c.maxHealth;
       });
+      store.currentWave += 1;
+      store.showNextWaveButton = false;
 
       return store;
     }),
@@ -150,30 +156,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.gameClock.start();
       return {
         ...store,
-        levels: [
-          createLevelOne(grid, (enemy?: Enemy<EnemyAction>) => {
-            const store = get();
-            store.addGold(enemy?.bounty ?? 0);
-            const isLastWave =
-              store.levels[store.currentLevel].waves.length - 1 ===
-              store.currentWave;
-            const noMoreEvents = store.levelEventHandler.events.size === 0;
-            const isLastEnemy =
-              store.grid
-                .getEnemies()
-                .filter((e) => e.state !== 'dead' && e.state !== 'death')
-                .length < 1;
-            if (isLastWave && noMoreEvents && isLastEnemy) {
-              store.setGameOver();
-            }
-          }),
-        ],
+        levels: [createLevelOne(grid, createStoreCallbacksForLevel(store))],
         availableCharacters: createAvailableCharacters(),
         gameOver: false,
         gold: 200,
         score: 0,
         currentLevel: 0,
         currentWave: 0,
+        showNextWaveButton: true,
+        selectedPosition: null,
       };
     }),
   setGameOver: () =>
@@ -215,4 +206,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.grid.setRenderParticles(store.settings.drawParticles);
       return store;
     }),
+  setShowNextWave: (isVisible: boolean) =>
+    set((store) => ({ ...store, showNextWaveButton: isVisible })),
 }));

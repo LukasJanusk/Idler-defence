@@ -1,7 +1,10 @@
-import type { AnyCharacter, Rect } from './types';
+import type { AnyCharacter, GameStore, Rect } from './types';
 import type { Animation } from './model/animations/animation';
 import { Grid } from './model/grid';
 import type { Attack } from './model/entities/attack';
+import type { Enemy } from './model/entities/enemy';
+import type { EnemyAction } from './model/entities/character';
+
 export function getRectMiddle(rect: Rect): { x: number; y: number } {
   return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
 }
@@ -57,4 +60,23 @@ export function removeExpired<T extends { isAlive: boolean }>(
   for (const e of [...entities]) {
     if (!e.isAlive) entities.delete(e);
   }
+}
+
+export function createStoreCallbacksForLevel(store: GameStore) {
+  return (enemy?: Enemy<EnemyAction>) => {
+    store.addGold(enemy?.bounty ?? 0);
+    const isLastWave =
+      store.levels[store.currentLevel].waves.length === store.currentWave;
+    const noMoreEvents = store.levelEventHandler.events.size === 0;
+    const isLastEnemy =
+      store.grid
+        .getEnemies()
+        .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
+    console.log('Is Last Enemy - ' + isLastEnemy);
+    console.log('No More events - ' + noMoreEvents);
+    console.log('Is last wave - ' + isLastWave);
+    if (isLastWave && noMoreEvents && isLastEnemy) {
+      store.setGameOver();
+    }
+  };
 }

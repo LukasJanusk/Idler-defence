@@ -9,6 +9,7 @@ const withGameStore = (
   useGameStore.setState((prev) => ({
     ...prev,
     gameOver: true,
+    score: 1000,
     handleGameOver: () => {
       console.log('Game over handled');
     },
@@ -20,6 +21,7 @@ const withGameStore = (
 
 const meta: Meta<typeof GameOver> = {
   title: 'Game over',
+
   component: GameOver,
   decorators: [(Story) => withGameStore(Story)],
   parameters: {

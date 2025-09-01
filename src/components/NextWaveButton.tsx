@@ -6,14 +6,14 @@ type NextWaveButtonProps = {
   onClick?: () => void;
 };
 export default function NextWaveButton({ onClick }: NextWaveButtonProps) {
-  const [show, setShow] = useState<boolean>(true);
+  const show = useGameStore((store) => store.showNextWaveButton);
+  const setShow = useGameStore((store) => store.setShowNextWave);
   const nextWave = useGameStore((store) => store.nextWave);
   const currentWave = useGameStore((store) => store.currentWave);
   const [pulse, setPulse] = useState<boolean>(true);
   useEffect(() => {
-    setShow(true);
     setPulse(true);
-  }, [currentWave]);
+  }, [currentWave, setShow]);
   if (!show) return <></>;
   return (
     <button

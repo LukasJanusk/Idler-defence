@@ -18,6 +18,7 @@ import type { Grid } from './model/grid';
 import type { GameClock } from './model/gameClock';
 import type { Enemy } from './model/entities/enemy';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
+import type { CreateScore, Score, Highscores } from './schema/scoreSchema';
 
 export type EnemyType = 'zombieOne' | 'savageZombie' | 'zombieThree';
 export type CreateEnemyEventData = {
@@ -74,7 +75,6 @@ type CharacterBase<A extends AnyAction> = {
   actions: A[];
   animations: SpriteAnimations<A>;
 };
-
 export type GameState = {
   party: Party;
   projectiles: Projectile[];
@@ -103,6 +103,7 @@ export type GameStore = {
   currentWave: number;
   currentLevel: number;
   levels: Array<Level>;
+  showNextWaveButton: boolean;
 
   // actions
 
@@ -124,4 +125,7 @@ export type GameStore = {
   pause: () => void;
   handleGameOver: () => void;
   setGameOver: () => void;
+  setShowNextWave: (isVisible: boolean) => void;
 };
+
+export type { CreateScore, Score, Highscores };

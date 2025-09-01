@@ -18,8 +18,6 @@ export default function useGrid() {
       elapsed.current += dt;
       if (enemies.some((e) => e.rect.x < 0 - GRID_AREA_SIZE)) {
         setGameOver();
-        gameClock.stop();
-        return;
       }
       if (elapsed.current >= interval) {
         grid.update(dt);

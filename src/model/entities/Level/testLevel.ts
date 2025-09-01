@@ -103,7 +103,7 @@ export const createEnemyWaveEvents = (
 export const waveOneEventsData: CreateEnemyEventData[] = [
   {
     enemyType: 'zombieOne',
-    count: 5,
+    count: 3,
     interval: 10000,
     startTime: 0,
   },
@@ -112,7 +112,7 @@ export const waveOneEventsData: CreateEnemyEventData[] = [
 export const waveTwoEventsData: CreateEnemyEventData[] = [
   {
     enemyType: 'zombieOne',
-    count: 7,
+    count: 5,
     interval: 10000,
     startTime: 0,
   },
