@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { parseCreateScore, parseHighscores } from '../schema/scoreSchema';
 import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
+import config from '@/config';
 
 type GameOverFormProps = {
   score: number;
@@ -30,7 +31,7 @@ export default function GameOverForm({
         name,
         date: timestamp,
       });
-      const response = await fetch('api/highscore', {
+      const response = await fetch(`${config.apiUrl}/highscores`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

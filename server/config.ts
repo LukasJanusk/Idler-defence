@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { env } from 'process';
-
 import z from 'zod';
 
 const schema = z.object({

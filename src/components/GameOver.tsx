@@ -14,28 +14,29 @@ export default function GameOver() {
   if (!gameOver) return null;
 
   return (
-    <>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       {highscore && userScore ? (
         <HighscoresComponent
           score={userScore}
           highscores={highscore}
-          onClose={() => setHighscore(null)}
+          onClose={() => {
+            setHighscore(null);
+            handleGameOver();
+          }}
         />
       ) : (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <GameOverForm
-            score={score}
-            onSubmit={(value: Highscores, score: Score) => {
-              setHighscore(value);
-              setUserScore(score);
-            }}
-            onClose={() => {
-              setHighscore(null);
-              handleGameOver();
-            }}
-          />
-        </div>
+        <GameOverForm
+          score={score}
+          onSubmit={(value: Highscores, score: Score) => {
+            setHighscore(value);
+            setUserScore(score);
+          }}
+          onClose={() => {
+            setHighscore(null);
+            handleGameOver();
+          }}
+        />
       )}
-    </>
+    </div>
   );
 }

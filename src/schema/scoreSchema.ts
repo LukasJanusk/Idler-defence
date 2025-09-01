@@ -1,14 +1,14 @@
 import z from 'zod';
 
 const scoreSchema = z.object({
-  id: z.string(),
-  rank: z.number(),
-  score: z.number().int().min(1, 'Cannot submit scores of 0'),
-  name: z
+  id: z.coerce.string(),
+  rank: z.coerce.number(),
+  score: z.coerce.number().int().min(1, 'Cannot submit scores of 0'),
+  name: z.coerce
     .string()
     .min(1, 'Name must be at least 1 character')
     .max(20, 'Name must be 20 or less characters'),
-  date: z.string(),
+  date: z.coerce.string(),
 });
 
 const highscores = z.array(scoreSchema);
