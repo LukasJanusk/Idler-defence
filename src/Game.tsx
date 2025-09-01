@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameStore } from './store';
 import CharacterScreen from './components/CharacterScreen';
 import { GAME_HEIGHT, GAME_WIDTH } from './constants';
@@ -18,6 +18,19 @@ export default function Game() {
   const { enemies, projectiles, party } = useGrid();
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
+
+  useEffect(() => {
+    const handleBlur = () => pause();
+    const handleFocus = () => play();
+
+    window.addEventListener('blur', handleBlur);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [play, pause]);
 
   return (
     <div

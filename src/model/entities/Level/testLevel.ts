@@ -146,7 +146,6 @@ export const waveFiveEventsData: CreateEnemyEventData[] = [
 ];
 export const waveSixEventsData: CreateEnemyEventData[] = [
   { enemyType: 'fastZombie', count: 30, interval: 3000, startTime: 0 },
-
   { enemyType: 'savageZombie', count: 10, interval: 10000, startTime: 5000 },
 ];
 export const createLevelOne = (

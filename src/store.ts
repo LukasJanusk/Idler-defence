@@ -14,6 +14,7 @@ import type { Enemy } from './model/entities/enemy';
 import { createStoreCallbacksForLevel } from './utils';
 
 const clock = new GameClock();
+clock.start();
 const levelHandler = new LevelEventHandler(clock);
 const grid = new Grid(9, 5, 128);
 
