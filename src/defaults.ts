@@ -11,6 +11,8 @@ import { Enemy } from './model/entities/enemy';
 import { createZombieOneAnimations } from './model/animations/enemies/zombieAnimations';
 import { createBasicAttack } from './model/enemyAttacks/basicAttack';
 import { createSavageZombieAnimations } from './model/animations/enemies/savageZombieAnimations';
+import { createFastZombieAnimations } from './model/animations/enemies/fastZombieAnimations';
+import { createHungryZombieAnimations } from './model/animations/enemies/HungryZombieAnimations';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);
@@ -88,10 +90,10 @@ export const createZombieOne = () => {
     { x: 768, y: 0, width: 128, height: 128 },
     createBasicAttack(0, 0, 0, 1),
   );
-  zombie.bounty = 40;
+  zombie.bounty = 20;
   zombie.experience = 50;
   zombie.stunRecovery = 100;
-  zombie.description = 'Slow moving and weak.';
+  zombie.description = 'Your average hard working zombie.';
   return zombie;
 };
 
@@ -99,7 +101,7 @@ export const createSavageZombie = () => {
   const savage = new Enemy(
     `SavageZombie-${v4()}`,
     'Savage zombie',
-    2000,
+    2500,
     0,
     15,
     6,
@@ -108,15 +110,58 @@ export const createSavageZombie = () => {
     createBasicAttack(0, 0, 15, 1),
   );
   savage.bounty = 100;
-  savage.experience = 100;
-  savage.stunRecovery = 100;
+  savage.experience = 1000;
+  savage.stunRecovery = 70;
   savage.description =
     'Starved and aggressive zombies are knwon as Savage zombies.';
+
   return savage;
 };
+
+export const createFastZombie = () => {
+  const fast = new Enemy(
+    `FastZombie-${v4()}`,
+    'Fast Zombie',
+    500,
+    0,
+    5,
+    13,
+    createFastZombieAnimations(),
+    { x: 768, y: 0, width: 128, height: 128 },
+    createBasicAttack(0, 0, 7, 1, 1),
+  );
+  fast.bounty = 30;
+  fast.health = 600;
+  fast.experience = 70;
+  fast.stunRecovery = 100;
+  fast.description = 'Zombies that are use of catching small animals.';
+
+  return fast;
+};
+
+export const createHungryZombie = () => {
+  const hungry = new Enemy(
+    `HungryZombie-${v4()}`,
+    'Hungry Zombie',
+    300,
+    0,
+    4,
+    4,
+    createHungryZombieAnimations(),
+    { x: 768, y: 0, width: 128, height: 128 },
+    createBasicAttack(0, 0, 7, 1, 1),
+  );
+  hungry.bounty = 10;
+  hungry.experience = 20;
+  hungry.health = 300;
+  hungry.stunRecovery = 300;
+  hungry.description = 'Weak zombies, who have not had a meal in a long time.';
+
+  return hungry;
+};
 export const defaultSettings: Settings = {
-  automateSkillCast: false,
+  automateSkillCast: true,
   showGrid: false,
-  drawParticles: false,
+  drawParticles: true,
 };
 export const defaultGold = () => 200;

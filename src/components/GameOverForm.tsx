@@ -79,7 +79,9 @@ export default function GameOverForm({
       <hr />
       <p className="my-4 text-lg text-medieval-parchment">
         Score:
-        <span className="ml-2 text-[36px]">{score}</span>
+        <span className="ml-2 text-[36px] font-bold text-medieval-emerald">
+          {score}
+        </span>
       </p>
       <form
         className="flex flex-col gap-2 text-medieval-parchment"

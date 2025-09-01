@@ -77,7 +77,7 @@ export abstract class Character<T extends string> {
   icon: string = '👤';
   availableAttributes: number = 0;
   level: number = 1;
-  experience: number = 323230;
+  experience: number = 0;
   experienceToNext = 100;
   rect: Rect = { x: 0, y: 0, width: 128, height: 128 };
   pos: 'pos1' | 'pos2' | 'pos3' | 'pos4' | null = null;

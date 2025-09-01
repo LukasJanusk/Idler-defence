@@ -20,7 +20,11 @@ import type { Enemy } from './model/entities/enemy';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
 import type { CreateScore, Score, Highscores } from './schema/scoreSchema';
 
-export type EnemyType = 'zombieOne' | 'savageZombie' | 'zombieThree';
+export type EnemyType =
+  | 'zombieOne'
+  | 'savageZombie'
+  | 'fastZombie'
+  | 'hungryZombie';
 export type CreateEnemyEventData = {
   enemyType: EnemyType;
   count: number;

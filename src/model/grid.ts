@@ -23,6 +23,7 @@ import {
   type ParticleType,
 } from './entities/particles';
 import { MAXIMUM_PARTICLES, PARTY_POSITIO_ROW } from '@/constants';
+import { defaultSettings as settings } from '@/defaults';
 
 const isCharacter = (entity: unknown): entity is AnyCharacter => {
   if (
@@ -142,7 +143,7 @@ export class Grid {
   vertical: number;
   areaSize: number;
   particles: Particle[] = [];
-  renderParticles: boolean = false;
+  renderParticles: boolean = settings.drawParticles;
 
   constructor(horizontal: number, vertical: number, areaSize: number) {
     this.horizontal = horizontal;
