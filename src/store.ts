@@ -11,7 +11,7 @@ import { LevelEventHandler } from './model/levelEventHandler';
 import { createLevelOne } from './model/entities/Level/testLevel';
 import type { EnemyAction } from './model/entities/character';
 import type { Enemy } from './model/entities/enemy';
-import { createStoreCallbacksForLevel } from './utils';
+import { calculateScore, createStoreCallbacksForLevel } from './utils';
 
 const clock = new GameClock();
 clock.start();
@@ -40,9 +40,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         store.grid
           .getEnemies()
           .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
-      console.log('Is Last Enemy - ' + isLastEnemy);
-      console.log('No More events - ' + noMoreEvents);
-      console.log('Is last wave - ' + isLastWave);
       if (isLastWave && noMoreEvents && isLastEnemy) {
         store.setGameOver();
       }
@@ -102,20 +99,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   pause: () =>
     set((store) => {
-      console.log('Game Paused');
       store.gameClock.stop();
       store.levelEventHandler.stop();
       return store;
     }),
   play: () =>
     set((store) => {
-      console.log('Game Live');
       store.gameClock.start();
       store.levelEventHandler.start();
       return store;
     }),
   nextLevel: () => {
-    console.log('Not yet implemented');
+    console.info('Not yet implemented');
   },
   nextWave: () =>
     set((store) => {
@@ -159,36 +154,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...store,
         levels: [createLevelOne(grid, createStoreCallbacksForLevel(store))],
         availableCharacters: createAvailableCharacters(),
-        gameOver: false,
         gold: 200,
         score: 0,
         currentLevel: 0,
         currentWave: 0,
         showNextWaveButton: true,
         selectedPosition: null,
+        gameOver: false,
       };
     }),
   setGameOver: () =>
     set((store) => {
-      store.gameOver = true;
       store.levelEventHandler.stop();
       store.gameClock.stop();
-      store.score =
-        store.gold +
-        store.grid
-          .getCharacters()
-          .map((c) => c.level)
-          .reduce((p, c) => p + c, 0) *
-          1000;
+      store.score = calculateScore(store.gold, store.grid);
 
       return { ...store, gameOver: true };
     }),
-  getGameClock: () => get().gameClock,
-  getEnemies: () => {
-    return get()
-      .grid.grid.flat()
-      .flatMap((area) => Array.from(area.enemies));
-  },
   selectPosition: (pos) =>
     set((store) => ({ ...store, selectedPosition: pos })),
   addGold: (n) => set((store) => ({ ...store, gold: (store.gold += n) })),

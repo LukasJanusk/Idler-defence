@@ -1,7 +1,7 @@
 import type { EnemyAction } from '@/model/entities/character';
 import type { Enemy } from '@/model/entities/enemy';
-import Bar from './reusable/Bar';
-import Indicator from './reusable/Indicator';
+import Bar from '../reusable/Bar';
+import Indicator from '../reusable/Indicator';
 
 type EnemyInfoProps = {
   enemy: Enemy<EnemyAction> | null;

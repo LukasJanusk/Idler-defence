@@ -1,7 +1,7 @@
-import Sprite from './reusable/Sprite';
+import Sprite from '../reusable/Sprite';
 import type { EnemyAction } from '@/model/entities/character';
 import type { Enemy } from '@/model/entities/enemy';
-import Bar from './reusable/Bar';
+import Bar from '../reusable/Bar';
 import type React from 'react';
 
 type EnemySpriteProps = {
@@ -14,7 +14,7 @@ export default function EnemySprite({ enemy, setInfo }: EnemySpriteProps) {
       onMouseEnter={() => setInfo(enemy)}
       onMouseLeave={() => setInfo(null)}
       key={enemy.id}
-      className="absolute z-10"
+      className="absolute"
       style={{
         left: enemy.rect.x,
         top: enemy.rect.y - 10,

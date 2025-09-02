@@ -1,5 +1,5 @@
 import { useGameStore } from '@/store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GameOverForm from './GameOverForm';
 import type { Highscores, Score } from '@/types';
 import HighscoresComponent from './HighscoresComponent';
@@ -11,6 +11,16 @@ export default function GameOver() {
   const [userScore, setUserScore] = useState<Score | null>(null);
   const [highscore, setHighscore] = useState<Highscores | null>(null);
 
+  useEffect(() => {
+    const reset = () => {
+      if (!gameOver) {
+        setUserScore(null);
+        setHighscore(null);
+      }
+    };
+    reset();
+  }, [gameOver]);
+
   if (!gameOver) return null;
 
   return (
@@ -20,7 +30,6 @@ export default function GameOver() {
           score={userScore}
           highscores={highscore}
           onClose={() => {
-            setHighscore(null);
             handleGameOver();
           }}
         />
@@ -32,7 +41,6 @@ export default function GameOver() {
             setUserScore(score);
           }}
           onClose={() => {
-            setHighscore(null);
             handleGameOver();
           }}
         />

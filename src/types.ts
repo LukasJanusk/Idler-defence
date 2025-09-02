@@ -11,12 +11,10 @@ import type {
   WizardAction,
   LightningMage,
   LightningMageAction,
-  EnemyAction,
 } from './model/entities/character';
 import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
 import type { GameClock } from './model/gameClock';
-import type { Enemy } from './model/entities/enemy';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
 import type { CreateScore, Score, Highscores } from './schema/scoreSchema';
 
@@ -118,9 +116,7 @@ export type GameStore = {
     position: PartyPositionName,
     patch: Partial<AnyCharacter>,
   ) => void;
-  getGameClock: () => GameClock;
   selectPosition: (pos: PartyPositionName) => void;
-  getEnemies: () => Enemy<EnemyAction>[];
   addGold: (n: number) => void;
   setSettings: (patch: Partial<Settings>) => void;
   nextWave: () => void;

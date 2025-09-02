@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useGameStore } from './store';
 import CharacterScreen from './components/CharacterScreen';
 import { GAME_HEIGHT, GAME_WIDTH } from './constants';
-import EnemyComponent from './components/EnemyComponent';
+import EnemyComponent from './components/EnemyComponent/EnemyComponent';
 import ProjectileComponent from './components/ProjectileComponent';
 import useGrid from './hooks/useGrid';
 import GoldDisplay from './components/GoldDisplay';

@@ -72,11 +72,15 @@ export function createStoreCallbacksForLevel(store: GameStore) {
       store.grid
         .getEnemies()
         .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
-    console.log('Is Last Enemy - ' + isLastEnemy);
-    console.log('No More events - ' + noMoreEvents);
-    console.log('Is last wave - ' + isLastWave);
     if (isLastWave && noMoreEvents && isLastEnemy) {
       store.setGameOver();
     }
   };
+}
+export function calculateScore(gold: number, grid: Grid) {
+  const characters = grid.getCharacters();
+  const totalLevels = characters.reduce((sum, c) => sum + c.level, 0);
+  const multiplier = (100 * 4) / characters.length ? characters.length : 1;
+
+  return gold + totalLevels * multiplier;
 }

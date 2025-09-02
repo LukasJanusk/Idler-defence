@@ -10,20 +10,23 @@ export default function useGrid() {
   const interval = UPDATE_RATE;
   const [enemies, setEnemies] = useState(grid.getEnemies());
   const [projectiles, setProjectiles] = useState(grid.getProjectiles());
-  const [characters, setCharacters] = useState(grid.getCharacters());
+
   const [party, setParty] = useState(grid.getParty());
 
   useEffect(() => {
     function onTick(dt: number) {
       elapsed.current += dt;
-      if (enemies.some((e) => e.rect.x < 0 - GRID_AREA_SIZE)) {
+      const currentEnemies = grid.getEnemies();
+      const gameOver = currentEnemies.some(
+        (e) => e.rect.x < 0 - GRID_AREA_SIZE,
+      );
+      if (gameOver) {
         setGameOver();
-      }
-      if (elapsed.current >= interval) {
+      } else if (elapsed.current >= interval) {
         grid.update(dt);
-        setEnemies(grid.getEnemies());
+        setEnemies(currentEnemies);
         setProjectiles(grid.getProjectiles());
-        setCharacters(grid.getCharacters());
+
         setParty(grid.getParty());
         elapsed.current %= interval;
       }
@@ -31,7 +34,7 @@ export default function useGrid() {
     gameClock.subscribe(onTick);
 
     return () => gameClock.unsubscribe(onTick);
-  }, [gameClock, grid, interval, enemies, setGameOver]);
+  }, [gameClock, grid, interval, setGameOver]);
 
-  return { grid, enemies, projectiles, characters, party };
+  return { grid, projectiles, party, enemies };
 }

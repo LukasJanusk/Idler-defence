@@ -1,6 +1,5 @@
-import type { EnemyAction } from '../model/entities/character';
-import { Enemy } from '../model/entities/enemy';
-
+import type { EnemyAction } from '@/model/entities/character';
+import { Enemy } from '@/model/entities/enemy';
 import { useState, type ReactNode } from 'react';
 import EnemySprite from './EnemySprite';
 import EnemyInfo from './EnemyInfo';
@@ -15,7 +14,9 @@ export default function EnemyComponent({ enemies, children }: Props) {
   return (
     <div className="relative left-0 top-0 z-0 h-full w-full bg-transparent">
       {enemies.map((enemy) => {
-        return <EnemySprite setInfo={setEnemyInfo} enemy={enemy} />;
+        return (
+          <EnemySprite key={enemy.id} setInfo={setEnemyInfo} enemy={enemy} />
+        );
       })}
       {children}
       <EnemyInfo enemy={enemyInfo} />
