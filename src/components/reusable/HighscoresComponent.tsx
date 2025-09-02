@@ -14,7 +14,10 @@ export default function HighscoresComponent({
   return (
     <div className="relative max-h-[512px] min-h-[256px] w-[512px] border-4 border-medieval-silver bg-medieval-stone p-4 text-medieval-parchment shadow-xl">
       <h1 className="my-2 text-xl font-bold">Highscores</h1>
-      <ul className="max-h-[420px] overflow-auto border-2 border-medieval-silver">
+      <ul
+        className="max-h-[420px] overflow-auto border-2 border-medieval-silver focus:outline-none"
+        tabIndex={0}
+      >
         <li className="grid grid-cols-4 justify-between bg-medieval-stoneCrimson px-2 py-1 font-bold text-medieval-silver">
           <div>Rank</div>
           <div>Name</div>

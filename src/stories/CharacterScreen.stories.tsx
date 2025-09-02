@@ -1,22 +1,17 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import CharacterScreen from '@/components/CharacterScreen/CharacterScreen';
-import type { CharacterScreenProps } from '@/components/CharacterScreen/CharacterScreen';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters, defaultSettings } from '@/defaults';
 import { GameClock } from '@/model/gameClock';
 import { Grid } from '@/model/grid';
 import ParticleContextProvider from '@/context/ParticleContextProvider';
 
-const withGameAndParticlesContext = (
-  Story: StoryFn<typeof CharacterScreen>,
-  props: CharacterScreenProps,
-  context: Parameters<StoryFn<typeof CharacterScreen>>[1],
-  initialState?: Partial<ReturnType<typeof useGameStore>>,
-) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const withGameAndParticlesContext = (Story: any, context: any) => {
   const clock = new GameClock();
   clock.start();
   const grid = new Grid(9, 5, 128);
-
+  const availableCharacters = createAvailableCharacters();
   useGameStore.setState((prev) => ({
     ...prev,
     gameClock: clock,
@@ -24,13 +19,19 @@ const withGameAndParticlesContext = (
     grid: grid,
     selectedPosition: null,
     settings: defaultSettings,
-    availableCharacters: createAvailableCharacters(),
-    ...initialState,
+    availableCharacters: availableCharacters,
+    addCharacterToParty: (pos, id) => {
+      const char = Array.from(availableCharacters).find((c) => c.id === id);
+      if (!char) return;
+      char.pos = pos;
+      grid.setCharacterToPosition(pos, char);
+      availableCharacters.delete(char);
+    },
   }));
 
   return (
     <ParticleContextProvider>
-      <Story {...props} {...context} />
+      <Story {...context.args} />;
     </ParticleContextProvider>
   );
 };
@@ -38,10 +39,7 @@ const withGameAndParticlesContext = (
 const meta: Meta<typeof CharacterScreen> = {
   title: 'Character Screen',
   component: CharacterScreen,
-  decorators: [
-    (Story, context) =>
-      withGameAndParticlesContext(Story, context.args, context),
-  ],
+  decorators: [(Story, context) => withGameAndParticlesContext(Story, context)],
   parameters: { layout: 'centered' },
   args: {
     party: { pos1: null, pos2: null, pos3: null, pos4: null },

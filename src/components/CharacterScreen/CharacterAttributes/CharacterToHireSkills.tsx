@@ -3,13 +3,15 @@ import SkillButton from '../../reusable/SkillButton';
 import SkillModal from '../../reusable/SkillModal';
 import type { Skill } from '@/types';
 
-type CharacterToHireSkillsProps = {
-  skills: Skill[];
+type CharacterToHireSkillsProps<T extends string> = {
+  skills: Skill<T>[];
 };
-type CharacterToHireSkillProps = {
-  skill: Skill;
+type CharacterToHireSkillProps<T extends string> = {
+  skill: Skill<T>;
 };
-function CharacterToHireSkill({ skill }: CharacterToHireSkillProps) {
+function CharacterToHireSkill<T extends string>({
+  skill,
+}: CharacterToHireSkillProps<T>) {
   const [divRef, hover] = useHover<HTMLDivElement>();
   return (
     <div key={skill.name} ref={divRef} className="relative">
@@ -27,9 +29,9 @@ function CharacterToHireSkill({ skill }: CharacterToHireSkillProps) {
     </div>
   );
 }
-export default function CharacterToHireSkills({
+export default function CharacterToHireSkills<T extends string>({
   skills,
-}: CharacterToHireSkillsProps) {
+}: CharacterToHireSkillsProps<T>) {
   return (
     <div className="flex w-full flex-row items-center justify-around gap-1 bg-medieval-stone px-2 py-1">
       {skills.map((skill) => (

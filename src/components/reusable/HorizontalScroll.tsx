@@ -11,6 +11,7 @@ export default function HorizontalScroll({ children }: HorizontalScrollProps) {
       <img
         className={`pointer-events-none absolute left-0 top-0`}
         src={new URL(scroll, import.meta.url).href}
+        alt="Scroll container"
       />
       <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 italic text-medieval-stone">
         {children}

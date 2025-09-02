@@ -4,6 +4,13 @@ import { FireMage } from '@/model/entities/character';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import { v4 } from 'uuid';
 
+const char1 = new FireMage(
+  'FireMage-test' + v4(),
+  'Vadim',
+  createFireMageAnimations(),
+);
+char1.availableAttributes = 4;
+char1.level = 4;
 const meta = {
   title: 'CharacterAttributes',
   component: CharacterAttributes,
@@ -40,11 +47,7 @@ export const Default: Story = {
 };
 export const HiredAvailablePoints: Story = {
   args: {
-    character: new FireMage(
-      'FireMage-test' + v4(),
-      'Vadim',
-      createFireMageAnimations(),
-    ),
+    character: char1,
     hired: true,
   },
 };

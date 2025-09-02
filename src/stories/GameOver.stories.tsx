@@ -1,32 +1,23 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import GameOver from '@/components/GameOver/GameOver';
 import { useGameStore } from '@/store';
 
-const withGameStore = (
-  Story: StoryFn<typeof GameOver>,
-  initialState?: Partial<ReturnType<typeof useGameStore>>,
-) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const withGameStore = (Story: any, context: any) => {
   useGameStore.setState((prev) => ({
     ...prev,
     gameOver: true,
     score: 1000,
-    handleGameOver: () => {
-      console.log('Game over handled');
-    },
-    ...initialState,
+    handleGameOver: () => console.log('Game over handled'),
   }));
 
-  return <Story />;
+  return <Story {...context.args} />;
 };
 
 const meta: Meta<typeof GameOver> = {
   title: 'Game over',
-
   component: GameOver,
-  decorators: [(Story) => withGameStore(Story)],
-  parameters: {
-    layout: 'fullscreen',
-  },
+  decorators: [withGameStore],
 };
 
 export default meta;

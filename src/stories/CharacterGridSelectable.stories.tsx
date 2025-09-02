@@ -19,12 +19,6 @@ const withGameStore = (
     gameClock: clock,
     grid: new Grid(9, 5, 128),
     selectedPosition: 'pos3',
-    party: {
-      pos1: createAvailableCharacters().values().next().value || null,
-      pos2: null,
-      pos3: createAvailableCharacters().values().next().value || null,
-      pos4: null,
-    },
     availableCharacters: createAvailableCharacters(),
     ...initialState,
   });
@@ -57,15 +51,18 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     position: 'pos1',
+    character: null,
   },
 };
 export const Selected: Story = {
   args: {
     position: 'pos3',
+    character: createAvailableCharacters().values().next().value || null,
   },
 };
 export const NoCharacter: Story = {
   args: {
     position: 'pos2',
+    character: null,
   },
 };

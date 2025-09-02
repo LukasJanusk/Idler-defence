@@ -80,7 +80,7 @@ export default function GameOverForm({
       <hr />
       <p className="my-4 text-lg text-medieval-parchment">
         Score:
-        <span className="ml-2 text-[36px] font-bold text-medieval-emerald">
+        <span className="ml-2 text-[36px] font-bold text-medieval-green-500">
           {score}
         </span>
       </p>
@@ -92,7 +92,7 @@ export default function GameOverForm({
       >
         <label htmlFor="name">Name:</label>
         <input
-          className="bg-medieval-dark/10 px-3 py-2 text-medieval-parchment placeholder-medieval-parchment/50 outline-none ring-2 ring-medieval-silver/40 transition focus:bg-medieval-stone focus:ring-2 focus:ring-medieval-silver"
+          className="bg-medieval-dark/10 px-3 py-2 text-medieval-parchment placeholder-white/50 outline-none ring-2 ring-medieval-silver/40 transition focus:bg-medieval-stone focus:ring-2 focus:ring-medieval-silver"
           name="name"
           type="text"
           value={name}
