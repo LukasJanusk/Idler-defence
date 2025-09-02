@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CharacterSelect from '@/components/CharacterSkills/CharacterSelect';
+import CharacterSelect from '@/components/CharacterScreen/CharacterSkills/CharacterSelect';
 import { createAvailableCharacters } from '@/defaults';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

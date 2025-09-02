@@ -1,6 +1,6 @@
 import { useGameStore } from '@/store';
-import type { AnyCharacter } from '../../types';
-import Container from '../reusable/Container';
+import type { AnyCharacter } from '../../../types';
+import Container from '../../reusable/Container';
 
 type CharacterSelectProps = {
   availableCharacters: Set<AnyCharacter>;

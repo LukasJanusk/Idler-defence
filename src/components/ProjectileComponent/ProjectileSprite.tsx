@@ -1,5 +1,5 @@
 import type { Projectile } from '@/model/entities/projectile';
-import Sprite from './reusable/Sprite';
+import Sprite from '@/components/reusable/Sprite';
 
 type ProjectileProps = {
   projectile: Projectile;

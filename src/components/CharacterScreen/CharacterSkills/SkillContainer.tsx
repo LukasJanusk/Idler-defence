@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import SkillButton from '../reusable/SkillButton';
-import Indicator from '../reusable/Indicator';
-import Container from '../reusable/Container';
+import SkillButton from '@/components/reusable/SkillButton';
+import Indicator from '@/components/reusable/Indicator';
+import Container from '@/components/reusable/Container';
 import type { PartyPositionName, Skill } from '@/types';
-import { useGameStore } from '../../store';
-import type { CharacterAction } from '../../model/entities/character';
+import { useGameStore } from '@/store';
+import type { CharacterAction } from '@/model/entities/character';
 
 type SkillContainerProps<T extends string> = {
   skills: Skill<T>[];

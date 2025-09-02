@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import PositionChangeButton from '@/components/CharacterSprite/PositionChangeButton';
+import PositionChangeButton from '@/components/CharacterScreen/CharacterSprite/PositionChangeButton';
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 
 const meta = {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CharacterAttributes from '@/components/CharacterAttributes/CharacterAttributes';
+import CharacterAttributes from '@/components/CharacterScreen/CharacterAttributes/CharacterAttributes';
 import { FireMage } from '@/model/entities/character';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import { v4 } from 'uuid';

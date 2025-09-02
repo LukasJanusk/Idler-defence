@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { MenuIcon } from 'lucide-react';
-import Button from './reusable/Button';
+import Button from '@/components/reusable/Button';
 import { useGameStore } from '@/store';
+import Toggle from '../reusable/Toggle';
 
 export default function Menu() {
   const [live, setLive] = useState<boolean>(true);
@@ -50,37 +51,54 @@ export default function Menu() {
             >
               {live ? 'Pause' : 'Resume'}
             </Button>
-            <Button
-              onClick={() => setSettings({ showGrid: !settings.showGrid })}
-            >
-              {`Grid - ${settings.showGrid ? 'Off' : 'On'}`}
-            </Button>
-            <Button
-              onClick={() =>
-                setSettings({ drawParticles: !settings.drawParticles })
-              }
-            >
-              {`Particles - ${settings.drawParticles ? 'Off' : 'On'}`}
-            </Button>
-            <Button
-              onClick={() =>
-                setSettings({ automateSkillCast: !settings.automateSkillCast })
-              }
-            >{`Autocast - ${settings.automateSkillCast ? 'Off' : 'On'}`}</Button>
-            <Button
-              onClick={() => {
-                alert('Not yet implemented');
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              onClick={() => {
-                alert('Not yet implemented');
-              }}
-            >
-              Exit
-            </Button>
+            <div className="flex w-full flex-row items-center justify-between">
+              <Button
+                onClick={() => setSettings({ showGrid: !settings.showGrid })}
+                className="mr-2 w-full"
+              >
+                Grid
+              </Button>
+              <Toggle
+                on={settings.showGrid}
+                onClick={() => setSettings({ showGrid: !settings.showGrid })}
+              />
+            </div>
+            <div className="flex w-full flex-row items-center justify-between">
+              <Button
+                onClick={() =>
+                  setSettings({ drawParticles: !settings.drawParticles })
+                }
+                className="mr-2 w-full"
+              >
+                Particles
+              </Button>
+              <Toggle
+                on={settings.drawParticles}
+                onClick={() =>
+                  setSettings({ drawParticles: !settings.drawParticles })
+                }
+              />
+            </div>
+            <div className="flex w-full flex-row items-center justify-between">
+              <Button
+                onClick={() =>
+                  setSettings({
+                    automateSkillCast: !settings.automateSkillCast,
+                  })
+                }
+                className="mr-2 w-full"
+              >
+                Autocast
+              </Button>
+              <Toggle
+                on={settings.automateSkillCast}
+                onClick={() =>
+                  setSettings({
+                    automateSkillCast: !settings.automateSkillCast,
+                  })
+                }
+              />
+            </div>
           </div>
         )}
       </div>

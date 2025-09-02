@@ -1,11 +1,11 @@
 import { useHover } from '@/hooks/useHover';
 import PositionChangeButton from './PositionChangeButton';
-import Sprite from '../reusable/Sprite';
+import Sprite from '@/components/reusable/Sprite';
 import type { AnyCharacter, PartyPositionName } from '@/types';
-import Bar from '../reusable/Bar';
+import Bar from '@/components/reusable/Bar';
 import { useGameStore } from '@/store';
 import { PlusIcon } from 'lucide-react';
-import HorizontalScroll from '../reusable/HorizontalScroll';
+import HorizontalScroll from '@/components/reusable/HorizontalScroll';
 
 export type CharacterSpriteProps = {
   position: PartyPositionName;

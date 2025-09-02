@@ -2,7 +2,7 @@ import { useGameStore } from '@/store';
 import { useEffect, useState } from 'react';
 import GameOverForm from './GameOverForm';
 import type { Highscores, Score } from '@/types';
-import HighscoresComponent from './HighscoresComponent';
+import HighscoresComponent from '../reusable/HighscoresComponent';
 
 export default function GameOver() {
   const gameOver = useGameStore((store) => store.gameOver);

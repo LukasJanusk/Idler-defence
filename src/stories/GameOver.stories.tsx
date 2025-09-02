@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
-import GameOver from '@/components/GameOver';
+import GameOver from '@/components/GameOver/GameOver';
 import { useGameStore } from '@/store';
 
 const withGameStore = (

@@ -1,5 +1,5 @@
 import CharacterAttributes from './CharacterAttributes/CharacterAttributes';
-import Container from './reusable/Container';
+import Container from '@/components/reusable/Container';
 import SkillContainer from './CharacterSkills/SkillContainer';
 import CharacterSelect from './CharacterSkills/CharacterSelect';
 import { GRID_AREA_SIZE } from '@/constants';

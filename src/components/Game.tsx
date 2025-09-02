@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useGameStore } from './store';
-import CharacterScreen from './components/CharacterScreen';
-import { GAME_HEIGHT, GAME_WIDTH } from './constants';
-import EnemyComponent from './components/EnemyComponent/EnemyComponent';
-import ProjectileComponent from './components/ProjectileComponent';
-import useGrid from './hooks/useGrid';
-import GoldDisplay from './components/GoldDisplay';
-import NextWaveButton from './components/NextWaveButton';
-import Menu from './components/Menu';
-import WaveDisplay from './components/WaveDisplay';
-import Alert from './components/reusable/Alert';
-import GameOver from './components/GameOver';
+import { useGameStore } from '@/store';
+import CharacterScreen from './CharacterScreen/CharacterScreen';
+import { GAME_HEIGHT, GAME_WIDTH } from '@/constants';
+import EnemyComponent from './EnemyComponent/EnemyComponent';
+import ProjectileComponent from './ProjectileComponent/ProjectileComponent';
+import useGrid from '@/hooks/useGrid';
+import GoldDisplay from './UIComponents/GoldDisplay';
+import NextWaveButton from './UIComponents/NextWaveButton';
+import Menu from './UIComponents/Menu';
+import WaveDisplay from './UIComponents/WaveDisplay';
+import Alert from './reusable/Alert';
+import GameOver from './GameOver/GameOver';
 
 export default function Game() {
   const settings = useGameStore((store) => store.settings);

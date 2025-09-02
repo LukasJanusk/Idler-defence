@@ -1,11 +1,11 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
-import CharacterScreen from '@/components/CharacterScreen';
+import CharacterScreen from '@/components/CharacterScreen/CharacterScreen';
+import type { CharacterScreenProps } from '@/components/CharacterScreen/CharacterScreen';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters, defaultSettings } from '@/defaults';
 import { GameClock } from '@/model/gameClock';
 import { Grid } from '@/model/grid';
 import ParticleContextProvider from '@/context/ParticleContextProvider';
-import type { CharacterScreenProps } from '@/components/CharacterScreen';
 
 const withGameAndParticlesContext = (
   Story: StoryFn<typeof CharacterScreen>,

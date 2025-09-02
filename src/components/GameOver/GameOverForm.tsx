@@ -1,7 +1,7 @@
 import type { Highscores, Score } from '@/types';
 import { X, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
-import { parseCreateScore, parseHighscores } from '../schema/scoreSchema';
+import { parseCreateScore, parseHighscores } from '../../schema/scoreSchema';
 import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
 import config from '@/config';
