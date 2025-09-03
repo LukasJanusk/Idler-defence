@@ -1,69 +1,60 @@
-# React + TypeScript + Vite
+## Setup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. `npm install`
+2. Create a PostgreSQL database, or use an existing one from the previous exercises.
+3. Setup `.env` files in `client` and `server` based on `.env.example` files.
 
-Currently, two official plugins are available:
+## Running the project in development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# automatically restarts the server
+npm run dev -w server
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# client can be started separately
+npm run dev -w client
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tests
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# front end unit and E2E tests
+npm test -w client
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# only front end unit tests
+npm run test:unit -w client
+
+# only front end E2E tests
+npm run test:e2e -w client
+
+# back end tests
+npm test -w server
+```
+
+## Migrations
+
+```bash
+# prepare a migration
+npm run migrate:new myMigrationName -w server
+
+# migrate up to the latest migration
+npm run migrate:latest -w server
+```
+
+## Running the project in production
+
+Client:
+
+```bash
+npm run build -w client
+npm run preview -w client
+```
+
+Server:
+
+```bash
+npm run build -w server
+npm run start -w server
+
+# or migrate + start
+npm run prod -w server
 ```

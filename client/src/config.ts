@@ -1,7 +1,6 @@
 import z from 'zod';
 
 const schema = z.object({
-  port: z.coerce.number().default(4000),
   apiUrl: z.url(),
 });
 
