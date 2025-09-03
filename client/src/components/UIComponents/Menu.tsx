@@ -3,6 +3,7 @@ import { MenuIcon } from 'lucide-react';
 import Button from '@/components/reusable/Button';
 import { useGameStore } from '@/store';
 import Toggle from '../reusable/Toggle';
+import Instructions from '../Instructions';
 
 export default function Menu() {
   const [open, setOpen] = useState<boolean>(false);
@@ -11,6 +12,7 @@ export default function Menu() {
   const settings = useGameStore((store) => store.settings);
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const gamePause = () => {
     pause();
@@ -27,6 +29,9 @@ export default function Menu() {
   };
   return (
     <div className="absolute right-2 top-4 w-[256px]">
+      {showInstructions && (
+        <Instructions onClose={() => setShowInstructions(false)} />
+      )}
       <div className="relative flex flex-col items-end gap-1">
         <button
           onClick={toggleMenu}
@@ -48,6 +53,14 @@ export default function Menu() {
               }}
             >
               {settings.pause ? 'Resume' : 'Pause'}
+            </Button>
+            <Button
+              onClick={() => {
+                setShowInstructions((prev) => !prev);
+              }}
+              className="mr-2 w-full"
+            >
+              Help
             </Button>
             <div className="flex w-full flex-row items-center justify-between">
               <Button

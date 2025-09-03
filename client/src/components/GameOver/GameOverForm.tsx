@@ -1,10 +1,11 @@
 import type { Highscores, Score } from '@/types';
-import { X, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { parseCreateScore, parseHighscores } from '../../schema/scoreSchema';
 import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
 import config from '@/config';
+import CloseButton from '../reusable/CloseButton';
 
 type GameOverFormProps = {
   score: number;
@@ -106,13 +107,7 @@ export default function GameOverForm({
           Submit
         </button>
       </form>
-      <button
-        aria-label="Close modal"
-        className="absolute right-2 top-2 rounded-sm bg-medieval-stoneLight/30 text-medieval-stoneCrimson transition-transform duration-200 hover:scale-110 hover:bg-red-300/50 active:scale-95"
-        onClick={() => onClose()}
-      >
-        <X className="h-5 w-5" />
-      </button>
+      <CloseButton onClose={() => onClose()} />
     </div>
   );
 }
