@@ -164,5 +164,6 @@ export const defaultSettings: Settings = {
   showGrid: false,
   drawParticles: true,
   pause: false,
+  showUi: false,
 };
 export const defaultGold = () => 200;

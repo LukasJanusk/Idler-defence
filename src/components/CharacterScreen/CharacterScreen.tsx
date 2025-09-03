@@ -17,7 +17,6 @@ export default function CharacterScreen({
   onAlert,
 }: CharacterScreenProps) {
   const [selectedId, setSelectedId] = useState<null | string>(null);
-
   const availableCharacters = useGameStore(
     (store) => store.availableCharacters,
   );
@@ -25,6 +24,7 @@ export default function CharacterScreen({
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const selectedCharacter = selectedPosition ? party[selectedPosition] : null;
   const addCharacter = useGameStore((store) => store.addCharacterToParty);
+
   const multiplier =
     Object.keys(party).filter((key) => party[key as PartyPositionName] !== null)
       .length + 1;
@@ -41,6 +41,7 @@ export default function CharacterScreen({
     addCharacter(selectedPosition, id);
   };
   const [showMenu, setShowMenu] = useState<boolean>(true);
+  const showUI = useGameStore((store) => store.settings.showUi);
   return (
     <div
       onMouseEnter={() => setShowMenu(true)}
@@ -63,7 +64,7 @@ export default function CharacterScreen({
         <CharacterGridSelectable position={'pos2'} character={party.pos2} />
         <CharacterGridSelectable position={'pos1'} character={party.pos1} />
       </div>
-      {showMenu && (
+      {(showUI || showMenu) && (
         <div className="animate-enterRight">
           <Container size="lg">
             <div className={`flex flex-row`}>

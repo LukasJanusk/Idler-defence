@@ -3,16 +3,20 @@ import type { EnemyAction } from '@/model/entities/character';
 import type { Enemy } from '@/model/entities/enemy';
 import Bar from '../reusable/Bar';
 import type React from 'react';
+import { useGameStore } from '@/store';
 
 type EnemySpriteProps = {
   enemy: Enemy<EnemyAction>;
   setInfo: React.Dispatch<React.SetStateAction<Enemy<EnemyAction> | null>>;
 };
 export default function EnemySprite({ enemy, setInfo }: EnemySpriteProps) {
+  const showUI = useGameStore((store) => store.settings.showUi);
   return (
     <div
       onMouseEnter={() => setInfo(enemy)}
-      onMouseLeave={() => setInfo(null)}
+      onMouseLeave={() => {
+        if (!showUI) setInfo(null);
+      }}
       key={enemy.id}
       className="absolute"
       style={{

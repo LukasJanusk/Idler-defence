@@ -14,14 +14,25 @@ import GameOver from './GameOver/GameOver';
 
 export default function Game() {
   const settings = useGameStore((store) => store.settings);
+  const [wasPaused, setWasPaused] = useState<boolean>(false);
   const [alert, setAlert] = useState<null | string>(null);
   const { enemies, projectiles, party } = useGrid();
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
 
   useEffect(() => {
-    const handleBlur = () => pause();
-    const handleFocus = () => play();
+    const handleBlur = () => {
+      if (settings.pause) {
+        setWasPaused(true);
+      }
+      pause();
+    };
+    const handleFocus = () => {
+      if (!wasPaused) {
+        play();
+      }
+      setWasPaused(false);
+    };
 
     window.addEventListener('blur', handleBlur);
     window.addEventListener('focus', handleFocus);
@@ -30,7 +41,7 @@ export default function Game() {
       window.removeEventListener('blur', handleBlur);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [play, pause]);
+  }, [play, pause, wasPaused, settings.pause]);
 
   return (
     <div

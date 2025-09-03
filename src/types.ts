@@ -87,6 +87,7 @@ export type Settings = {
   showGrid: boolean;
   drawParticles: boolean;
   pause: boolean;
+  showUi: boolean;
 };
 export type Level = {
   id: string;

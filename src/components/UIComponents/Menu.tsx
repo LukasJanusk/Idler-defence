@@ -5,7 +5,6 @@ import { useGameStore } from '@/store';
 import Toggle from '../reusable/Toggle';
 
 export default function Menu() {
-  // const [live, setLive] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [leaving, setLeaving] = useState<boolean>(false);
   const setSettings = useGameStore((store) => store.setSettings);
@@ -14,11 +13,9 @@ export default function Menu() {
   const play = useGameStore((store) => store.play);
 
   const gamePause = () => {
-    // setLive(false);
     pause();
   };
   const gamePlay = () => {
-    // setLive(true);
     play();
   };
   const toggleMenu = () => {
@@ -98,6 +95,18 @@ export default function Menu() {
                     automateSkillCast: !settings.automateSkillCast,
                   })
                 }
+              />
+            </div>
+            <div className="flex w-full flex-row items-center justify-between">
+              <Button
+                onClick={() => setSettings({ showUi: !settings.showUi })}
+                className="mr-2 w-full"
+              >
+                Always show UI
+              </Button>
+              <Toggle
+                on={settings.showUi}
+                onClick={() => setSettings({ showUi: !settings.showUi })}
               />
             </div>
           </div>

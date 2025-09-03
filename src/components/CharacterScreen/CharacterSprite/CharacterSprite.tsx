@@ -17,6 +17,9 @@ export default function CharacterSprite({
 }: CharacterSpriteProps) {
   const [divRef, hover] = useHover<HTMLDivElement>();
   const selectedPosition = useGameStore((store) => store.selectedPosition);
+  const showUI = useGameStore((store) => store.settings.showUi);
+
+  const show = !character.isDead() && !character.isDeath() && (showUI || hover);
 
   return (
     <div className={`relative cursor-pointer`} ref={divRef}>
@@ -56,7 +59,7 @@ export default function CharacterSprite({
         />
       </div>
 
-      {hover && !character.isDead() && !character.isDeath() && (
+      {show && (
         <div className="absolute bottom-1 left-0 flex w-full flex-row justify-between">
           <PositionChangeButton
             position={position}
