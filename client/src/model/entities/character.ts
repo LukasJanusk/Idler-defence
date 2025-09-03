@@ -24,6 +24,17 @@ import type { Debuff } from './debuff';
 import type { Buff } from './buff';
 import { initWizardAttacks } from '../characterAttacks/wizardAttacks';
 import { initLightningMageAttacks } from '../characterAttacks/lightningMageAttacks';
+import {
+  arcaneBlastSound,
+  chargedBoltsSound,
+  fireBallSound,
+  fireWizardStabSound,
+  flamejetSound,
+  knightStabSound,
+  magicArrowSound,
+  magicSphereSound,
+  zapSound,
+} from '../sound';
 
 export type BaseAction =
   | 'idle'
@@ -99,6 +110,7 @@ export abstract class Character<T extends string> {
   private skillCostCleanups: Array<() => void> = [];
 
   abstract initAttacks(grid: Grid): void;
+  abstract initAudio(): void;
 
   constructor(
     id: string,
@@ -393,6 +405,9 @@ export class Warrior extends Character<WarriorAction> {
       vitality: 15,
     };
   }
+  initAudio() {
+    console.log('Warrior audio not yet implemented');
+  }
   initAttacks(grid: Grid) {
     if (this.attacksLoaded) return;
     console.log('Warrior attacks not implemented', grid);
@@ -442,6 +457,20 @@ export class FireMage extends Character<FireMageAction> {
     initFireWizardAttacks(grid, this);
     this.attacksLoaded = true;
   }
+  initAudio() {
+    this.animations.fireball.onFrame(4, () => {
+      fireBallSound.currentTime = 0;
+      fireBallSound.play();
+    });
+    this.animations.flamejet.onFrame(4, () => {
+      flamejetSound.currentTime = 0;
+      flamejetSound.play();
+    });
+    this.animations.attack.onFrame(2, () => {
+      fireWizardStabSound.currentTime = 0;
+      fireWizardStabSound.play();
+    });
+  }
 }
 
 export class Knight extends Character<KnightAction> {
@@ -486,6 +515,13 @@ export class Knight extends Character<KnightAction> {
     if (this.attacksLoaded) return;
     initKnightAttacks(grid, this);
     this.attacksLoaded = true;
+  }
+  initAudio() {
+    this.animations.attack.onFrame(2, () => {
+      knightStabSound.currentTime = 0;
+      knightStabSound.play();
+    });
+    console.log('Knight audio not yet implemented');
   }
 
   update(dt: number) {
@@ -539,6 +575,20 @@ export class Wizard extends Character<WizardAction> {
     initWizardAttacks(grid, this);
     this.attacksLoaded = true;
   }
+  initAudio() {
+    this.animations.magicSphere.onFrame(5, () => {
+      magicSphereSound.currentTime = 0;
+      magicSphereSound.play();
+    });
+    this.animations.magicArrow.onFrame(5, () => {
+      magicArrowSound.currentTime = 0;
+      magicArrowSound.play();
+    });
+    this.animations.magicBall.onFrame(3, () => {
+      arcaneBlastSound.currentTime = 0;
+      arcaneBlastSound.play();
+    });
+  }
 }
 export class LightningMage extends Character<LightningMageAction> {
   characterClass: string = 'Lightning mage';
@@ -579,5 +629,15 @@ export class LightningMage extends Character<LightningMageAction> {
     if (this.attacksLoaded) return;
     initLightningMageAttacks(grid, this);
     this.attacksLoaded = true;
+  }
+  initAudio() {
+    this.animations.idle.onFrame(3, () => {
+      zapSound.currentTime = 0;
+      zapSound.play();
+    });
+    this.animations.chargedBolts.onFrame(0, () => {
+      chargedBoltsSound.currentTime = 0;
+      chargedBoltsSound.play();
+    });
   }
 }

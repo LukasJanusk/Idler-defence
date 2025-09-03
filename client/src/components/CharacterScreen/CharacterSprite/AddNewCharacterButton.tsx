@@ -13,7 +13,7 @@ export default function AddNewCharacterButton({
 
   return (
     <button
-      className={`flex h-16 w-16 items-center justify-center rounded-full bg-medieval-stone/80 text-medieval-silver opacity-30 duration-200 hover:scale-105 hover:text-medieval-gold hover:opacity-100 active:scale-95`}
+      className={`flex h-16 w-16 items-center justify-center rounded-full bg-medieval-stone/80 text-medieval-silver opacity-30 duration-200 hover:scale-105 hover:text-medieval-green-600 hover:opacity-100 active:scale-95`}
       aria-label={`Add new Character to ${position}`}
       onClick={() => selectPosition(position)}
     >

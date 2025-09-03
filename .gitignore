@@ -2,3 +2,5 @@ node_modules
 /local
 .vite
 .DS_Store
+dist
+dist/**/*

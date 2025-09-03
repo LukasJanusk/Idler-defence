@@ -58,7 +58,7 @@ export const createFireWizardFireballAttack = (
     animation,
     damage * multiplier,
     'character',
-    { x: x + 60, y: y + 38, width: 32, height: 64 },
+    { x: x + 60, y: y + 30, width: 32, height: 64 },
     { x: 1280, y: y, width: GRID_AREA_SIZE, height: GRID_AREA_SIZE },
     300,
     null,

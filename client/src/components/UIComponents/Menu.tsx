@@ -28,7 +28,7 @@ export default function Menu() {
     }, 90);
   };
   return (
-    <div className="absolute right-2 top-4 w-[256px]">
+    <div className="absolute right-2 top-4 w-[240px]">
       {showInstructions && (
         <Instructions onClose={() => setShowInstructions(false)} />
       )}

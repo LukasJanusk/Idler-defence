@@ -15,7 +15,7 @@ export default function NextWaveButton({ onClick, demo }: NextWaveButtonProps) {
   useEffect(() => {
     setPulse(true);
   }, [currentWave, setShow]);
-  if (!show) return <></>;
+  if (!show && !demo) return <></>;
   return (
     <button
       aria-label="Next wave"

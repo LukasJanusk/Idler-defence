@@ -53,7 +53,7 @@ export default function SkillContainer<T extends string>({
         {selectedSkill?.name}
         <div className="items center flex flex-row gap-1">
           {' '}
-          <span className="text-base">LVL</span>
+          <span className="text-base">lvl:</span>
           <div className="h-[24px] w-[24px] rounded-full bg-medieval-emerald text-center text-base font-bold text-white">
             {selectedSkill?.level}
           </div>
