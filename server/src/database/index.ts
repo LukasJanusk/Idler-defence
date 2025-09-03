@@ -5,7 +5,7 @@ import {
   PostgresDialect,
 } from 'kysely';
 import pg from 'pg';
-import type { DB } from './types.ts';
+import type { DB } from './types';
 
 export function createDatabase(options: pg.PoolConfig): Kysely<DB> {
   return new Kysely<DB>({
@@ -18,4 +18,4 @@ export function createDatabase(options: pg.PoolConfig): Kysely<DB> {
 
 export type Database = Kysely<DB>;
 export type DatabasePartial<T> = Kysely<T>;
-export * from './types.ts';
+export * from './types';

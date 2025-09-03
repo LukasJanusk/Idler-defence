@@ -1,9 +1,6 @@
 import { type Selectable, sql } from 'kysely';
-import { createDatabase, type Database } from '../database/index.ts';
-import type { PostScore, Score, ScoreNoRank } from '../schema.ts';
-import config from '../config.ts';
-
-const db = createDatabase(config.database);
+import { type Database } from '../database/index';
+import type { PostScore, Score, ScoreNoRank } from '../schema';
 
 export function scoreRepository(db: Database) {
   const createScore = async (values: PostScore): Promise<ScoreNoRank> => {
@@ -13,16 +10,27 @@ export function scoreRepository(db: Database) {
       .returningAll()
       .executeTakeFirstOrThrow();
   };
+  const getAllScores = async (): Promise<Selectable<ScoreNoRank>[]> => {
+    return db
+      .selectFrom('game.score')
+      .selectAll()
+      .orderBy('game.score.date', 'desc')
+      .execute();
+  };
 
   const getScoresAround = async (
     id: number,
     targetScore: number,
-    range = 5,
+    range = 5
   ): Promise<Selectable<Score>[]> => {
     const ranked = db
       .selectFrom('game.score')
       .selectAll()
-      .select(sql<number>`ROW_NUMBER() OVER (ORDER BY score DESC)`.as('rank'))
+      .select(
+        sql<number>`CAST(ROW_NUMBER() OVER (ORDER BY score DESC) AS INTEGER)`.as(
+          'rank'
+        )
+      )
       .as('ranked');
 
     const target = await db
@@ -45,7 +53,7 @@ export function scoreRepository(db: Database) {
       .execute();
   };
 
-  return { createScore, getScoresAround };
+  return { createScore, getScoresAround, getAllScores };
 }
 
-export const repo = scoreRepository(db);
+export const useScoreRepository = (db: Database) => scoreRepository(db);

@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "gen:types": "npx kysely-codegen --camel-case --dialect postgres --out-file src/database/types.ts",
+    "dev": "tsx watch src",
+    "migrate:new": "tsx ./src/database/migrate/new",
+    "migrate:latest": "tsx src/database/migrate/latest",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/pg": "^8.15.5",
+    "kysely-codegen": "^0.18.5",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.2"
+  },
+  "dependencies": {
+    "@types/supertest": "^6.0.3",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "kysely": "^0.28.5",
+    "pg": "^8.16.3",
+    "supertest": "^7.1.4",
+    "tsx": "^4.20.5",
+    "vitest": "^3.2.4"
+  }
+}
