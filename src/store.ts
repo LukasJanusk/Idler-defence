@@ -101,13 +101,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((store) => {
       store.gameClock.stop();
       store.levelEventHandler.stop();
-      return store;
+
+      return { ...store, settings: { ...store.settings, pause: true } };
     }),
   play: () =>
     set((store) => {
       store.gameClock.start();
       store.levelEventHandler.start();
-      return store;
+
+      return { ...store, settings: { ...store.settings, pause: false } };
     }),
   nextLevel: () => {
     console.info('Not yet implemented');

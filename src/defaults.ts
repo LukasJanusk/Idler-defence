@@ -163,5 +163,6 @@ export const defaultSettings: Settings = {
   automateSkillCast: true,
   showGrid: false,
   drawParticles: true,
+  pause: false,
 };
 export const defaultGold = () => 200;

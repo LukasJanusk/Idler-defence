@@ -5,19 +5,20 @@ import { useGameStore } from '@/store';
 import Toggle from '../reusable/Toggle';
 
 export default function Menu() {
-  const [live, setLive] = useState<boolean>(true);
+  // const [live, setLive] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [leaving, setLeaving] = useState<boolean>(false);
   const setSettings = useGameStore((store) => store.setSettings);
   const settings = useGameStore((store) => store.settings);
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
+
   const gamePause = () => {
-    setLive(false);
+    // setLive(false);
     pause();
   };
   const gamePlay = () => {
-    setLive(true);
+    // setLive(true);
     play();
   };
   const toggleMenu = () => {
@@ -42,14 +43,14 @@ export default function Menu() {
           >
             <Button
               onClick={() => {
-                if (live) {
-                  gamePause();
-                } else {
+                if (settings.pause) {
                   gamePlay();
+                } else {
+                  gamePause();
                 }
               }}
             >
-              {live ? 'Pause' : 'Resume'}
+              {settings.pause ? 'Resume' : 'Pause'}
             </Button>
             <div className="flex w-full flex-row items-center justify-between">
               <Button

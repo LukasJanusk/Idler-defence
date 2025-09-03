@@ -21,7 +21,7 @@ export default function GameModal({ size, title, children }: GameModalProps) {
 
   return (
     <div
-      className="absolute z-20 flex flex-col overflow-hidden rounded border-2 border-medieval-stoneLight bg-medieval-parchment text-medieval-stone"
+      className="absolute z-50 flex flex-col overflow-hidden rounded border-2 border-medieval-stoneLight bg-medieval-parchment text-medieval-stone"
       style={{
         width: `${width}px`,
         height: `${height}px`,

@@ -86,6 +86,7 @@ export type Settings = {
   automateSkillCast: boolean;
   showGrid: boolean;
   drawParticles: boolean;
+  pause: boolean;
 };
 export type Level = {
   id: string;
