@@ -98,6 +98,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return { ...store };
     });
   },
+  levelUpSkill: (pos, skill) => {
+    set((store) => {
+      const char = store.grid.getCharacterFromPosition(pos);
+      if (!char) return store;
+
+      store.gold -= skill.level * skill.skillLevelUpData.upgradeCost;
+      char.levelUpSkill<typeof skill.action>(skill);
+      return store;
+    });
+  },
   pause: () =>
     set((store) => {
       store.gameClock.stop();

@@ -5,6 +5,9 @@ import Container from '@/components/reusable/Container';
 import type { PartyPositionName, Skill } from '@/types';
 import { useGameStore } from '@/store';
 import type { CharacterAction } from '@/model/entities/character';
+import { PlusCircle } from 'lucide-react';
+import { useHover } from '@/hooks/useHover';
+import { MAXIMUM_SKILL_LEVEL } from '@/constants';
 
 type SkillContainerProps<T extends string> = {
   skills: Skill<T>[];
@@ -16,10 +19,22 @@ export default function SkillContainer<T extends string>({
   state,
   position,
 }: SkillContainerProps<T>) {
-  const [selectedSkill, setSelectedSkill] = useState(
+  const [selectedSkill, setSelectedSkill] = useState<Skill<T> | null>(
     skills.find((skill) => skill.action === state) || null,
   );
   const setCharacterState = useGameStore((store) => store.updateCharacterState);
+  const gold = useGameStore((store) => store.gold);
+  const levelUpSkill = useGameStore((store) => store.levelUpSkill);
+
+  const canUpgrade =
+    selectedSkill &&
+    selectedSkill.level < MAXIMUM_SKILL_LEVEL &&
+    selectedSkill.level * selectedSkill.skillLevelUpData.upgradeCost < gold;
+
+  const upgradeSkill = () => {
+    if (!canUpgrade) return;
+    levelUpSkill<T>(position, selectedSkill);
+  };
   const handleSelectSkill = (skill: Skill<T>) => {
     setSelectedSkill(skill);
     setCharacterState(position, {
@@ -27,6 +42,7 @@ export default function SkillContainer<T extends string>({
       lastAction: null,
     });
   };
+  const [buttonRef, hover] = useHover<HTMLButtonElement>();
   useEffect(() => {
     setSelectedSkill(skills.find((skill) => skill.action === state) || null);
   }, [state, skills]);
@@ -51,9 +67,29 @@ export default function SkillContainer<T extends string>({
       </div>
       <div className="flex flex-row items-center justify-between px-2 text-2xl font-bold text-medieval-silver">
         {selectedSkill?.name}
-        <div className="items center flex flex-row gap-1">
-          {' '}
-          <span className="text-base">lvl:</span>
+        <div className="items center relative flex flex-row gap-1">
+          {hover && canUpgrade && (
+            <div
+              className={`absolute -top-10 z-50 -translate-x-1/2 text-nowrap rounded bg-medieval-dark p-1 ${canUpgrade ? 'text-medieval-parchment' : 'text-red-800'}`}
+            >
+              {selectedSkill
+                ? selectedSkill.level *
+                    selectedSkill.skillLevelUpData.upgradeCost +
+                  ' 🪙'
+                : ''}
+            </div>
+          )}{' '}
+          {canUpgrade && (
+            <button
+              aria-label="skill upgrade button"
+              ref={buttonRef}
+              className={`rounded-full hover:scale-105 active:scale-95 active:bg-medieval-green-700`}
+              onClick={upgradeSkill}
+            >
+              <PlusCircle className={`animate-pulse text-medieval-emerald`} />
+            </button>
+          )}
+          <div className="text-base">lvl:</div>
           <div className="h-[24px] w-[24px] rounded-full bg-medieval-emerald text-center text-base font-bold text-white">
             {selectedSkill?.level}
           </div>

@@ -5,25 +5,25 @@ import type {
   Skill,
   SpriteAnimations,
 } from '@/types';
-import { initFireWizardAttacks } from '../characterAttacks/fireWizardAttacks';
-import { Animation } from '../animations/animation';
-import { type Grid } from '../grid';
-import { UPDATE_RATE } from '@/constants';
-import { FireMageSkills } from './skills/fireMageSkills';
-import { wizardSkills } from './skills/wizardSkills';
-import { lightningMageSkills } from './skills/LightningMageSkills';
-import { knightSkills } from './skills/knightSkills';
+import { initFireWizardAttacks } from '@/model/characterAttacks/fireWizardAttacks';
+import { Animation } from '@/model/animations/animation';
+import { type Grid } from '@/model/grid';
+import { MAXIMUM_SKILL_LEVEL, UPDATE_RATE } from '@/constants';
+import { FireMageSkills } from '@/model/entities/skills/fireMageSkills';
+import { wizardSkills } from '@/model/entities/skills/wizardSkills';
+import { lightningMageSkills } from '@/model/entities/skills/LightningMageSkills';
+import { knightSkills } from '@/model/entities/skills/knightSkills';
 import { setupDeathResurrect } from '@/utils';
-import { createFireMageAnimations } from '../animations/fireWizardAnimations';
-import { createKnightAnimations } from '../animations/knightAnimations';
-import { createLightningMageAnimations } from '../animations/lightningMageAnimations';
-import { createWizardAnimations } from '../animations/wizardAnimations';
+import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
+import { createKnightAnimations } from '@/model/animations/knightAnimations';
+import { createLightningMageAnimations } from '@/model/animations/lightningMageAnimations';
+import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { defaultSettings } from '@/defaults';
-import { initKnightAttacks } from '../characterAttacks/knightAttacks';
-import type { Debuff } from './debuff';
-import type { Buff } from './buff';
-import { initWizardAttacks } from '../characterAttacks/wizardAttacks';
-import { initLightningMageAttacks } from '../characterAttacks/lightningMageAttacks';
+import { initKnightAttacks } from '@/model/characterAttacks/knightAttacks';
+import type { Debuff } from '@/model/entities/debuff';
+import type { Buff } from '@/model/entities/buff';
+import { initWizardAttacks } from '@/model/characterAttacks/wizardAttacks';
+import { initLightningMageAttacks } from '@/model/characterAttacks/lightningMageAttacks';
 import {
   arcaneBlastSound,
   chargedBoltsSound,
@@ -252,6 +252,28 @@ export abstract class Character<T extends string> {
     this.experience -= this.experienceToNext;
     this.experienceToNext += 100;
     this.availableAttributes += 1;
+    this.health = this.maxHealth;
+  }
+  levelUpSkill<T extends string>(skill: Skill<T>) {
+    if (skill.level >= MAXIMUM_SKILL_LEVEL) return false;
+    if (skill.skillLevelUpData.baseDamage) {
+      skill.baseDamage += skill.skillLevelUpData.baseDamage;
+    }
+    if (skill.skillLevelUpData.cost) {
+      skill.cost += skill.skillLevelUpData.cost;
+    }
+    if (skill.skillLevelUpData.speed && skill.speed) {
+      skill.speed += skill.skillLevelUpData.speed;
+    }
+    if (skill.skillLevelUpData.armor && skill.armor) {
+      skill.armor += skill.skillLevelUpData.armor;
+    }
+    skill.level += 1;
+    const multiplier = (100 + this.attributes.strength) / 100;
+    skill.damage = skill.baseDamage * multiplier;
+
+    this.initSkillCost();
+    return true;
   }
   spendAttribute(attribute: Attribute) {
     this.attributes[attribute] += 1;
@@ -522,15 +544,6 @@ export class Knight extends Character<KnightAction> {
       knightStabSound.play();
     });
     console.log('Knight audio not yet implemented');
-  }
-
-  update(dt: number) {
-    this.armor = 20;
-
-    if (this.state === 'protect') {
-      this.armor = this.getCurrentSkill()?.armor || 50;
-    }
-    super.update(dt);
   }
 }
 export class Wizard extends Character<WizardAction> {

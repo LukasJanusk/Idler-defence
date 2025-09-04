@@ -4,6 +4,12 @@ import fireMageIdle from '@/assets/skill_icons/fire_mage_recovery_icon.png';
 import fireMageStab from '@/assets/skill_icons/fire_wizard_stab_icon.png';
 import flamejet from '@/assets/skill_icons/firewizard_flamejet_icon.png';
 import type { FireMageAction } from '../character';
+import {
+  fireBallLevelUpData,
+  FireMageRegenerateLevelUpData,
+  FireMageStabLevelUpData,
+  flameJetLevelUpData,
+} from './skillLevelData';
 export const FireMageSkills: Skill<FireMageAction>[] = [
   {
     id: `FireMage-Regenerate`,
@@ -19,6 +25,7 @@ export const FireMageSkills: Skill<FireMageAction>[] = [
     level: 1,
     cost: -10,
     multiplier: 1,
+    skillLevelUpData: FireMageRegenerateLevelUpData,
   },
   {
     id: 'FireMage-FireBall',
@@ -34,6 +41,7 @@ export const FireMageSkills: Skill<FireMageAction>[] = [
     level: 1,
     cost: 20,
     multiplier: 1,
+    skillLevelUpData: fireBallLevelUpData,
   },
   {
     id: 'FireMage-FlameJet',
@@ -49,6 +57,7 @@ export const FireMageSkills: Skill<FireMageAction>[] = [
     level: 1,
     cost: 35,
     multiplier: 1,
+    skillLevelUpData: flameJetLevelUpData,
   },
   {
     id: 'FireMage-Stab',
@@ -64,5 +73,6 @@ export const FireMageSkills: Skill<FireMageAction>[] = [
     level: 1,
     cost: 5,
     multiplier: 1,
+    skillLevelUpData: FireMageStabLevelUpData,
   },
 ];

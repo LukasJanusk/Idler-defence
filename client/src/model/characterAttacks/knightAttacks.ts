@@ -29,15 +29,21 @@ export const createKnightIntimidateAttack = (
   x: number,
   y: number,
   multiplier: number = 0,
-  damage: number = 0,
+  speed: number = 1,
 ) => {
-  const debuff = new Debuff('Knight-intimidate', 'player', { speed: -1 }, 600);
+  const debuff = new Debuff(
+    'Knight-intimidate',
+    'player',
+    { speed: -speed },
+    600,
+  );
+
   const applyDebuff = (target?: Enemy<EnemyAction> | AnyCharacter) => {
     target?.registerDebuff(debuff);
   };
   const attack = new Attack(
     `Knight-intimidate-Attack${v4()}`,
-    damage,
+    0,
     { x, y, width: GRID_AREA_SIZE, height: GRID_AREA_SIZE },
     'player',
     9,
@@ -63,7 +69,14 @@ export const initKnightAttacks = (grid: Grid, knight: Knight) => {
     knight.animations.attack,
     0,
   );
-  knight.animations.guard.onFrame(0, () => (knight.armor = 30));
+  const protect = () =>
+    new Buff(
+      `Knight-Protect`,
+      'player',
+      { armor: knight.getCurrentSkill()?.armor || 70 },
+      200,
+    );
+  knight.animations.protect.onFrame(0, () => knight.registerBuff(protect()));
 
   registerAttackToGrid(
     grid,
@@ -73,7 +86,7 @@ export const initKnightAttacks = (grid: Grid, knight: Knight) => {
         knight.rect.x,
         knight.rect.y,
         knight.skills.find((s) => s.action === 'idle')?.multiplier,
-        knight.skills.find((s) => s.action === 'idle')?.damage,
+        knight.skills.find((s) => s.action === 'idle')?.speed,
       ),
     [3],
     knight.animations.idle,

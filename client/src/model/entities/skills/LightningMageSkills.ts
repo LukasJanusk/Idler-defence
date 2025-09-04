@@ -4,6 +4,12 @@ import strike from '@/assets/skill_icons/lightning_mage_strike_icon.png';
 import chargedBolts from '@/assets/skill_icons/lightning_mage_charged_bolt_icon.png';
 import discharge from '@/assets/skill_icons/lightning_mage_discharge_icon.png';
 import type { LightningMageAction } from '../character';
+import {
+  chargedBoltsLevelUpData,
+  dischargeLevelUpData,
+  lightningStrikeLevelUpData,
+  zapLevelUpData,
+} from './skillLevelData';
 
 export const lightningMageSkills: Skill<LightningMageAction>[] = [
   {
@@ -21,6 +27,7 @@ export const lightningMageSkills: Skill<LightningMageAction>[] = [
     level: 1,
     cost: -1,
     multiplier: 1,
+    skillLevelUpData: zapLevelUpData,
   },
   {
     id: 'LightningMage-LightningStrike',
@@ -36,6 +43,7 @@ export const lightningMageSkills: Skill<LightningMageAction>[] = [
     level: 1,
     cost: 15,
     multiplier: 1,
+    skillLevelUpData: lightningStrikeLevelUpData,
   },
   {
     id: 'LightningMage-ChargedBolts',
@@ -50,6 +58,7 @@ export const lightningMageSkills: Skill<LightningMageAction>[] = [
     level: 1,
     cost: 10,
     multiplier: 1,
+    skillLevelUpData: chargedBoltsLevelUpData,
   },
   {
     id: 'LightningMage-LightningStream',
@@ -64,5 +73,6 @@ export const lightningMageSkills: Skill<LightningMageAction>[] = [
     level: 1,
     cost: 20,
     multiplier: 1,
+    skillLevelUpData: dischargeLevelUpData,
   },
 ];

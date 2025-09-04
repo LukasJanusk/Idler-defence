@@ -30,6 +30,14 @@ export type CreateEnemyEventData = {
   interval: number;
   startTime: number;
 };
+export type SkillLevelUpData = {
+  baseDamage?: number;
+  cost?: number;
+  upgradeCost: number;
+  charLevelRequirements?: number;
+  armor?: number;
+  speed?: number;
+};
 export type Attribute = 'strength' | 'dexterity' | 'vitality' | 'intelligence';
 export type Rect = { x: number; y: number; width: number; height: number };
 export type SpriteAnimations<T extends string> = Record<T, Animation>;
@@ -48,6 +56,7 @@ export type Skill<T extends string> = {
   cost: number;
   multiplier: number;
   armor?: number;
+  skillLevelUpData: SkillLevelUpData;
 };
 export type Attributes = {
   strength: number;
@@ -121,6 +130,10 @@ export type GameStore = {
   ) => void;
   selectPosition: (pos: PartyPositionName) => void;
   addGold: (n: number) => void;
+  levelUpSkill: <T extends string>(
+    pos: PartyPositionName,
+    skill: Skill<T>,
+  ) => void;
   setSettings: (patch: Partial<Settings>) => void;
   nextWave: () => void;
   nextLevel: () => void;

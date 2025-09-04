@@ -77,12 +77,17 @@ export default {
           '0%': { transform: 'translateX(0px)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-10deg)' },
+          '50%': { transform: 'rotate(10deg)' },
+        },
       },
       animation: {
         pop: 'pop 0.6s ease',
         slideLeft: 'slideLeft 0.1s ease',
         enterRight: 'enterRight 0.1s ease',
         leaveRight: 'leaveRight 0.1s ease',
+        wiggle: 'wiggle 0.3s ease-in-out',
       },
     },
   },

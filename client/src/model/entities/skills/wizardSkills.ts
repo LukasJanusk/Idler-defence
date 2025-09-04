@@ -4,6 +4,12 @@ import magicSphere from '@/assets/skill_icons/magic_sphere_icon.png';
 import arcaneBlast from '@/assets/skill_icons/arcane_blast_icon.png';
 import wizardRecover from '@/assets/skill_icons/wizard_recover_icon.png';
 import type { WizardAction } from '../character';
+import {
+  wizardArcaneBlastLevelUpData,
+  wizardMagicArrowLevelUpData,
+  wizardMagicSphereLevelUpData,
+  wizardRecoveryLevelUpData,
+} from './skillLevelData';
 
 export const wizardSkills: Skill<WizardAction>[] = [
   {
@@ -20,6 +26,7 @@ export const wizardSkills: Skill<WizardAction>[] = [
     level: 1,
     cost: -5,
     multiplier: 1,
+    skillLevelUpData: wizardRecoveryLevelUpData,
   },
   {
     id: 'Wizard-MagicArrow',
@@ -34,6 +41,7 @@ export const wizardSkills: Skill<WizardAction>[] = [
     cost: 10,
     multiplier: 1,
     level: 1,
+    skillLevelUpData: wizardMagicArrowLevelUpData,
   },
   {
     id: 'Wizard-MagicBall',
@@ -48,6 +56,7 @@ export const wizardSkills: Skill<WizardAction>[] = [
     level: 1,
     cost: 20,
     multiplier: 1,
+    skillLevelUpData: wizardArcaneBlastLevelUpData,
   },
   {
     id: 'Wizard-MagicSphere',
@@ -58,10 +67,11 @@ export const wizardSkills: Skill<WizardAction>[] = [
     baseDamage: 220,
     damage: 220,
     duration: 1.6,
-    speed: 1,
+    speed: 80,
     action: 'magicSphere',
     level: 1,
     cost: 70,
     multiplier: 1,
+    skillLevelUpData: wizardMagicSphereLevelUpData,
   },
 ];

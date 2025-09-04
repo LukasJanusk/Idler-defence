@@ -32,7 +32,10 @@ export default function Indicator({ info, icon, value }: IndicatorProps) {
     if (icon === '⚔️' || icon === '🛡️' || icon === '💨')
       return Math.round(value);
     else if (icon === '⏳') return `${value}s`;
-    else if (icon === '🔵') return value < 0 ? `+${value * -1}` : value;
+    else if (icon === '🔵')
+      return value < 0
+        ? `+${(Math.round(value * 10) / 10) * -1}`
+        : Math.round(value * 10) / 10;
     else if (icon === '❔') return '';
     else return value;
   };

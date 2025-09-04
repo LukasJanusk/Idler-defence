@@ -6,3 +6,4 @@ export const UPDATE_RATE = 17; // ~60 UPS(updates per second)
 export const GRAVITY = 100;
 export const PARTY_POSITIO_ROW = 2;
 export const MAXIMUM_PARTICLES = 200;
+export const MAXIMUM_SKILL_LEVEL = 10;

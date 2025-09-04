@@ -4,6 +4,12 @@ import knightIntimidate from '@/assets/skill_icons/knight_intimidate_icon.png';
 import knightGuard from '@/assets/skill_icons/knight_guard_icon.png';
 import knightDefend from '@/assets/skill_icons/knight_defend_icon.png';
 import type { KnightAction } from '../character';
+import {
+  knightGuardLevelUpData,
+  knightIntimidateLevelUpData,
+  knightProtectLevelUpData,
+  knightStabLevelUpData,
+} from './skillLevelData';
 
 export const knightSkills: Skill<KnightAction>[] = [
   {
@@ -19,6 +25,7 @@ export const knightSkills: Skill<KnightAction>[] = [
     level: 1,
     cost: -1,
     multiplier: 1,
+    skillLevelUpData: knightIntimidateLevelUpData,
   },
   {
     id: 'Knight-PowerfulStab',
@@ -33,6 +40,7 @@ export const knightSkills: Skill<KnightAction>[] = [
     level: 1,
     cost: 5,
     multiplier: 1,
+    skillLevelUpData: knightStabLevelUpData,
   },
   {
     id: 'Knight-GuardAlly',
@@ -49,6 +57,7 @@ export const knightSkills: Skill<KnightAction>[] = [
     cost: 1,
     multiplier: 1,
     armor: 15,
+    skillLevelUpData: knightGuardLevelUpData,
   },
   {
     id: 'Knight-Defend',
@@ -64,5 +73,6 @@ export const knightSkills: Skill<KnightAction>[] = [
     cost: 1,
     multiplier: 1,
     armor: 70,
+    skillLevelUpData: knightProtectLevelUpData,
   },
 ];

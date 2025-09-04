@@ -32,6 +32,7 @@ export const createWizardMagicSphereAttack = (
   y: number,
   multiplier: number = 1,
   damage: number,
+  speed: number = 100,
 ) => {
   const animation = createAnimation(magicSphere, 9, 100, 'magicSphere');
   const projectile = new Projectile(
@@ -46,7 +47,7 @@ export const createWizardMagicSphereAttack = (
     null,
   );
   projectile.onHit = (target) =>
-    target?.registerDebuff(createKnockbackDebuff(100, 200));
+    target?.registerDebuff(createKnockbackDebuff(speed, 200));
   return projectile;
 };
 export const createWizardMagicArrowAttack = (
@@ -152,6 +153,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
       wizard.rect.y,
       1,
       wizard.getCurrentSkill()?.damage || 220,
+      wizard.getCurrentSkill()?.speed,
     );
     projectile.animation.onFrame(4, () => {
       projectile.animation.frame = 0;
