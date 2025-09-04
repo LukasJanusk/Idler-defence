@@ -112,7 +112,7 @@ export default function Instructions({ onClose }: InstructionsProps) {
                 {['Strength', 'Dexterity', 'Intelligence', 'Vitality'].map(
                   (att) => (
                     <div
-                      className={`flex w-[256px] flex-row items-center justify-start gap-20 border-2 border-medieval-parchment bg-medieval-wood text-medieval-silver transition-all duration-200`}
+                      className={`flex w-[256px] flex-row items-center justify-between gap-2 border-2 border-medieval-parchment bg-medieval-wood py-1 pr-4 text-medieval-silver transition-all duration-200`}
                     >
                       <span className="pl-2">
                         {att === 'Strength'
@@ -122,10 +122,11 @@ export default function Instructions({ onClose }: InstructionsProps) {
                             : att === 'Intelligence'
                               ? '🧠'
                               : '❤️'}
-                      </span>
+                      </span>{' '}
                       <span className="self-center justify-self-center pr-2 text-center font-bold">
                         {att}
-                      </span>
+                      </span>{' '}
+                      <span className="font-bold">10</span>
                     </div>
                   ),
                 )}

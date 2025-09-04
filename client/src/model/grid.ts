@@ -82,6 +82,7 @@ export class Area {
     this.row = row;
     this.column = column;
     this.id = id ? id : v4();
+    this.rect = { x: column * width, y: row * height, width, height };
   }
   registerEntity(entity: unknown): boolean {
     if (isCharacter(entity)) {
@@ -154,17 +155,6 @@ export class Grid {
         { length: horizontal },
         (_, col) =>
           new Area(areaSize, areaSize, row, col, `area-${row}-${col}`),
-      ),
-    );
-    this.grid.forEach((row, rowIndex) =>
-      row.forEach(
-        (area, colIndex) =>
-          (area.rect = {
-            x: area.width * colIndex,
-            y: area.height * rowIndex,
-            width: area.width,
-            height: area.height,
-          }),
       ),
     );
   }

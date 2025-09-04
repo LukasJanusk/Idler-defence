@@ -22,21 +22,8 @@ export default function Bar({
   colorStyles,
   label,
 }: BarProps) {
-  // const [maxWidth, setMaxWidth] = useState(0);
-  // const maxRef = useRef<HTMLDivElement>(null);
   const [labelRef, labelWidth] = useGetWidth<HTMLDivElement>();
   const [maxRef, maxWidth] = useGetWidth<HTMLDivElement>();
-
-  // useEffect(() => {
-  //   if (!maxRef.current) return;
-  //   const observer = new ResizeObserver((entries) => {
-  //     for (const entry of entries) {
-  //       setMaxWidth(entry.contentRect.width);
-  //     }
-  //   });
-  //   observer.observe(maxRef.current);
-  //   return () => observer.disconnect();
-  // }, []);
 
   const height =
     size === 'sm' ? SMALL_HEIGHT : size === 'lg' ? LARGE_HEIGHT : MEDIUM_HEIGHT;
@@ -45,6 +32,7 @@ export default function Bar({
 
   return (
     <div
+      aria-label={`${label ? `${label} bar` : 'Progress bar'}`}
       ref={maxRef}
       className={`border-box relative flex w-full justify-start border-2 border-medieval-silver bg-medieval-stone shadow-md`}
       style={{

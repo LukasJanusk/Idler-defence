@@ -1,20 +1,32 @@
-import { X } from 'lucide-react';
+import Button from './Button';
+import CloseButton from './CloseButton';
+import { AlertCircle } from 'lucide-react';
 
-type AlertProps = { message: string; onClose: () => void };
+type AlertProps = {
+  message: string;
+  label?: string;
+  onClose: () => void;
+  action: { name: string; handle: () => void };
+};
 
-export default function Alert({ message, onClose }: AlertProps) {
+export default function Alert({
+  message,
+  onClose,
+  label = 'Alert',
+  action,
+}: AlertProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="relative w-[320px] rounded-sm border-2 border-medieval-gold bg-medieval-parchment p-4 shadow-xl">
-        <p className="text-center text-lg font-bold text-medieval-dark">
-          {message}
-        </p>
-        <button
-          className="absolute right-2 top-2 text-medieval-stoneCrimson transition-transform duration-200 hover:scale-110 active:scale-95"
-          onClick={onClose}
-        >
-          <X className="h-5 w-5" />
-        </button>
+      <div className="relative flex max-h-[512px] w-[320px] flex-col gap-2 border-4 border-medieval-silver bg-medieval-stone p-4 text-medieval-parchment shadow-xl">
+        <div className="flex items-center gap-2 text-xl font-bold">
+          <AlertCircle className="min-h-6 min-w-6 rounded-full bg-yellow-800 text-medieval-silver" />
+          {label}
+        </div>
+        <p className="overflow-auto text-lg">{message}</p>
+        {action && (
+          <Button onClick={() => action.handle()}>{action.name}</Button>
+        )}
+        <CloseButton onClose={() => onClose()} />
       </div>
     </div>
   );
