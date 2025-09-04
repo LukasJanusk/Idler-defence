@@ -13,10 +13,13 @@ export default function Sprite({ animation, entity, scale = 1 }: SpriteProps) {
   const frame = useAnimation(animation);
   const size = useSpriteLoad(animation);
   if (!animation) return <div>Animation not found!</div>;
-  if (!size || !animation)
+  if (!size)
     return (
-      <div className="w-ful h-full items-center justify-center text-medieval-parchment">
-        <LoaderCircleIcon aria-label="loading" className="animate-spin" />
+      <div className="w-ful relative flex h-full items-center justify-center text-medieval-parchment">
+        <LoaderCircleIcon
+          aria-label="loading"
+          className="absolute h-12 w-12 animate-spin"
+        />
       </div>
     );
   const width = size.width;

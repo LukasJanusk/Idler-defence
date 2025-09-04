@@ -3,7 +3,7 @@ import { MenuIcon } from 'lucide-react';
 import Button from '@/components/reusable/Button';
 import { useGameStore } from '@/store';
 import Toggle from '../reusable/Toggle';
-import Instructions from '../Instructions';
+import Instructions from './Instructions';
 
 export default function Menu() {
   const [open, setOpen] = useState<boolean>(false);

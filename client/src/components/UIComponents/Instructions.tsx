@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
-import Button from './reusable/Button';
-import CloseButton from './reusable/CloseButton';
-import InstructionsDescription from './reusable/InstructionsDesciption';
-import Sprite from './reusable/Sprite';
-import { createZombieOne } from '../defaults';
+import Button from '../reusable/Button';
+import CloseButton from '../reusable/CloseButton';
+import InstructionsDescription from '../reusable/InstructionsDesciption';
+import Sprite from '../reusable/Sprite';
+import { createZombieOne } from '../../defaults';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { wizardSkills } from '@/model/entities/skills/wizardSkills';
-import SkillButton from './reusable/SkillButton';
-import GoldDisplay from './UIComponents/GoldDisplay';
-import WaveDisplay from './UIComponents/WaveDisplay';
-import NextWaveButton from './UIComponents/NextWaveButton';
+import SkillButton from '../reusable/SkillButton';
+import GoldDisplay from './GoldDisplay';
+import WaveDisplay from './WaveDisplay';
+import NextWaveButton from './NextWaveButton';
 
 type InstructionsProps = {
   onClose?: () => void;
@@ -58,7 +58,7 @@ const categs: Category[] = [
   {
     title: 'gold',
     description:
-      'Every monster will grant some gold on death. You can spend gold to hire new heroes to your party. ' +
+      'Every monster will grant some gold on death. You can spend gold on hero skill upgrades or to hire new heroes to your party. ' +
       'Accumulated gold also counts towards your final score.',
   },
   {
@@ -112,6 +112,7 @@ export default function Instructions({ onClose }: InstructionsProps) {
                 {['Strength', 'Dexterity', 'Intelligence', 'Vitality'].map(
                   (att) => (
                     <div
+                      key={att}
                       className={`flex w-[256px] flex-row items-center justify-between gap-2 border-2 border-medieval-parchment bg-medieval-wood py-1 pr-4 text-medieval-silver transition-all duration-200`}
                     >
                       <span className="pl-2">
@@ -136,6 +137,7 @@ export default function Instructions({ onClose }: InstructionsProps) {
               <div className="mb-2 flex flex-row justify-around gap-2 bg-medieval-silver/20 py-2">
                 {wizardSkills.map((skill) => (
                   <SkillButton
+                    key={skill.id}
                     url={skill.url}
                     skillName={skill.name}
                     disabled={true}
