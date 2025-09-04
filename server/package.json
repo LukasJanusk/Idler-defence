@@ -9,7 +9,8 @@
     "dev": "tsx watch src",
     "migrate:new": "tsx ./src/database/migrate/new",
     "migrate:latest": "tsx src/database/migrate/latest",
-    "test": "vitest"
+    "test": "vitest",
+    "e2e": "NODE_ENV=test tsx watch src"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

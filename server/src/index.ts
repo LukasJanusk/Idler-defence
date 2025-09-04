@@ -3,6 +3,7 @@ import config from './config';
 import { createDatabase } from './database';
 
 const database = createDatabase(config.database);
+console.log(`Database created for: ${config.env}`);
 const app = createApp(database);
 
 app.listen(config.port, () => {
