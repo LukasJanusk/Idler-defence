@@ -8,7 +8,7 @@ type ProjectileProps = {
 export default function ProjectileSprite({ projectile }: ProjectileProps) {
   return (
     <div
-      className="pointer-events-none absolute"
+      className="border-box pointer-events-none absolute"
       style={{ left: projectile.rect.x, top: projectile.rect.y }}
     >
       <Sprite animation={projectile.animation} entity={projectile.source} />

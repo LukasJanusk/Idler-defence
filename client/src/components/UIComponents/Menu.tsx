@@ -34,6 +34,7 @@ export default function Menu() {
       )}
       <div className="relative flex flex-col items-end gap-1">
         <button
+          aria-label="Menu button"
           onClick={toggleMenu}
           className={`z-50 h-10 w-10 border-2 border-medieval-parchment ${open ? 'bg-medieval-stoneCrimson' : 'bg-medieval-stone'} text-medieval-parchment transition-all duration-200 hover:scale-105 active:scale-95`}
         >
@@ -44,6 +45,7 @@ export default function Menu() {
             className={`flex ${leaving ? 'animate-leaveRight' : 'animate-slideLeft'} border-medieval-parchement z-50 w-full flex-col gap-2 border-2 bg-medieval-wood p-2`}
           >
             <Button
+              aria-label={`${settings.pause ? 'resume button' : 'pause button'}`}
               onClick={() => {
                 if (settings.pause) {
                   gamePlay();
@@ -55,6 +57,7 @@ export default function Menu() {
               {settings.pause ? 'Resume' : 'Pause'}
             </Button>
             <Button
+              aria-label={`toggle help button`}
               onClick={() => {
                 setShowInstructions((prev) => !prev);
               }}
@@ -64,6 +67,7 @@ export default function Menu() {
             </Button>
             <div className="flex w-full flex-row items-center justify-between">
               <Button
+                aria-label={`toggle grid button`}
                 onClick={() => setSettings({ showGrid: !settings.showGrid })}
                 className="mr-2 w-full"
               >
@@ -76,6 +80,7 @@ export default function Menu() {
             </div>
             <div className="flex w-full flex-row items-center justify-between">
               <Button
+                aria-label={`toggle particles button`}
                 onClick={() =>
                   setSettings({ drawParticles: !settings.drawParticles })
                 }
@@ -92,6 +97,7 @@ export default function Menu() {
             </div>
             <div className="flex w-full flex-row items-center justify-between">
               <Button
+                aria-label={`toggle autocast button`}
                 onClick={() =>
                   setSettings({
                     automateSkillCast: !settings.automateSkillCast,
@@ -112,6 +118,7 @@ export default function Menu() {
             </div>
             <div className="flex w-full flex-row items-center justify-between">
               <Button
+                aria-label={`toggle show ui button`}
                 onClick={() => setSettings({ showUi: !settings.showUi })}
                 className="mr-2 w-full"
               >

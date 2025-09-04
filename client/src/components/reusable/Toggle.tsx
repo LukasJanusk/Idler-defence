@@ -23,6 +23,7 @@ export default function Toggle({
 
   return (
     <div
+      aria-label={`toggle ${on ? 'on' : 'off'}`}
       onClick={handleClick}
       className={`flex h-6 w-12 min-w-12 cursor-pointer items-center rounded-full p-1 transition-colors duration-200 ${
         on ? 'bg-medieval-green-600' : 'bg-medieval-stone'

@@ -1,4 +1,4 @@
-import { it, describe, expect } from 'vitest';
+import { it, describe, expect, vi } from 'vitest';
 import { Area } from '@/model/grid';
 import {
   createTestAttack,
@@ -6,6 +6,23 @@ import {
   createTestProjectile,
 } from './utils';
 import { createZombieOne } from '@/defaults';
+
+class MockAudio {
+  currentTime = 0;
+  play = vi.fn();
+  pause = vi.fn();
+  load = vi.fn();
+}
+
+class MockImage {
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  src = '';
+  addEventListener = vi.fn();
+  removeEventListener = vi.fn();
+}
+vi.stubGlobal('Audio', MockAudio);
+vi.stubGlobal('Image', MockImage);
 
 describe('registerEntity', () => {
   it('registers Character correctly', () => {

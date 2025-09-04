@@ -1,6 +1,23 @@
-import { it, describe, expect } from 'vitest';
+import { it, describe, expect, vi } from 'vitest';
 import { createDefaultGrid, createTestKnight } from './utils';
 import { GRID_AREA_SIZE, PARTY_POSITIO_ROW } from '@/constants';
+
+class MockAudio {
+  currentTime = 0;
+  play = vi.fn();
+  pause = vi.fn();
+  load = vi.fn();
+}
+
+class MockImage {
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  src = '';
+  addEventListener = vi.fn();
+  removeEventListener = vi.fn();
+}
+vi.stubGlobal('Audio', MockAudio);
+vi.stubGlobal('Image', MockImage);
 
 describe('getAreaFromPos', () => {
   it('returns expected area from position', () => {

@@ -1,10 +1,10 @@
 import { Grid } from '@/model/grid';
-import { Knight, type KnightAction } from '../character';
+import { Knight, type KnightAction } from '@/model/entities/character';
 import type { Rect, SpriteAnimations } from '@/types';
-import { Projectile } from '../projectile';
+import { Projectile } from '@/model/entities/projectile';
 import { createAnimation } from '@/model/animations/animation';
 import type { Animation } from '@/model/animations/animation';
-import { Attack } from '../attack';
+import { Attack } from '@/model/entities/attack';
 import { GRID_AREA_SIZE } from '@/constants';
 
 type GridDefaults = {
