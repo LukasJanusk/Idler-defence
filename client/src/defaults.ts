@@ -13,6 +13,7 @@ import { createBasicAttack } from './model/enemyAttacks/basicAttack';
 import { createSavageZombieAnimations } from './model/animations/enemies/savageZombieAnimations';
 import { createFastZombieAnimations } from './model/animations/enemies/fastZombieAnimations';
 import { createHungryZombieAnimations } from './model/animations/enemies/HungryZombieAnimations';
+import { createGreenGorgonAnimations } from './model/animations/enemies/greenGorgonAnimations';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);
@@ -59,6 +60,16 @@ const namesFemale: string[] = [
   'Livia',
   'Claudia',
 ];
+
+export const defaultSettings: Settings = {
+  automateSkillCast: true,
+  showGrid: false,
+  drawParticles: true,
+  pause: false,
+  showUi: false,
+};
+
+export const defaultGold = () => 200;
 
 export const createAvailableCharacters = () => {
   const available = new Set<AnyCharacter>();
@@ -159,11 +170,25 @@ export const createHungryZombie = () => {
 
   return hungry;
 };
-export const defaultSettings: Settings = {
-  automateSkillCast: true,
-  showGrid: false,
-  drawParticles: true,
-  pause: false,
-  showUi: false,
+
+export const createGreenGorgon = () => {
+  const gorgon = new Enemy(
+    `Gorgon-${v4()}`,
+    'Green gorgon',
+    10000,
+    0,
+    50,
+    10,
+    createGreenGorgonAnimations(),
+    { x: 768, y: 0, width: 128, height: 128 },
+    createBasicAttack(0, 0, 50, 1),
+  );
+  gorgon.bounty = 1000;
+  gorgon.experience = 5000;
+  gorgon.health = 10000;
+  gorgon.stunRecovery = 75;
+  gorgon.description =
+    'Green gorgons are agile and relentless creatures. They slither through shadows, striking fear into any who dare cross their path.';
+
+  return gorgon;
 };
-export const defaultGold = () => 200;

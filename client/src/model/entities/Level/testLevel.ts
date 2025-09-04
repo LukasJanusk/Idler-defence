@@ -1,5 +1,6 @@
 import {
   createFastZombie,
+  createGreenGorgon,
   createHungryZombie,
   createSavageZombie,
   createZombieOne,
@@ -46,6 +47,8 @@ const createEnemyByType = (type: EnemyType) => {
       return createFastZombie();
     case 'hungryZombie':
       return createHungryZombie();
+    case 'greenGorgon':
+      return createGreenGorgon();
   }
 };
 const createEnemy = (
@@ -114,7 +117,7 @@ export const waveTwoEventsData: CreateEnemyEventData[] = [
   },
 ];
 export const waveThreeEventsData: CreateEnemyEventData[] = [
-  { enemyType: 'hungryZombie', count: 10, interval: 10000, startTime: 0 },
+  { enemyType: 'hungryZombie', count: 15, interval: 6000, startTime: 0 },
   {
     enemyType: 'zombieOne',
     count: 10,
@@ -125,7 +128,7 @@ export const waveThreeEventsData: CreateEnemyEventData[] = [
 ];
 export const waveFourEventsData: CreateEnemyEventData[] = [
   { enemyType: 'hungryZombie', count: 10, interval: 10000, startTime: 0 },
-  { enemyType: 'fastZombie', count: 15, interval: 4000, startTime: 18000 },
+  { enemyType: 'fastZombie', count: 15, interval: 3000, startTime: 18000 },
   {
     enemyType: 'zombieOne',
     count: 5,
@@ -145,8 +148,11 @@ export const waveFiveEventsData: CreateEnemyEventData[] = [
   { enemyType: 'savageZombie', count: 3, interval: 10000, startTime: 55000 },
 ];
 export const waveSixEventsData: CreateEnemyEventData[] = [
-  { enemyType: 'fastZombie', count: 30, interval: 3000, startTime: 0 },
-  { enemyType: 'savageZombie', count: 10, interval: 10000, startTime: 5000 },
+  { enemyType: 'fastZombie', count: 20, interval: 4000, startTime: 0 },
+  { enemyType: 'savageZombie', count: 10, interval: 8000, startTime: 5000 },
+];
+export const waveSevenEventsData: CreateEnemyEventData[] = [
+  { enemyType: 'greenGorgon', count: 3, interval: 10000, startTime: 0 },
 ];
 export const createLevelOne = (
   grid: Grid,
@@ -169,10 +175,23 @@ export const createLevelOne = (
     grid,
     onEnemyDeath,
   );
-  const waveSix = createEnemyWaveEvents(waveOneEventsData, grid, onEnemyDeath);
+  const waveSix = createEnemyWaveEvents(waveSixEventsData, grid, onEnemyDeath);
+  const waveSeven = createEnemyWaveEvents(
+    waveSevenEventsData,
+    grid,
+    onEnemyDeath,
+  );
   return {
     id: 'Level-1',
     name: 'Level 1',
-    waves: [waveOne, waveTwo, waveThree, wavefour, wavefive, waveSix],
+    waves: [
+      waveOne,
+      waveTwo,
+      waveThree,
+      wavefour,
+      wavefive,
+      waveSix,
+      waveSeven,
+    ],
   };
 };
