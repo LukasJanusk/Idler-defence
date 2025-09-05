@@ -4,12 +4,14 @@ import {
   createHungryZombie,
   createSavageZombie,
   createZombieOne,
+  createTestEnemy,
 } from '@/defaults';
 import { Grid } from '@/model/grid';
 import { LevelEventHandler, type LevelEvent } from '@/model/levelEventHandler';
-import type { Enemy } from '../enemy';
-import type { EnemyAction } from '../character';
+import type { Enemy } from '@/model/entities/enemy';
+import type { EnemyAction } from '@/model/entities/character';
 import type { CreateEnemyEventData, EnemyType, Level } from '@/types';
+import config from '@/config';
 
 export const createLevelEvents = (
   interval: number,
@@ -49,6 +51,8 @@ const createEnemyByType = (type: EnemyType) => {
       return createHungryZombie();
     case 'greenGorgon':
       return createGreenGorgon();
+    case 'testEnemy':
+      return createTestEnemy();
   }
 };
 const createEnemy = (
@@ -181,6 +185,7 @@ export const createLevelOne = (
     grid,
     onEnemyDeath,
   );
+
   return {
     id: 'Level-1',
     name: 'Level 1',
@@ -194,4 +199,28 @@ export const createLevelOne = (
       waveSeven,
     ],
   };
+};
+
+const testLevelWaveData: CreateEnemyEventData[] = [
+  { enemyType: 'testEnemy', count: 1, interval: 0, startTime: 0 },
+];
+
+export const createTestLevel = (
+  grid: Grid,
+  onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
+) => {
+  const waveOne = createEnemyWaveEvents(testLevelWaveData, grid, onEnemyDeath);
+  console.log('test level created');
+  return { id: 'test', name: 'test-level', waves: [waveOne] };
+};
+
+export const createLevel = (
+  grid: Grid,
+  onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
+) => {
+  if (config.env === 'test') {
+    console.log('test level created');
+    return createTestLevel(grid, onEnemyDeath);
+  }
+  return createLevelOne(grid, onEnemyDeath);
 };

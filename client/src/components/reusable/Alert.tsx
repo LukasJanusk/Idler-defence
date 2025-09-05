@@ -6,7 +6,7 @@ type AlertProps = {
   message: string;
   label?: string;
   onClose: () => void;
-  action: { name: string; handle: () => void };
+  action?: { name: string; handle: () => void };
 };
 
 export default function Alert({

@@ -14,6 +14,7 @@ import { createSavageZombieAnimations } from './model/animations/enemies/savageZ
 import { createFastZombieAnimations } from './model/animations/enemies/fastZombieAnimations';
 import { createHungryZombieAnimations } from './model/animations/enemies/HungryZombieAnimations';
 import { createGreenGorgonAnimations } from './model/animations/enemies/greenGorgonAnimations';
+import config from '@/config';
 
 const pickRandomName = (names: string[]): string => {
   const randomIndex = Math.floor(Math.random() * names.length);
@@ -73,12 +74,17 @@ export const defaultGold = () => 200;
 
 export const createAvailableCharacters = () => {
   const available = new Set<AnyCharacter>();
-  available.add(new Wizard(`Wizard${v4()}`, pickRandomName(namesMale)));
-  available.add(
-    new LightningMage(`LightningMage${v4()}`, pickRandomName(namesFemale)),
-  );
-  available.add(new Knight(`Knight${v4()}`, pickRandomName(namesMale)));
-  available.add(new FireMage(`FireMage${v4()}`, pickRandomName(namesMale)));
+  if (config.env === 'test')
+    available.add(new LightningMage('test lightning mage', 'test'));
+  else {
+    available.add(new Wizard(`Wizard${v4()}`, pickRandomName(namesMale)));
+    available.add(
+      new LightningMage(`LightningMage${v4()}`, pickRandomName(namesFemale)),
+    );
+    available.add(new Knight(`Knight${v4()}`, pickRandomName(namesMale)));
+    available.add(new FireMage(`FireMage${v4()}`, pickRandomName(namesMale)));
+  }
+
   return available;
 };
 export function initializeGameState(): GameState {
@@ -191,4 +197,24 @@ export const createGreenGorgon = () => {
     'Green gorgons are agile and relentless creatures. They slither through shadows, striking fear into any who dare cross their path.';
 
   return gorgon;
+};
+
+export const createTestEnemy = () => {
+  const enemy = new Enemy(
+    'test-enemy',
+    'Test zombie',
+    1,
+    0,
+    1,
+    5,
+    createZombieOneAnimations(),
+    { x: 384, y: 256, width: 128, height: 128 },
+    createBasicAttack(0, 0, 1, 1),
+  );
+  enemy.description = 'test description';
+  enemy.bounty = 10;
+  enemy.experience = 10;
+  enemy.health = 1;
+
+  return enemy;
 };

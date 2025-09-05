@@ -32,3 +32,23 @@ npm test -w client
 # back end tests
 npm test -w server
 ```
+
+### e2e
+
+Install playwright browsers
+
+```bash
+npx playwright install -w client && npx playwright install-deps -w client
+```
+
+Start server
+
+```bash
+npm run e2e -w s erver
+```
+
+Start client tests
+
+```bash
+npm run test:e2e -w client
+```

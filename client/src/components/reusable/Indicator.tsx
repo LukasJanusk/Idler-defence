@@ -42,11 +42,11 @@ export default function Indicator({ info, icon, value }: IndicatorProps) {
   const [elRef, modalOpen] = useHover<HTMLDivElement>();
   return (
     <div
-      className={`relative flex cursor-pointer flex-row items-center justify-between gap-1`}
+      className={`relative flex cursor-pointer flex-row items-center justify-between gap-[2px]`}
       ref={elRef}
     >
       <div
-        className={`border-box flex h-[28px] w-[28px] items-center justify-center rounded-full text-sm text-white ${backgroundColorStyles(
+        className={`border-box flex h-[28px] w-[28px] items-center justify-center rounded-full text-xs text-white ${backgroundColorStyles(
           icon,
         )}`}
       >
@@ -55,14 +55,14 @@ export default function Indicator({ info, icon, value }: IndicatorProps) {
       {icon !== '❔' && (
         <span
           className={
-            'min-w-[36px] max-w-[36px] rounded-md bg-medieval-parchment px-1 text-center text-xs font-semibold text-black'
+            'min-w-[34px] max-w-[38px] rounded-sm bg-medieval-parchment px-[1px] text-center text-xs font-semibold text-black'
           }
         >
           {displayValue()}
         </span>
       )}
       {modalOpen && info.length && (
-        <div className="absolute -top-[128px] left-1/2 z-50 max-h-[128px] min-h-[64px] min-w-[128px] -translate-x-1/2 overflow-auto rounded-md bg-medieval-parchment p-2 text-center font-sans text-xs text-black shadow-lg">
+        <div className="border-silver absolute -top-[128px] left-1/2 z-50 max-h-[128px] min-h-[64px] min-w-[128px] -translate-x-1/2 overflow-auto border-2 bg-medieval-parchment p-2 text-center font-sans text-xs text-black shadow-lg">
           {info}
         </div>
       )}

@@ -23,7 +23,8 @@ export type EnemyType =
   | 'savageZombie'
   | 'fastZombie'
   | 'hungryZombie'
-  | 'greenGorgon';
+  | 'greenGorgon'
+  | 'testEnemy';
 export type CreateEnemyEventData = {
   enemyType: EnemyType;
   count: number;

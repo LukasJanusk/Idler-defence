@@ -95,6 +95,7 @@ export default function GameOverForm({
         <input
           className="bg-medieval-dark/10 px-3 py-2 text-medieval-parchment placeholder-white/50 outline-none ring-2 ring-medieval-silver/40 transition focus:bg-medieval-stone focus:ring-2 focus:ring-medieval-silver"
           name="name"
+          id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}

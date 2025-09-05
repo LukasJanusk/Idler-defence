@@ -13,6 +13,7 @@ export default function EnemySprite({ enemy, setInfo }: EnemySpriteProps) {
   const showUI = useGameStore((store) => store.settings.showUi);
   return (
     <div
+      aria-label={`enemy ${enemy.name}`}
       onMouseEnter={() => setInfo(enemy)}
       onMouseLeave={() => {
         if (!showUI) setInfo(null);
