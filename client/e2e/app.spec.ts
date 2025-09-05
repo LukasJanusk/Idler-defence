@@ -4,7 +4,9 @@ test('has title', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('Idler defence')).toBeVisible();
 });
-test('On level end displays score form and submits', async ({ page }) => {
+test('On level end displays score form and submits and resets on close', async ({
+  page,
+}) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Menu button' }).click();
   await page.getByRole('button', { name: 'Always show UI' }).click();
@@ -21,4 +23,7 @@ test('On level end displays score form and submits', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Name:' }).click();
   await page.getByRole('textbox', { name: 'Name:' }).fill('test');
   await page.getByRole('button', { name: 'Submit' }).click();
+  await expect(page.getByRole('heading', { name: 'Highscores' })).toBeVisible();
+  await page.getByRole('button', { name: 'Close modal' }).click();
+  await expect(page.getByRole('button', { name: 'Next wave' })).toBeVisible();
 });
