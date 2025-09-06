@@ -8,6 +8,7 @@ type ParticleEffects = {
   splashMagic: (x: number, y: number, n: number) => void;
   splashSparks: (x: number, y: number, n: number) => void;
   splashLines: (x: number, y: number, n: number, arc?: number) => void;
+  splashHollowSquares: (x: number, y: number, n: number) => void;
 };
 export const ParticleContext = createContext<null | ParticleEffects>(null);
 

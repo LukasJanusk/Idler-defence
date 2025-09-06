@@ -27,7 +27,8 @@ export const createKnightStabAttack = (
   attack.onHit = (enemy?: Enemy<EnemyAction> | AnyCharacter) => {
     if (!enemy) return;
     const middle = getRectMiddle(enemy.rect);
-    grid.generateParticles('line', middle.x, middle.y + 20, 1);
+    grid.generateParticles('line', middle.x, middle.y + 20, 1, 0);
+    grid.generateParticles('blood', middle.x, middle.y + 20, 5);
   };
   return attack;
 };

@@ -17,6 +17,7 @@ import {
   splashBlood,
   splashEmbers,
   splashHealth,
+  splashHollowSquares,
   splashLines,
   splashMagic,
   splashSparks,
@@ -204,6 +205,8 @@ export class Grid {
         return this.particles.push(...splashSparks(x, y, n));
       case 'line':
         return this.particles.push(...splashLines(x, y, n, arc));
+      case 'hollowSquare':
+        return this.particles.push(...splashHollowSquares(x, y, n));
     }
   }
   updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {

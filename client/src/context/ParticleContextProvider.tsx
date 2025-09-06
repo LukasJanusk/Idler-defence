@@ -19,6 +19,7 @@ export default function ParticleContextProvider({
     splashMagic,
     splashSparks,
     splashLines,
+    splashHollowSquares,
   } = useParticles(ref);
 
   return (
@@ -31,6 +32,7 @@ export default function ParticleContextProvider({
         splashMagic,
         splashSparks,
         splashLines,
+        splashHollowSquares,
       }}
     >
       <Background />

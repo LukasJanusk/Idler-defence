@@ -10,6 +10,7 @@ export default function Particles() {
     splashMagic,
     splashSparks,
     splashLines,
+    splashHollowSquares,
   } = useParticleContext();
   return (
     <div className="absolute left-0 top-0 z-50 bg-white">
@@ -20,6 +21,9 @@ export default function Particles() {
       <Button onClick={() => splashMagic(500, 300, 120)}>Splash Magic</Button>
       <Button onClick={() => splashSparks(500, 300, 120)}>Splash Sparks</Button>
       <Button onClick={() => splashLines(500, 300, 1)}>Splash lines</Button>
+      <Button onClick={() => splashHollowSquares(500, 300, 12)}>
+        Splash squares
+      </Button>
     </div>
   );
 }

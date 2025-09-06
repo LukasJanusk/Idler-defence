@@ -543,7 +543,6 @@ export class Knight extends Character<KnightAction> {
       knightStabSound.currentTime = 0;
       knightStabSound.play();
     });
-    console.log('Knight audio not yet implemented');
   }
 }
 export class Wizard extends Character<WizardAction> {

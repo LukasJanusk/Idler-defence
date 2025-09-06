@@ -1,3 +1,5 @@
+import type { Rect } from '@/types';
+
 let particleId = 0;
 export type ParticleType =
   | 'blood'
@@ -6,9 +8,14 @@ export type ParticleType =
   | 'health'
   | 'magic'
   | 'spark'
-  | 'line';
+  | 'line'
+  | 'hollowSquare';
 
-export type AnyParticle = Particle | SlashParticle;
+export type AnyParticle =
+  | Particle
+  | SlashParticle
+  | ExpandingHollowSquareParticle
+  | SquareParticle;
 
 export class Particle {
   id: number;
@@ -68,7 +75,7 @@ export class BloodParticle extends Particle {
   constructor(x: number, y: number) {
     const vx = (Math.random() - 0.5) * 100;
     const vy = (Math.random() - 1) * 100;
-    super(x, y, vx, vy, Math.random() * 5, getRandomBloodColor(), 150);
+    super(x, y, vx, vy, Math.random() * 3, getRandomBloodColor(), 150);
   }
   update(dt: number) {
     this.vy += this.gravity * 0.001 * dt;
@@ -181,9 +188,9 @@ export class SlashParticle {
     this.vy += this.gravity * 0.001 * dt;
     this.x += this.vx * 0.001 * dt;
     this.y += this.vy * 0.001 * dt;
-    this.alpha -= 0.003 * dt;
-    this.thickness += 0.005 * dt;
-    this.length += 0.3 * dt;
+    this.alpha -= 0.004 * dt;
+    this.thickness += 0.007 * dt;
+    this.length += 0.7 * dt;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -206,6 +213,81 @@ export class SlashParticle {
   }
   isAlive() {
     return this.alpha > 0 && this.thickness < 50;
+  }
+}
+
+export class SquareParticle {
+  id: number;
+  rect: Rect;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  color: string;
+  alpha: number;
+  size: number;
+  gravity: number;
+  thickness: number = 4;
+  arc: number = 0;
+  constructor(
+    x: number,
+    y: number,
+    size: number,
+    vx: number,
+    vy: number,
+    color: string,
+    gravity: number = 0,
+    arc: number = Math.random() * Math.PI * 2,
+  ) {
+    this.id = particleId++;
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.size = size;
+    this.color = color;
+    this.alpha = 1;
+    this.gravity = gravity;
+    this.arc = arc;
+    this.rect = { x: this.x, y: this.y, width: this.size, height: this.size };
+  }
+
+  update(dt: number) {
+    this.vy += this.gravity * 0.001 * dt;
+    this.x += this.vx * 0.001 * dt;
+    this.y += this.vy * 0.001 * dt;
+    this.size += 0.002 * dt;
+    this.alpha -= 0.002 * dt;
+    this.size += 0.003 * dt;
+    this.thickness += 0.001 * dt;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.globalAlpha = Math.max(this.alpha, 0);
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.thickness;
+
+    ctx.strokeRect(
+      this.x - this.size / 2,
+      this.y - this.size / 2,
+      this.size,
+      this.size,
+    );
+
+    ctx.globalAlpha = 1;
+  }
+
+  isAlive() {
+    return this.alpha > 0 && this.size < 20;
+  }
+}
+
+export class ExpandingHollowSquareParticle extends SquareParticle {
+  constructor(x: number, y: number) {
+    const vx = (Math.random() - 0.5) * 100;
+    const vy = (Math.random() - 0.5) * 100;
+    super(x, y, Math.random() * 10, vx, vy, getRandomBrightColor());
+    this.thickness = Math.random() * 3;
   }
 }
 
@@ -236,9 +318,15 @@ export function splashLines(
   arc?: number,
 ) {
   return Array.from({ length: nParticles }).map(
-    () => new SlashParticle(x, y, 10, 1, getRandomSlashColor(), 50, 0, 1, arc),
+    () => new SlashParticle(x, y, 10, 1, getRandomSlashColor(), 30, 0, 1, arc),
   );
 }
+export function splashHollowSquares(x: number, y: number, nParticle: number) {
+  return Array.from({ length: nParticle }).map(
+    () => new ExpandingHollowSquareParticle(x, y),
+  );
+}
+
 function getRandomEmberColor() {
   const colors = ['#FFA500', '#FFD700', '#FF4500'];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -275,6 +363,22 @@ function getRandomSlashColor() {
     '#FFEFD5',
     '#F5F5F5',
     '#FFFACD',
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function getRandomBrightColor() {
+  const colors = [
+    '#FF69B4',
+    '#87CEFA',
+    '#8A2BE2',
+    '#FFD700',
+    '#00FA9A',
+    '#FF4500',
+    '#00CED1',
+    '#FF1493',
+    '#7FFF00',
+    '#1E90FF',
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 }

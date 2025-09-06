@@ -27,6 +27,9 @@ export function useParticles(
   const splashLines = (x: number, y: number, n: number, arc?: number) => {
     grid.generateParticles('line', x, y, n, arc);
   };
+  const splashHollowSquares = (x: number, y: number, n: number) => {
+    grid.generateParticles('hollowSquare', x, y, n);
+  };
   useEffect(() => {
     const onTick = (dt: number) => {
       const ctx = canvas.current?.getContext('2d');
@@ -48,5 +51,6 @@ export function useParticles(
     splashHealth,
     splashMagic,
     splashLines,
+    splashHollowSquares,
   };
 }

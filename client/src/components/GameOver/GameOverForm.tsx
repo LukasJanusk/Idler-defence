@@ -27,6 +27,7 @@ export default function GameOverForm({
     setLoading(true);
     try {
       const timestamp = new Date().toISOString();
+
       const createScoreData = parseCreateScore({
         score,
         name,
@@ -39,6 +40,8 @@ export default function GameOverForm({
         },
         body: JSON.stringify(createScoreData),
       });
+      if (!response.ok)
+        throw new Error('Failed to access server, please try again.');
       const data = await response.json();
       const parsed = parseHighscores(data);
       const userScore = parsed.find(
