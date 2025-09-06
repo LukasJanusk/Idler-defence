@@ -18,6 +18,7 @@ export default function ParticleContextProvider({
     splashHealth,
     splashMagic,
     splashSparks,
+    splashLines,
   } = useParticles(ref);
 
   return (
@@ -29,6 +30,7 @@ export default function ParticleContextProvider({
         splashHealth,
         splashMagic,
         splashSparks,
+        splashLines,
       }}
     >
       <Background />

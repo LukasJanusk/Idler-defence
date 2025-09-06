@@ -2,7 +2,7 @@ import { Attack } from '@/model/entities/attack';
 import { v4 } from 'uuid';
 import type { EnemyAction, Knight } from '../entities/character';
 import type { Grid } from '../grid';
-import { registerAttackToGrid } from '@/utils';
+import { getRectMiddle, registerAttackToGrid } from '@/utils';
 import { Debuff } from '../entities/debuff';
 import { GRID_AREA_SIZE } from '@/constants';
 import type { Enemy } from '../entities/enemy';
@@ -12,6 +12,7 @@ import { Buff } from '../entities/buff';
 export const createKnightStabAttack = (
   x: number,
   y: number,
+  grid: Grid,
   multiplier: number = 1,
   damage: number = 80,
 ) => {
@@ -23,6 +24,11 @@ export const createKnightStabAttack = (
     0,
   );
   attack.multiplier = multiplier;
+  attack.onHit = (enemy?: Enemy<EnemyAction> | AnyCharacter) => {
+    if (!enemy) return;
+    const middle = getRectMiddle(enemy.rect);
+    grid.generateParticles('line', middle.x, middle.y + 20, 1);
+  };
   return attack;
 };
 export const createKnightIntimidateAttack = (
@@ -62,6 +68,7 @@ export const initKnightAttacks = (grid: Grid, knight: Knight) => {
       createKnightStabAttack(
         knight.rect.x,
         knight.rect.y,
+        grid,
         knight.skills.find((s) => s.action === 'attack')?.multiplier,
         knight.skills.find((s) => s.action === 'attack')?.damage,
       ),

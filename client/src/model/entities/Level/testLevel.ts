@@ -156,7 +156,7 @@ export const waveSixEventsData: CreateEnemyEventData[] = [
   { enemyType: 'savageZombie', count: 10, interval: 8000, startTime: 5000 },
 ];
 export const waveSevenEventsData: CreateEnemyEventData[] = [
-  { enemyType: 'greenGorgon', count: 3, interval: 10000, startTime: 0 },
+  { enemyType: 'greenGorgon', count: 1, interval: 0, startTime: 0 },
 ];
 export const createLevelOne = (
   grid: Grid,

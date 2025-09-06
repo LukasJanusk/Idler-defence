@@ -13,13 +13,14 @@ import { getRectMiddle, removeExpired } from '../utils';
 import { Enemy } from './entities/enemy';
 import { Attack } from './entities/attack';
 import {
-  Particle,
   splashArane,
   splashBlood,
   splashEmbers,
   splashHealth,
+  splashLines,
   splashMagic,
   splashSparks,
+  type AnyParticle,
   type ParticleType,
 } from './entities/particles';
 import { MAXIMUM_PARTICLES, PARTY_POSITIO_ROW } from '@/constants';
@@ -143,7 +144,7 @@ export class Grid {
   horizontal: number;
   vertical: number;
   areaSize: number;
-  particles: Particle[] = [];
+  particles: AnyParticle[] = [];
   renderParticles: boolean = settings.drawParticles;
 
   constructor(horizontal: number, vertical: number, areaSize: number) {
@@ -180,7 +181,13 @@ export class Grid {
   setRenderParticles(render: boolean) {
     this.renderParticles = render;
   }
-  generateParticles(type: ParticleType, x: number, y: number, n: number) {
+  generateParticles(
+    type: ParticleType,
+    x: number,
+    y: number,
+    n: number,
+    arc?: number,
+  ) {
     if (!this.renderParticles) return;
     switch (type) {
       case 'blood':
@@ -195,6 +202,8 @@ export class Grid {
         return this.particles.push(...splashMagic(x, y, n));
       case 'spark':
         return this.particles.push(...splashSparks(x, y, n));
+      case 'line':
+        return this.particles.push(...splashLines(x, y, n, arc));
     }
   }
   updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {
