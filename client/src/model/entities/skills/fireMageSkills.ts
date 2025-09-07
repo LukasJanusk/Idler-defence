@@ -1,8 +1,8 @@
 import type { Skill } from '@/types';
 import fireball from '@/assets/skill_icons/fire_wizard_fireball_icon.png';
-import fireMageIdle from '@/assets/skill_icons/fire_mage_recovery_icon.png';
+import fireMageIdle from '@/assets/skill_icons/fire_wizard_recovery_icon.png';
 import fireMageStab from '@/assets/skill_icons/fire_wizard_stab_icon.png';
-import flamejet from '@/assets/skill_icons/firewizard_flamejet_icon.png';
+import flamejet from '@/assets/skill_icons/fire_wizard_flamejet_icon.png';
 import type { FireMageAction } from '../character';
 import {
   fireBallLevelUpData,

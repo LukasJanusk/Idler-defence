@@ -53,10 +53,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         (c) => c.id === id,
       );
       if (!char) return store;
-      if (char.price > store.gold) {
+      const toPay = char.price * (1 + store.grid.getCharacters().length);
+      if (toPay > store.gold) {
         return store;
       }
-      store.gold -= char.price;
+      store.gold -= toPay;
       const grid = store.grid;
       char.pos = pos;
       char.initAttributes();

@@ -37,7 +37,7 @@ export default function SkillButton({
     ? 'bg-medieval-stoneCrimson'
     : isHovering && !disabled
       ? 'bg-medieval-green-800'
-      : 'bg-medieval-stone';
+      : 'bg-medieval-dark/40';
   return (
     <button
       ref={hoverRef}
@@ -50,7 +50,7 @@ export default function SkillButton({
         className={`absolute left-0 top-0 ${backgroundColorStyles} transiotn-all duration-200`}
       >
         <SkillBorder
-          className={`relative z-10 transition-all duration-200 ${sizeStyles} ${disabled ? 'text-medieval-silver' : isHovering || selected ? 'text-secondary' : 'text-medieval-silver'}`}
+          className={`relative z-20 transition-all duration-200 ${sizeStyles} ${disabled ? 'text-medieval-silver' : isHovering || selected ? 'text-secondary' : 'text-medieval-silver'}`}
         />
         {url && url !== '' ? (
           <img
