@@ -10,6 +10,7 @@ import SkillButton from '../reusable/SkillButton';
 import GoldDisplay from './GoldDisplay';
 import WaveDisplay from './WaveDisplay';
 import NextWaveButton from './NextWaveButton';
+import AddNewCharacterButton from '../CharacterScreen/CharacterSprite/AddNewCharacterButton';
 
 type InstructionsProps = {
   onClose?: () => void;
@@ -23,12 +24,12 @@ const categs: Category[] = [
     title: 'characters',
     description:
       'You can hire characters for gold. ' +
-      'On the left side of the screen you can access Hire window by clicking one of the plus icons. ' +
-      'Characters and hire cost is displayed bleow. ' +
+      'On the left side of the screen clicking one of the plus icons. ' +
+      'Characters cost and names are displayed below. ' +
       'In that screen you can also see Attributes and skills character has. ' +
-      'You can hire up to 4 heros. Each hero has different set of stregths and weaknesses ' +
+      'You can hire up to 4 heros to your party. Each hero has different set of stregths and weaknesses ' +
       'For example knighs are tough and have alot of health but they do not have ranged attaks. ' +
-      'While wizards are powerful ranged attackers, but they are very fragile if enemies gets too close.',
+      'While wizards are powerful ranged attackers, but they are very fragile if enemies get too close.',
   },
   {
     title: 'attributes',
@@ -36,7 +37,7 @@ const categs: Category[] = [
       'Each attribute is resposible for different characteristics of your heroes. ' +
       'Every point of strength increase damage dealt by 1%. ' +
       'Dexterity increase heroes actions speed. ' +
-      'You can see how long each skill takes to cast on the character skill screen indicators. ' +
+      'You can see how long each skill takes to cast on the character skill screen. ' +
       'Every point of intelligence increase Energy by 10 points and also makes you regenerate it faster. ' +
       'Vitality increase Health points by 10 and make you regenerate Health faster. ',
   },
@@ -46,7 +47,7 @@ const categs: Category[] = [
       'Heroes have 4 skills. First skill usually have a passive effect, while other three are active skills. ' +
       'Active skills cost Energy. Once you run out of Energy hero activates his/hers passive skill. ' +
       'Skill cast speed, damage, and cost are displayed at the bottom of the skill screen. ' +
-      'Tip: you can enable autocast in settings. Autocast allows heroes to activate their last cast skill once they have enough Energy. ',
+      'Tip: you can enable autocast in settings. Autocast allows heroes to use their last cast active skill once they have enough Energy. ',
   },
   {
     title: 'enemies',
@@ -64,7 +65,7 @@ const categs: Category[] = [
   {
     title: 'wave',
     description:
-      'Levels consist of waves. You can see total and current wave on the top right corner of the screen. ' +
+      'Levels consist of waves. You can see total and current wave on the top left corner of the screen. ' +
       'Once you deafeat all enemies for that wave "Next wave" button appears. ' +
       'On a new wave start your heroes regenerate their Energy and Health to full. ' +
       'Tip: You can time this for your advantage!',
@@ -102,9 +103,13 @@ export default function Instructions({ onClose }: InstructionsProps) {
             )}
             {categories[selected].title === 'characters' && (
               <div className="mb-2 flex flex-row justify-around bg-medieval-silver/80">
+                <div className="flex flex-col justify-center">
+                  {' '}
+                  <AddNewCharacterButton position="pos1" demo={true} />
+                </div>
+
                 <Sprite animation={charAnim.idle} entity="enemy" />
                 <Sprite animation={charAnim.magicBall} entity="enemy" />
-                <Sprite animation={charAnim.dead} entity="enemy" />
               </div>
             )}
             {categories[selected].title === 'attributes' && (
