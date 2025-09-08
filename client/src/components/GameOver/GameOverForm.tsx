@@ -1,11 +1,11 @@
 import type { Highscores, Score } from '@/types';
 import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
-import { parseCreateScore, parseHighscores } from '../../schema/scoreSchema';
+import { parseCreateScore, parsePostScoreResponse } from '@/schema/scoreSchema';
 import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
 import config from '@/config';
-import CloseButton from '../reusable/CloseButton';
+import CloseButton from '@/components/reusable/CloseButton';
 
 type GameOverFormProps = {
   score: number;
@@ -43,14 +43,14 @@ export default function GameOverForm({
       if (!response.ok)
         throw new Error('Failed to access server, please try again.');
       const data = await response.json();
-      const parsed = parseHighscores(data);
-      const userScore = parsed.find(
-        (s) => s.date === timestamp && s.name === name && s.score === score,
+      const parsed = parsePostScoreResponse(data);
+      const userScore = parsed.highscores.find(
+        (s) => s.id === parsed.originalScore.id,
       );
       if (!userScore) {
         throw new Error('Could not find userscore');
       }
-      onSubmit(parsed, userScore);
+      onSubmit(parsed.highscores, userScore);
     } catch (err) {
       if (err instanceof ZodError) {
         setError(z.prettifyError(err));

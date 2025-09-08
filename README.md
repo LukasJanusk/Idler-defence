@@ -1,3 +1,11 @@
+# React Game Project
+
+## Project description
+
+Goal of this project is to create MVP of a 2D RPG game with Tower defence mechanics.
+Currently game support 4 playable characters and one test level for showcase.
+Ui should be intuitive to use. For more details on how things work click Help button in the Menu.
+
 ## Setup
 
 1. `npm install`
@@ -44,7 +52,7 @@ npx playwright install -w client && npx playwright install-deps -w client
 Start server
 
 ```bash
-npm run e2e -w s erver
+npm run e2e -w server
 ```
 
 Start client tests

@@ -17,7 +17,9 @@ export const postHighscore = (db: Database) => {
         insertedData.score,
         5
       );
-      res.status(201).json(highscores);
+      res
+        .status(201)
+        .json({ highscores: highscores, originalScore: insertedData });
     } catch (err) {
       if (err instanceof ZodError) {
         res.status(400).json(prettifyError(err));

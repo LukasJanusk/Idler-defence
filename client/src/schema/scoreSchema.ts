@@ -13,10 +13,19 @@ const scoreSchema = z.object({
 
 const highscores = z.array(scoreSchema);
 const createScoreSchema = scoreSchema.omit({ id: true, rank: true });
+const postScoreResponse = z.object({
+  originalScore: scoreSchema.omit({ rank: true }),
+  highscores: highscores,
+});
+
 export const parseCreateScore = (data: unknown) =>
   createScoreSchema.parse(data);
+export const parsePostScoreResponse = (data: unknown) =>
+  postScoreResponse.parse(data);
 export const parseScore = (data: unknown) => scoreSchema.parse(data);
 export const parseHighscores = (data: unknown) => highscores.parse(data);
+
 export type Score = z.infer<typeof scoreSchema>;
 export type CreateScore = z.infer<typeof createScoreSchema>;
 export type Highscores = z.infer<typeof highscores>;
+export type PostScoreResponse = z.infer<typeof postScoreResponse>;

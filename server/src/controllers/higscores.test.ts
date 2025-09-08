@@ -12,15 +12,17 @@ beforeEach(() => {
   db.deleteFrom('game.score').execute();
 });
 describe('ScoreController', () => {
-  it.skip('should create a score', async () => {
+  it('should create a score', async () => {
     const response = await request(app)
       .post('/api/highscores')
       .send({ name: 'Alice', score: 100, date: new Date().toISOString() });
-
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.name).toBe('Alice');
-    expect(response.body.score).toBe(100);
+    expect(response.body.highscores.length).toBe(1);
+    expect(response.body.highscores).toContainEqual({
+      ...response.body.originalScore,
+      id: expect.any(Number),
+      rank: expect.any(Number),
+    });
   });
   it('should get all scores', async () => {
     const response = await request(app).get('/api/highscores');
