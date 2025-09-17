@@ -170,6 +170,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...store,
         levels: [createLevel(grid, createStoreCallbacksForLevel(store))],
         availableCharacters: createAvailableCharacters(),
+        settings: { ...store.settings, pause: false },
         gold: 200,
         score: 0,
         currentLevel: 0,
@@ -185,7 +186,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.gameClock.stop();
       store.score = calculateScore(store.gold, store.grid);
 
-      return { ...store, gameOver: true };
+      return {
+        ...store,
+        gameOver: true,
+        settings: { ...store.settings, pause: true },
+      };
     }),
   selectPosition: (pos) =>
     set((store) => ({ ...store, selectedPosition: pos })),
