@@ -33,7 +33,7 @@ describe('registerEntity', () => {
     expect(area.characters).toHaveLength(1);
   });
 
-  it('Does not allow second character to be registered to the same area', () => {
+  it('does not allow second character to be registered to the same area', () => {
     const area = new Area(128, 128, 2, 2, 'test-area-0-0');
     const character = createTestKnight();
     const character2 = createTestKnight({ id: 'knight-test-2' });

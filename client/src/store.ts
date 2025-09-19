@@ -106,6 +106,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       store.gold -= skill.level * skill.skillLevelUpData.upgradeCost;
       char.levelUpSkill<typeof skill.action>(skill);
+
       return store;
     });
   },
