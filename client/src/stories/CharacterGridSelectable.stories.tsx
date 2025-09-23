@@ -1,6 +1,6 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import CharacterGridSelectable, {
-  type CharacterGridSelectableProps,
+  type Props as CharacterGridSelectableProps,
 } from '@/components/CharacterScreen/CharacterSprite/CharacterGridSelectable';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters } from '@/defaults';
