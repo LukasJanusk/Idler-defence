@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-type ToggleProps = {
+type Props = {
   on?: boolean;
   defaultOn?: boolean;
   onClick?: (state: boolean) => void;
@@ -10,7 +10,7 @@ export default function Toggle({
   on: controlledOn,
   defaultOn = false,
   onClick,
-}: ToggleProps) {
+}: Props) {
   const [uncontrolledOn, setUncontrolledOn] = useState(defaultOn);
   const isControlled = controlledOn !== undefined;
   const on = isControlled ? controlledOn : uncontrolledOn;

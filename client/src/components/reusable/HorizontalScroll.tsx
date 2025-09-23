@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import scroll from '@/assets/scroll_horizontal.png';
 
-type HorizontalScrollProps = {
+type Props = {
   children: ReactNode;
 };
 
-export default function HorizontalScroll({ children }: HorizontalScrollProps) {
+export default function HorizontalScroll({ children }: Props) {
   return (
     <div className="relative h-10">
       <img

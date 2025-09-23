@@ -3,7 +3,7 @@ import { useGameStore } from '@/store';
 import type { PartyPositionName } from '@/types';
 import type React from 'react';
 
-type PositionChangeButtonProps = {
+type Props = {
   position: PartyPositionName;
   direction: 'left' | 'right';
   size: 'sm' | 'md' | 'lg';
@@ -13,7 +13,7 @@ export default function PositionChangeButton({
   position,
   direction,
   size,
-}: PositionChangeButtonProps) {
+}: Props) {
   const moveCharacter = useGameStore((store) => store.moveCharacter);
 
   const moveLeft = (e: React.MouseEvent) => {

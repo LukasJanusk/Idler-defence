@@ -3,13 +3,13 @@ import type { Animation } from '@/model/animations/animation';
 import useSpriteLoad from '@/hooks/useSpriteLoad';
 import { LoaderCircleIcon } from 'lucide-react';
 
-type SpriteProps = {
+type Props = {
   animation: Animation;
   entity: 'character' | 'enemy';
   scale?: number;
 };
 
-export default function Sprite({ animation, entity, scale = 1 }: SpriteProps) {
+export default function Sprite({ animation, entity, scale = 1 }: Props) {
   const frame = useAnimation(animation);
   const size = useSpriteLoad(animation);
   if (!animation) return <div>Animation not found!</div>;

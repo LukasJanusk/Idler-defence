@@ -2,7 +2,7 @@ import { useGameStore } from '@/store';
 import type { AnyCharacter } from '../../../types';
 import Container from '../../reusable/Container';
 
-type CharacterSelectProps = {
+type Props = {
   availableCharacters: Set<AnyCharacter>;
   selected: string | null;
   setSelected: (id: string) => void;
@@ -12,7 +12,7 @@ export default function CharacterSelect({
   availableCharacters,
   selected,
   setSelected,
-}: CharacterSelectProps) {
+}: Props) {
   const handleSelectCharacter = (charId: string) => {
     setSelected(charId);
   };

@@ -4,11 +4,11 @@ import Bar from '../reusable/Bar';
 import Indicator from '../reusable/Indicator';
 import { useGameStore } from '@/store';
 
-type EnemyInfoProps = {
+type Props = {
   enemy: Enemy<EnemyAction> | null;
 };
 
-export default function EnemyInfo({ enemy }: EnemyInfoProps) {
+export default function EnemyInfo({ enemy }: Props) {
   const showUI = useGameStore((store) => store.settings.showUi);
   if (!showUI && (enemy === null || enemy.state === 'dead')) return <></>;
   return (

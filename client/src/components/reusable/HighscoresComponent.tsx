@@ -1,7 +1,7 @@
 import type { Highscores, Score } from '@/types';
 import { X } from 'lucide-react';
 
-type HighscoreComponentProps = {
+type Props = {
   score: Score;
   highscores: Highscores;
   onClose?: () => void;
@@ -10,7 +10,7 @@ export default function HighscoresComponent({
   score,
   highscores,
   onClose,
-}: HighscoreComponentProps) {
+}: Props) {
   return (
     <div className="relative max-h-[512px] min-h-[256px] w-[512px] border-4 border-medieval-silver bg-medieval-stone p-4 text-medieval-parchment shadow-xl">
       <h1 className="my-2 text-xl font-bold">Highscores</h1>

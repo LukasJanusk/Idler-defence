@@ -1,10 +1,10 @@
 import { X } from 'lucide-react';
 
-type CloseButtonProps = {
+type Props = {
   onClose?: () => void;
 };
 
-export default function CloseButton({ onClose }: CloseButtonProps) {
+export default function CloseButton({ onClose }: Props) {
   return (
     <button
       aria-label="Close modal"

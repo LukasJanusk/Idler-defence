@@ -1,11 +1,11 @@
 import type { Projectile } from '@/model/entities/projectile';
 import Sprite from '@/components/reusable/Sprite';
 
-type ProjectileProps = {
+type Props = {
   projectile: Projectile;
 };
 
-export default function ProjectileSprite({ projectile }: ProjectileProps) {
+export default function ProjectileSprite({ projectile }: Props) {
   return (
     <div
       aria-label={`${projectile.name} projectile`}

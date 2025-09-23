@@ -4,12 +4,10 @@ import { useParticles } from '@/hooks/useParticles';
 import { GAME_HEIGHT, GAME_WIDTH } from '../constants';
 import Background from '@/components/Background';
 
-type ParticleContextProps = {
+type Props = {
   children: ReactNode;
 };
-export default function ParticleContextProvider({
-  children,
-}: ParticleContextProps) {
+export default function ParticleContextProvider({ children }: Props) {
   const ref = useRef<null | HTMLCanvasElement>(null);
   const {
     splashBlood,

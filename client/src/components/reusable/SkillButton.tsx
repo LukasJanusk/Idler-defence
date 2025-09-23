@@ -2,7 +2,7 @@ import { ReactComponent as SkillBorder } from '@/assets/skill_border.svg?react';
 import { useHover } from '@/hooks/useHover';
 import missing from '@/assets/skill_icons/no_skill_icon.png';
 
-type SkillButtonProps = {
+type Props = {
   url: string;
   skillName: string;
   selected?: boolean;
@@ -18,7 +18,7 @@ export default function SkillButton({
   size = 'md',
   onClick,
   disabled = false,
-}: SkillButtonProps) {
+}: Props) {
   const xsStyles = 'h-[38px] w-[38px]';
   const smStyles = 'h-[48px] w-[48px]';
   const mdStyles = 'h-[56px] w-[56px]';

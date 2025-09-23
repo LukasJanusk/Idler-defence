@@ -210,7 +210,6 @@ export const createTestLevel = (
   onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
 ) => {
   const waveOne = createEnemyWaveEvents(testLevelWaveData, grid, onEnemyDeath);
-  console.log('test level created');
   return { id: 'test', name: 'test-level', waves: [waveOne] };
 };
 
@@ -219,7 +218,6 @@ export const createLevel = (
   onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
 ) => {
   if (config.env === 'test') {
-    console.log('test level created');
     return createTestLevel(grid, onEnemyDeath);
   }
   return createLevelOne(grid, onEnemyDeath);

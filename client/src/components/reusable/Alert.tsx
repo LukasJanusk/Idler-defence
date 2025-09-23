@@ -2,7 +2,7 @@ import Button from './Button';
 import CloseButton from './CloseButton';
 import { AlertCircle } from 'lucide-react';
 
-type AlertProps = {
+type Props = {
   message: string;
   label?: string;
   onClose: () => void;
@@ -14,7 +14,7 @@ export default function Alert({
   onClose,
   label = 'Alert',
   action,
-}: AlertProps) {
+}: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="relative flex max-h-[512px] w-[320px] flex-col gap-2 border-4 border-medieval-silver bg-medieval-stone p-4 text-medieval-parchment shadow-xl">

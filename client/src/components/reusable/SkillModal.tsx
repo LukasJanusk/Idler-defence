@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 import { GRID_AREA_SIZE } from '@/constants';
 
-type GameModalProps = {
+type Props = {
   size: 'sm' | 'md' | 'lg';
   title?: string;
   children: ReactNode;
 };
 
-export default function GameModal({ size, title, children }: GameModalProps) {
+export default function GameModal({ size, title, children }: Props) {
   let width = GRID_AREA_SIZE * 1.5;
   let height = GRID_AREA_SIZE * 1.5;
   if (size === 'md') {

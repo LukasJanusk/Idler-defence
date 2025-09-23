@@ -6,12 +6,10 @@ import type { Skill } from '@/types';
 type CharacterToHireSkillsProps<T extends string> = {
   skills: Skill<T>[];
 };
-type CharacterToHireSkillProps<T extends string> = {
+type Props<T extends string> = {
   skill: Skill<T>;
 };
-function CharacterToHireSkill<T extends string>({
-  skill,
-}: CharacterToHireSkillProps<T>) {
+function CharacterToHireSkill<T extends string>({ skill }: Props<T>) {
   const [divRef, hover] = useHover<HTMLDivElement>();
   return (
     <div key={skill.name} ref={divRef} className="relative">

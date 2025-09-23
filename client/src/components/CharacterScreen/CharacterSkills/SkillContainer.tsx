@@ -9,7 +9,7 @@ import { PlusCircle } from 'lucide-react';
 import { useHover } from '@/hooks/useHover';
 import { MAXIMUM_SKILL_LEVEL } from '@/constants';
 
-type SkillContainerProps<T extends string> = {
+type Props<T extends string> = {
   skills: Skill<T>[];
   state: CharacterAction;
   position: PartyPositionName;
@@ -18,7 +18,7 @@ export default function SkillContainer<T extends string>({
   skills,
   state,
   position,
-}: SkillContainerProps<T>) {
+}: Props<T>) {
   const [selectedSkill, setSelectedSkill] = useState<Skill<T> | null>(
     skills.find((skill) => skill.action === state) || null,
   );

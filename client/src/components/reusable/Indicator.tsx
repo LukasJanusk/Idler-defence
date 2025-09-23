@@ -2,13 +2,13 @@ import { useHover } from '@/hooks/useHover';
 
 export type IndicatorIcons = '⚔️' | '⏳' | '🔵' | '❔' | '🛡️' | '💨';
 
-type IndicatorProps = {
+type Props = {
   info: string;
   icon: IndicatorIcons;
   value: number;
 };
 
-export default function Indicator({ info, icon, value }: IndicatorProps) {
+export default function Indicator({ info, icon, value }: Props) {
   const backgroundColorStyles = (icon: IndicatorIcons) => {
     switch (icon) {
       case '⚔️':

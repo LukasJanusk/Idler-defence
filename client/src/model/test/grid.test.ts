@@ -40,21 +40,25 @@ describe('getAreaFromPos', () => {
     expect(area3!.column).toBe(1);
     expect(area4!.column).toBe(0);
   });
+
   it('returns position with range', () => {
     const grid = createDefaultGrid();
     const area = grid.getAreaFromPos('pos1', 4);
+
     expect(area!.row).toBe(2);
     expect(area!.column).toBe(7);
   });
+
   it('returns null when area out of bounds', () => {
     const grid = createDefaultGrid();
     const area1 = grid.getAreaFromPos('pos4', 9);
-    expect(area1).toBeNull();
     const area2 = grid.getAreaFromPos('pos3', 8);
-    expect(area2).toBeNull();
     const area3 = grid.getAreaFromPos('pos2', 7);
-    expect(area3).toBeNull();
     const area4 = grid.getAreaFromPos('pos1', 6);
+
+    expect(area1).toBeNull();
+    expect(area2).toBeNull();
+    expect(area3).toBeNull();
     expect(area4).toBeNull();
   });
 });
@@ -64,32 +68,45 @@ describe('getCharacterFromPosition', () => {
     const grid = createDefaultGrid();
     const knight = createTestKnight();
     grid.grid[PARTY_POSITIO_ROW][3].characters.push(knight);
+
     const character = grid.getCharacterFromPosition('pos1');
+
     expect(character).toEqual(knight);
   });
+
   it('returns Character from position2', () => {
     const grid = createDefaultGrid();
     const knight = createTestKnight();
     grid.grid[PARTY_POSITIO_ROW][2].characters.push(knight);
+
     const character = grid.getCharacterFromPosition('pos2');
+
     expect(character).toEqual(knight);
   });
+
   it('returns Character from position3', () => {
     const grid = createDefaultGrid();
     const knight = createTestKnight();
     grid.grid[PARTY_POSITIO_ROW][1].characters.push(knight);
+
     const character = grid.getCharacterFromPosition('pos3');
+
     expect(character).toEqual(knight);
   });
+
   it('returns Character from position3', () => {
     const grid = createDefaultGrid();
     const knight = createTestKnight();
     grid.grid[PARTY_POSITIO_ROW][0].characters.push(knight);
+
     const character = grid.getCharacterFromPosition('pos4');
+
     expect(character).toEqual(knight);
   });
+
   it('returns null when no character in position', () => {
     const grid = createDefaultGrid();
+
     expect(grid.getCharacterFromPosition('pos1')).toEqual(null);
     expect(grid.getCharacterFromPosition('pos2')).toEqual(null);
     expect(grid.getCharacterFromPosition('pos3')).toEqual(null);
@@ -101,13 +118,9 @@ describe('setCharacterToPosition', () => {
     const col = 3;
     const grid = createDefaultGrid();
     const knight = createTestKnight();
-    expect(knight.rect).toEqual({
-      x: 0,
-      y: 0,
-      width: GRID_AREA_SIZE,
-      height: GRID_AREA_SIZE,
-    });
+
     grid.setCharacterToPosition('pos1', knight);
+
     expect(grid.grid[PARTY_POSITIO_ROW][col].characters[0]).toEqual(knight);
     expect(knight.rect).toEqual({
       x: GRID_AREA_SIZE * col,
@@ -116,17 +129,14 @@ describe('setCharacterToPosition', () => {
       height: GRID_AREA_SIZE,
     });
   });
+
   it('sets Character to position2', () => {
     const col = 2;
     const grid = createDefaultGrid();
     const knight = createTestKnight();
-    expect(knight.rect).toEqual({
-      x: 0,
-      y: 0,
-      width: GRID_AREA_SIZE,
-      height: GRID_AREA_SIZE,
-    });
+
     grid.setCharacterToPosition('pos2', knight);
+
     expect(grid.grid[PARTY_POSITIO_ROW][col].characters[0]).toEqual(knight);
     expect(knight.rect).toEqual({
       x: GRID_AREA_SIZE * col,
@@ -135,17 +145,14 @@ describe('setCharacterToPosition', () => {
       height: GRID_AREA_SIZE,
     });
   });
+
   it('sets Character to position3', () => {
     const col = 1;
     const grid = createDefaultGrid();
     const knight = createTestKnight();
-    expect(knight.rect).toEqual({
-      x: 0,
-      y: 0,
-      width: GRID_AREA_SIZE,
-      height: GRID_AREA_SIZE,
-    });
+
     grid.setCharacterToPosition('pos3', knight);
+
     expect(grid.grid[PARTY_POSITIO_ROW][col].characters[0]).toEqual(knight);
     expect(knight.rect).toEqual({
       x: GRID_AREA_SIZE * col,
@@ -154,17 +161,14 @@ describe('setCharacterToPosition', () => {
       height: GRID_AREA_SIZE,
     });
   });
+
   it('sets Character to position4', () => {
     const col = 0;
     const grid = createDefaultGrid();
     const knight = createTestKnight();
-    expect(knight.rect).toEqual({
-      x: 0,
-      y: 0,
-      width: GRID_AREA_SIZE,
-      height: GRID_AREA_SIZE,
-    });
+
     grid.setCharacterToPosition('pos4', knight);
+
     expect(grid.grid[PARTY_POSITIO_ROW][col].characters[0]).toEqual(knight);
     expect(knight.rect).toEqual({
       x: GRID_AREA_SIZE * col,
@@ -178,6 +182,7 @@ describe('setCharacterToPosition', () => {
 describe('removeCharacterFromPosition', () => {
   it('returns null when no character in that position', () => {
     const grid = createDefaultGrid();
+
     expect(grid.removeCharactersFromPosition('pos1')).toEqual(null);
     expect(grid.removeCharactersFromPosition('pos2')).toEqual(null);
     expect(grid.removeCharactersFromPosition('pos3')).toEqual(null);
@@ -188,8 +193,9 @@ describe('removeCharacterFromPosition', () => {
     const grid = createDefaultGrid();
     const knight = createTestKnight();
     grid.grid[PARTY_POSITIO_ROW][0].characters.push(knight);
-    expect(grid.grid[PARTY_POSITIO_ROW][0].characters.length).toEqual(1);
+
     const character = grid.removeCharactersFromPosition('pos4');
+
     expect(character).toEqual(knight);
     expect(grid.grid[PARTY_POSITIO_ROW][0].characters).toEqual([]);
   });

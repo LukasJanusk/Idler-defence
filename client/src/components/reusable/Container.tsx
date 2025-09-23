@@ -1,12 +1,12 @@
 import { ReactComponent as LargeBorder } from '@/assets/large_border.svg?react';
 import { GRID_AREA_SIZE } from '@/constants';
 
-type ContainerProps = {
+type Props = {
   children: React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
 };
 
-export default function Container({ children, size = 'md' }: ContainerProps) {
+export default function Container({ children, size = 'md' }: Props) {
   let width = GRID_AREA_SIZE;
   let height = GRID_AREA_SIZE;
 

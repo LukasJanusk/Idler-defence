@@ -27,6 +27,7 @@ vi.stubGlobal('Image', MockImage);
 describe('registerEntity', () => {
   it('registers Character correctly', () => {
     const area = new Area(128, 128, 0, 0, 'test-area-0-0');
+
     const character = createTestKnight();
     area.registerEntity(character);
 
@@ -37,6 +38,7 @@ describe('registerEntity', () => {
     const area = new Area(128, 128, 2, 2, 'test-area-0-0');
     const character = createTestKnight();
     const character2 = createTestKnight({ id: 'knight-test-2' });
+
     area.registerEntity(character);
 
     expect(character.rect.x).toEqual(area.rect.x);
@@ -103,7 +105,6 @@ describe('registerEntity', () => {
     const attack2 = createTestAttack();
     const proj1 = createTestProjectile();
     const proj2 = createTestProjectile();
-
     attack1.isAlive = false;
     proj1.isAlive = false;
 

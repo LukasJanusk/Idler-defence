@@ -7,17 +7,13 @@ import z, { ZodError } from 'zod';
 import config from '@/config';
 import CloseButton from '@/components/reusable/CloseButton';
 
-type GameOverFormProps = {
+type Props = {
   score: number;
   onSubmit: (Highscores: Highscores, userScore: Score) => void;
   onClose: () => void;
 };
 
-export default function GameOverForm({
-  onSubmit,
-  onClose,
-  score,
-}: GameOverFormProps) {
+export default function GameOverForm({ onSubmit, onClose, score }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState('');

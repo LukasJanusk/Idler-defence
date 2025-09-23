@@ -4,7 +4,7 @@ import { GRID_AREA_SIZE } from '@/constants';
 import { useGameStore } from '@/store';
 import type { AnyCharacter, PartyPositionName } from '@/types';
 
-export type CharacterGridSelectableProps = {
+export type Props = {
   position: PartyPositionName;
   character: AnyCharacter | null;
 };
@@ -18,7 +18,7 @@ function SelectedIndicator() {
 export default function CharacterGridSelectable({
   position,
   character,
-}: CharacterGridSelectableProps) {
+}: Props) {
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const selectPosition = useGameStore((store) => store.selectPosition);
 

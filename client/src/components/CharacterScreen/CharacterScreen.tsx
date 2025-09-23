@@ -8,14 +8,11 @@ import { useGameStore } from '@/store';
 import { useState } from 'react';
 import type { AnyCharacter, PartyPositionName } from '@/types';
 
-export type CharacterScreenProps = {
+export type Props = {
   party: Record<PartyPositionName, AnyCharacter | null>;
   onAlert?: (message: string | null) => void;
 };
-export default function CharacterScreen({
-  party,
-  onAlert,
-}: CharacterScreenProps) {
+export default function CharacterScreen({ party, onAlert }: Props) {
   const [selectedId, setSelectedId] = useState<null | string>(null);
   const availableCharacters = useGameStore(
     (store) => store.availableCharacters,

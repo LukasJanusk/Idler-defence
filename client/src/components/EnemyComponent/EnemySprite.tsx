@@ -5,11 +5,11 @@ import Bar from '../reusable/Bar';
 import type React from 'react';
 import { useGameStore } from '@/store';
 
-type EnemySpriteProps = {
+type Props = {
   enemy: Enemy<EnemyAction>;
   setInfo: React.Dispatch<React.SetStateAction<Enemy<EnemyAction> | null>>;
 };
-export default function EnemySprite({ enemy, setInfo }: EnemySpriteProps) {
+export default function EnemySprite({ enemy, setInfo }: Props) {
   const showUI = useGameStore((store) => store.settings.showUi);
   return (
     <div

@@ -1,5 +1,5 @@
 import { useGetWidth } from '@/hooks/useGetWidth';
-type BarProps = {
+type Props = {
   value: number;
   maxValue: number;
   showValues?: boolean;
@@ -21,7 +21,7 @@ export default function Bar({
   size,
   colorStyles,
   label,
-}: BarProps) {
+}: Props) {
   const [labelRef, labelWidth] = useGetWidth<HTMLDivElement>();
   const [maxRef, maxWidth] = useGetWidth<HTMLDivElement>();
 

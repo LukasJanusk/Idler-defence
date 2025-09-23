@@ -6,7 +6,7 @@ import Indicator from '@/components/reusable/Indicator';
 import { useGameStore } from '@/store';
 import Bar from '@/components/reusable/Bar';
 
-type CharacterAttributesProps = {
+type Props = {
   character: AnyCharacter | null;
   hired: boolean;
   onHire?: (id: string) => void;
@@ -16,7 +16,7 @@ export default function CharacterAttributes({
   character,
   hired,
   onHire,
-}: CharacterAttributesProps) {
+}: Props) {
   const handleDisband = useGameStore((store) => store.removeCharacterFromParty);
 
   if (!character) return <></>;

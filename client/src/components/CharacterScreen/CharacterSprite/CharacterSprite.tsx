@@ -7,14 +7,11 @@ import { useGameStore } from '@/store';
 import { PlusIcon } from 'lucide-react';
 import HorizontalScroll from '@/components/reusable/HorizontalScroll';
 
-export type CharacterSpriteProps = {
+export type Props = {
   position: PartyPositionName;
   character: AnyCharacter;
 };
-export default function CharacterSprite({
-  character,
-  position,
-}: CharacterSpriteProps) {
+export default function CharacterSprite({ character, position }: Props) {
   const [divRef, hover] = useHover<HTMLDivElement>();
   const selectedPosition = useGameStore((store) => store.selectedPosition);
   const showUI = useGameStore((store) => store.settings.showUi);

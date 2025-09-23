@@ -2,7 +2,7 @@ import { PlusCircle } from 'lucide-react';
 import type { PartyPositionName } from '@/types';
 import { useGameStore } from '@/store';
 
-type AddNewCharacterButtonProps = {
+type Props = {
   position: PartyPositionName;
   demo?: boolean;
 };
@@ -10,7 +10,7 @@ type AddNewCharacterButtonProps = {
 export default function AddNewCharacterButton({
   position,
   demo = false,
-}: AddNewCharacterButtonProps) {
+}: Props) {
   const selectPosition = useGameStore((store) => store.selectPosition);
 
   return (
