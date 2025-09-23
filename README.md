@@ -14,8 +14,8 @@ Ui should be intuitive to use. For more details on how things work click Help bu
 ## Setup
 
 1. `npm install`
-2. Create postgress db or use provided link
-3. Setup `.env` files in `client` and `server` based on `.env.example` files.
+2. Create postgress db or use provided link(DM for current dev db link).
+3. Setup `.env` files in `client` and `server` based on `.env.example` files (if you just want to play the game on the client side no setup is needed, skip database setup and starting server in the next step).
 4. If using local db run:
 
 ```bash
