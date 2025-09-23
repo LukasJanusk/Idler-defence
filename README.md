@@ -2,7 +2,7 @@
 
 ## Project description
 
-Goal of this project is to create MVP of a 2D RPG game with Tower defence mechanics.
+Goal of this project is to create 2D RPG game with Tower defence mechanics.
 Currently game support 4 playable characters and one test level for showcase.
 Ui should be intuitive to use. For more details on how things work click Help button in the Menu.
 
