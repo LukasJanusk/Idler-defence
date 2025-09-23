@@ -6,6 +6,9 @@ Goal of this project is to create 2D RPG game with Tower defence mechanics.
 Currently game support 4 playable characters and one test level for showcase.
 Ui should be intuitive to use. For more details on how things work click Help button in the Menu.
 
+## Screenshots
+![image alt](https://github.com/LukasJanusk/Idler-defence/blob/main/screenshots/idler-2025-09-23-140951.jpg?raw=true)
+
 ## Setup
 
 1. `npm install`
