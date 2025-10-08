@@ -3,7 +3,6 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import { defaultGold, defaultSettings } from '@/defaults';
 import * as storeModule from '@/store';
 import ParticleContextProvider from '@/context/ParticleContextProvider';
-import Game from './Game';
 import userEvent from '@testing-library/user-event';
 import type { AnyCharacter, PartyPositionName } from '@/types';
 import { createDefaultGrid, createTestKnight } from '@/model/test/utils';
@@ -13,6 +12,7 @@ import { createTestLevel } from '@/model/entities/Level/testLevel';
 import { FireMage, type EnemyAction } from '@/model/entities/character';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import type { Enemy } from '@/model/entities/enemy';
+import Level from './Level';
 
 mockResizeObserver();
 vi.mock('HTMLMediaElement', () => ({
@@ -87,12 +87,12 @@ beforeEach(() => {
 const withParticleContext = () => {
   return (
     <ParticleContextProvider>
-      <Game />
+      <Level />
     </ParticleContextProvider>
   );
 };
 
-describe('<Game />', () => {
+describe('<Level />', () => {
   it('renders Game component', async () => {
     render(withParticleContext());
 
