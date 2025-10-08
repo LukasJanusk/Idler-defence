@@ -19,6 +19,8 @@ const levelHandler = new LevelEventHandler(clock);
 const grid = new Grid(9, 5, 128);
 
 export const useGameStore = create<GameStore>((set, get) => ({
+  // game state
+
   gameClock: clock,
   selectedPosition: null,
   grid: grid,
@@ -47,6 +49,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ],
   currentLevel: 0,
   currentWave: 0,
+
+  // game actions
+
   addCharacterToParty: (pos, id) =>
     set((store) => {
       const char = Array.from(store.availableCharacters).find(
