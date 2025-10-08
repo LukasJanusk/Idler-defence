@@ -16,6 +16,7 @@ export default function SplashScreen({
         animate={{ opacity: splashVisible ? 1 : 0 }}
         transition={{ duration: 2, ease: 'easeInOut' }}
         style={{ pointerEvents: splashVisible ? 'auto' : 'none' }}
+        onClick={() => setSplashVisible(false)}
       />
       <motion.div
         className="flex h-40 w-40 items-center justify-center rounded-xl bg-medieval-stoneCrimson"
@@ -30,6 +31,7 @@ export default function SplashScreen({
           repeat: 0,
         }}
         onAnimationComplete={() => setSplashVisible(false)}
+        onClick={() => setSplashVisible(false)}
       >
         <Castle className="h-[80%] w-[80%] text-medieval-parchment" />
       </motion.div>
@@ -37,7 +39,7 @@ export default function SplashScreen({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, scale: [1.2, 1] }}
         transition={{ delay: 3, duration: 2, times: [0, 1] }}
-        className="absolute text-6xl font-bold text-medieval-parchment"
+        className="absolute pt-5 text-6xl font-bold text-medieval-parchment"
       >
         Idler Defence
       </motion.h1>
