@@ -119,6 +119,7 @@ export type GameStore = {
   currentLevel: number;
   levels: Array<Level>;
   showNextWaveButton: boolean;
+  gameStarted: boolean;
 
   // actions
 
@@ -130,6 +131,7 @@ export type GameStore = {
     patch: Partial<AnyCharacter>,
   ) => void;
   selectPosition: (pos: PartyPositionName) => void;
+  setGameStarted: (started: boolean) => void;
   addGold: (n: number) => void;
   levelUpSkill: <T extends string>(
     pos: PartyPositionName,

@@ -10,7 +10,7 @@ export default function SplashScreen({
   setSplashVisible,
 }: Props) {
   return (
-    <div className="w-wcreen flex h-screen flex-grow items-center justify-center bg-gray-400">
+    <div className="w-wcreen z-1000 flex h-screen flex-grow items-center justify-center bg-gray-400">
       <motion.div
         className={`absolute left-0 top-0 h-screen w-screen bg-black/30`}
         animate={{ opacity: splashVisible ? 1 : 0 }}

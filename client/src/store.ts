@@ -31,6 +31,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   levelEventHandler: levelHandler,
   gameOver: false,
   showNextWaveButton: true,
+  gameStarted: false,
   levels: [
     createLevel(grid, (enemy?: Enemy<EnemyAction>) => {
       const store = get();
@@ -129,6 +130,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       return { ...store, settings: { ...store.settings, pause: false } };
     }),
+  setGameStarted: (started) =>
+    set((store) => ({ ...store, gameStarted: started })),
   nextLevel: () => {
     console.info('Not yet implemented');
   },
@@ -214,7 +217,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       store.settings = { ...prev, ...patch };
       store.grid.setRenderParticles(store.settings.drawParticles);
-      return store;
+      return { ...store };
     }),
   setShowNextWave: (isVisible: boolean) =>
     set((store) => ({ ...store, showNextWaveButton: isVisible })),

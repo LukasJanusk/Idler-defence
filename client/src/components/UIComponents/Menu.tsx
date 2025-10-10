@@ -13,7 +13,13 @@ export default function Menu() {
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
   const [showInstructions, setShowInstructions] = useState(false);
+  const setGameStarted = useGameStore((store) => store.setGameStarted);
+  const handleGameOver = useGameStore((store) => store.handleGameOver);
 
+  const returnToMainMenu = () => {
+    handleGameOver();
+    setGameStarted(false);
+  };
   const gamePause = () => {
     pause();
   };
@@ -129,6 +135,14 @@ export default function Menu() {
                 onClick={() => setSettings({ showUi: !settings.showUi })}
               />
             </div>
+            <Button
+              aria-label={`Main menu button`}
+              onClick={() => {
+                returnToMainMenu();
+              }}
+            >
+              Main Menu
+            </Button>
           </div>
         )}
       </div>
