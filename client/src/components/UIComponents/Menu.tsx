@@ -16,7 +16,7 @@ export default function Menu() {
   const setGameStarted = useGameStore((store) => store.setGameStarted);
   const handleGameOver = useGameStore((store) => store.handleGameOver);
 
-  const returnToMainMenu = () => {
+  const returnToLevelSelectScreen = () => {
     handleGameOver();
     setGameStarted(false);
   };
@@ -136,12 +136,12 @@ export default function Menu() {
               />
             </div>
             <Button
-              aria-label={`Main menu button`}
+              aria-label={`Level select button`}
               onClick={() => {
-                returnToMainMenu();
+                returnToLevelSelectScreen();
               }}
             >
-              Main Menu
+              Level Select
             </Button>
           </div>
         )}

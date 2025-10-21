@@ -221,4 +221,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }),
   setShowNextWave: (isVisible: boolean) =>
     set((store) => ({ ...store, showNextWaveButton: isVisible })),
+  setCurrentLevel: (levelIndex: number) =>
+    set((store) => ({ ...store, currentLevel: levelIndex })),
 }));

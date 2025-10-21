@@ -105,6 +105,12 @@ export type Level = {
   name: string;
   waves: Array<Set<LevelEvent>>;
 };
+export type LevelSelectable = {
+  id: number;
+  name: string;
+  image?: string;
+  locked: boolean;
+};
 export type GameStore = {
   gameClock: GameClock;
   selectedPosition: null | PartyPositionName;
@@ -145,6 +151,7 @@ export type GameStore = {
   handleGameOver: () => void;
   setGameOver: () => void;
   setShowNextWave: (isVisible: boolean) => void;
+  setCurrentLevel: (levelIndex: number) => void;
 };
 
 export type { CreateScore, Score, Highscores };

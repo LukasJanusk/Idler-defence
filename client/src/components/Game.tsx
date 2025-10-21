@@ -4,16 +4,29 @@ import SplashScreen from './reusable/SplashScreen';
 import Level from './Level';
 import MainMenu from './MainMenu/MainMenu';
 import { useGameStore } from '@/store';
+import LevelSelectScreen from './LevelSelect/LevelSelectScreen';
+
+const levels = [
+  { id: 0, name: 'Tutorial', locked: false },
+  { id: 1, name: 'Level 1', locked: true },
+  { id: 2, name: 'Level 2', locked: true },
+  { id: 3, name: 'Level 3', locked: true },
+  { id: 4, name: 'Level 4', locked: true },
+];
 
 export default function Game() {
   const [splashVisible, setSplashVisible] = useState(true);
+  const [levelSelected, setLevelSelected] = useState(false);
+
   const gameStarted = useGameStore((store) => store.gameStarted);
   const setGameStarted = useGameStore((store) => store.setGameStarted);
 
+  const enterLevelSelect = (inLevelSelect?: boolean) => {
+    setLevelSelected(inLevelSelect ?? true);
+  };
   const startGame = () => {
     setGameStarted(true);
   };
-
   if (splashVisible && !gameStarted) {
     return (
       <div
@@ -34,6 +47,7 @@ export default function Game() {
       </div>
     );
   }
+
   return (
     <div
       style={{
@@ -44,11 +58,20 @@ export default function Game() {
       }}
       className="border-2 border-medieval-silver"
     >
-      {gameStarted ? (
-        <Level />
-      ) : (
-        <MainMenu startGame={startGame} gameStarted={gameStarted} />
+      {!gameStarted && levelSelected && (
+        <LevelSelectScreen
+          levels={levels}
+          startGame={startGame}
+          returnToMenu={() => {
+            setLevelSelected(false);
+            setGameStarted(false);
+          }}
+        />
       )}
+      {!levelSelected && (
+        <MainMenu startGame={enterLevelSelect} gameStarted={gameStarted} />
+      )}
+      {gameStarted && levelSelected && <Level />}
     </div>
   );
 }
