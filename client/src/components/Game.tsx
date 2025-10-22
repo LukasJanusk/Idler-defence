@@ -12,6 +12,13 @@ const levels = [
   { id: 2, name: 'Level 2', locked: true },
   { id: 3, name: 'Level 3', locked: true },
   { id: 4, name: 'Level 4', locked: true },
+  { id: 5, name: 'Level 4', locked: true },
+  { id: 6, name: 'Level 4', locked: true },
+  { id: 7, name: 'Level 4', locked: true },
+  { id: 8, name: 'Level 4', locked: true },
+  { id: 9, name: 'Level 4', locked: true },
+  { id: 10, name: 'Level 4', locked: true },
+  { id: 11, name: 'Level 4', locked: true },
 ];
 
 export default function Game() {

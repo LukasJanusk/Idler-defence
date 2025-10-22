@@ -20,7 +20,7 @@ export default function LevelSelectCard({
   return (
     <div
       onClick={() => setSelected()}
-      className={`h-[256px] w-[256px] overflow-hidden p-1 shadow-medieval-dark duration-200 hover:-translate-y-2 hover:shadow-xl ${isSelected ? 'bg-medieval-stoneCrimson' : 'hover:bg-medieval-green-700'}`}
+      className={`h-[256px] w-[256px] overflow-hidden p-1 shadow-medieval-dark duration-200 hover:-translate-y-2 hover:shadow-xl ${isSelected ? '-translate-y-2 scale-105 bg-medieval-stoneCrimson' : 'hover:bg-medieval-green-700'}`}
     >
       <div
         className={`relative h-full w-full bg-medieval-dark/90 text-medieval-parchment`}

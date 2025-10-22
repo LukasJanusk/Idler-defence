@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useGameStore } from '@/store';
 import LevelSelectButton from './LevelSelectButton';
 import Button from '../reusable/Button';
+import useSmoothScroll from '@/hooks/useSmoothScroll';
 
 type Props = {
   levels: LevelSelectable[];
@@ -24,14 +25,19 @@ export default function LevelSelectScreen({
     setCurrentLevel(levelId);
   };
 
+  const [containerRef] = useSmoothScroll<HTMLDivElement>(selectedLevel);
+
   return (
     <div
       className={`relative flex h-full w-full flex-nowrap items-center justify-center gap-1 bg-medieval-silver px-4`}
     >
       <div className="absolute top-4 text-2xl font-bold">
-        {levels[selectedLevel].name}
+        {levels[selectedLevel]?.name}
       </div>
-      <div className="flex w-full flex-nowrap">
+      <div
+        ref={containerRef}
+        className="scrollbar-hide flex w-full flex-nowrap gap-2 overflow-x-auto scroll-smooth p-2 py-10"
+      >
         {levels.map((level) => (
           <div key={level.id}>
             <LevelSelectCard
