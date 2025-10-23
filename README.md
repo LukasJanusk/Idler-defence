@@ -74,15 +74,15 @@ npm run test:e2e -w client
 - [ ] Implement Highscores page
 - [ ] Implement login flow
 - [ ] Implement credits page/section
-- [+] Implement settings menu
+- [X] Implement settings menu
 - [ ] Implement loading screen
-- [+] Implement splash screen with game title
+- [X] Implement splash screen with game title
 - [ ] Implement onboarding/tutorial
 - [ ] Move game rendering to WebGl
-- [+] Implement level select screen
-- [+] Implement ingame Main menu
+- [X] Implement level select screen
+- [X] Implement ingame Main menu
 - [ ] Implement load/save
-- [+] Integrate links to social media
+- [X] Integrate links to social media
 - [ ] Implement login security
 - [ ] Implement login with google
 - [ ] Implement Skill upgrade tree?
