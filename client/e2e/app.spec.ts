@@ -9,7 +9,6 @@ test('On level end displays score form and submits and resets on close', async (
 }) => {
   await page.goto('/game');
   await page.locator('svg').click();
-
   await page.getByRole('button', { name: 'New Game' }).click();
   await page.getByRole('img', { name: 'Background image of level 0' }).click();
   await page.getByRole('button', { name: 'Start' }).click();
@@ -23,7 +22,6 @@ test('On level end displays score form and submits and resets on close', async (
   await expect(page.getByRole('heading', { name: 'GAME OVER!' })).toBeVisible();
   await page.getByRole('button', { name: 'Submit' }).click();
   await expect(page.getByText('Error occured')).toBeVisible();
-
   await page.getByRole('button', { name: 'Return' }).click();
   await page.getByRole('textbox', { name: 'Name:' }).click();
   await page.getByRole('textbox', { name: 'Name:' }).fill('test');
