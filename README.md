@@ -7,6 +7,7 @@ Currently game support 4 playable characters and one test level for showcase.
 Ui should be intuitive to use. For more details on how things work click Help button in the Menu.
 
 ## Screenshots
+
 ![game screenshot](https://github.com/LukasJanusk/Idler-defence/blob/main/screenshots/idler-2025-09-23-140951.jpg?raw=true)
 ![game screenshot](https://github.com/LukasJanusk/Idler-defence/blob/main/screenshots/idler-2025-09-23-141446.jpg?raw=true)
 ![game screenshot](https://github.com/LukasJanusk/Idler-defence/blob/main/screenshots/idler-2025-09-23-142154.jpg?raw=true)
@@ -65,21 +66,23 @@ Start client tests
 ```bash
 npm run test:e2e -w client
 ```
+
 ## TODO
+
 - [ ] Implement user account for personal scores (server)
 - [ ] Implement Home page
 - [ ] Implement Highscores page
 - [ ] Implement login flow
 - [ ] Implement credits page/section
-- [ ] Implement settings  menu
-- [ ] Implement loading  screen
-- [ ] Implement splash screen with game title
+- [+] Implement settings menu
+- [ ] Implement loading screen
+- [+] Implement splash screen with game title
 - [ ] Implement onboarding/tutorial
 - [ ] Move game rendering to WebGl
-- [ ] Implement level select screen
-- [ ] Implement ingame Main menu
+- [+] Implement level select screen
+- [+] Implement ingame Main menu
 - [ ] Implement load/save
-- [ ] Integrate links to social media
+- [+] Integrate links to social media
 - [ ] Implement login security
 - [ ] Implement login with google
 - [ ] Implement Skill upgrade tree?
