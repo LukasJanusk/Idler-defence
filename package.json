@@ -6,5 +6,9 @@
   "workspaces": [
     "client",
     "server"
-  ]
+  ],
+  "devDependencies": {
+    "@types/node": "^24.9.1"
+  },
+  "scripts": {}
 }
