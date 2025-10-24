@@ -14,7 +14,12 @@ export function scoreRepository(db: Database) {
     return db
       .selectFrom('game.score')
       .selectAll()
-      .orderBy('game.score.date', 'desc')
+      .select(
+        sql<number>`CAST(ROW_NUMBER() OVER (ORDER BY score DESC) AS INTEGER)`.as(
+          'rank'
+        )
+      )
+      .orderBy('rank', 'asc')
       .execute();
   };
 
