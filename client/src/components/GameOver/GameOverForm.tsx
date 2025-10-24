@@ -1,11 +1,11 @@
 import type { Highscores, Score } from '@/types';
-import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { parseCreateScore, parsePostScoreResponse } from '@/schema/scoreSchema';
 import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
 import config from '@/config';
 import CloseButton from '@/components/reusable/CloseButton';
+import LoadingCircle from '../reusable/LoadingCircle';
 
 type Props = {
   score: number;
@@ -68,10 +68,7 @@ export default function GameOverForm({ onSubmit, onClose, score }: Props) {
         action={{ name: 'Return', handle: () => setError(null) }}
       />
     );
-  if (loading)
-    return (
-      <LoaderCircle className="h-[100px] w-[100px] animate-spin text-medieval-parchment" />
-    );
+  if (loading) return <LoadingCircle />;
   return (
     <div className="relative max-h-[512px] w-[320px] border-4 border-medieval-silver bg-medieval-stone p-4 text-medieval-parchment shadow-xl">
       <h1 className="mb-2 text-center text-[40px] font-bold text-medieval-parchment">
