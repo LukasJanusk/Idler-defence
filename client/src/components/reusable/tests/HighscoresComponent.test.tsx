@@ -34,9 +34,9 @@ describe('<HighscoresComponent />', () => {
     const rows = screen.getAllByRole('listitem');
 
     expect(rows[0]).toHaveTextContent('RankNameScoreDate');
-    expect(rows[1]).toHaveTextContent('1Alice1000');
-    expect(rows[2]).toHaveTextContent('2Bob200');
-    expect(rows[3]).toHaveTextContent('3Janice100');
+    expect(rows[1]).toHaveTextContent('1.Alice1000');
+    expect(rows[2]).toHaveTextContent('2.Bob200');
+    expect(rows[3]).toHaveTextContent('3.Janice100');
   });
 
   it('runs onClose callback', async () => {
