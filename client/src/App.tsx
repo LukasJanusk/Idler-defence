@@ -6,15 +6,15 @@ import { Navigation } from './components/Navigation/Navigation';
 function App() {
   return (
     <div className="flex h-screen flex-col">
-      <header className="fixed top-0 flex max-h-12 min-h-12 w-screen items-center bg-medieval-wood px-6 text-2xl font-bold text-medieval-parchment">
+      <header className="top-0 flex max-h-12 min-h-12 w-screen items-center bg-medieval-wood px-6 text-2xl font-bold text-medieval-parchment">
         <h1>Idler defence</h1>
         <Navigation />
       </header>
       <Routes>
-        <Route element={<HomePage />} path={'/'} />{' '}
+        <Route element={<HomePage />} path={'/'} />
         <Route element={<GamePage />} path={'/game'} />
       </Routes>
-      <footer className="h-8 bg-medieval-wood"></footer>
+      <footer className="bottom-0 h-8 bg-medieval-wood"></footer>
     </div>
   );
 }

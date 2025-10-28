@@ -6,12 +6,12 @@ export default function Settings() {
   const settings = useGameStore((store) => store.settings);
   const setSettings = useGameStore((store) => store.setSettings);
   return (
-    <div className="relative flex h-[600px] min-h-[512px] w-[640px] flex-col gap-2 overflow-auto border-4 border-medieval-silver bg-gradient-to-r from-medieval-dark via-medieval-stone to-medieval-arcane p-6 text-medieval-parchment shadow-xl">
+    <div className="via-medieval-stoneCrimsonDark relative flex h-[600px] min-h-[512px] w-[640px] flex-col gap-2 overflow-auto border-4 border-medieval-silver bg-gradient-to-bl from-medieval-stoneCrimson to-medieval-dark p-6 text-medieval-parchment shadow-xl">
       <div className="flex w-full flex-row items-center justify-between">
         <Button
           aria-label={`toggle grid button`}
           onClick={() => setSettings({ showGrid: !settings.showGrid })}
-          className="mr-2 w-full"
+          className="mr-2 w-5/6 hover:bg-green-800"
         >
           Grid
         </Button>
@@ -26,7 +26,7 @@ export default function Settings() {
           onClick={() =>
             setSettings({ drawParticles: !settings.drawParticles })
           }
-          className="mr-2 w-full"
+          className="mr-2 w-5/6 hover:bg-green-800"
         >
           Particles
         </Button>
@@ -45,7 +45,7 @@ export default function Settings() {
               automateSkillCast: !settings.automateSkillCast,
             })
           }
-          className="mr-2 w-full"
+          className="mr-2 w-5/6 hover:bg-green-800"
         >
           Autocast
         </Button>
@@ -62,7 +62,7 @@ export default function Settings() {
         <Button
           aria-label={`toggle show ui button`}
           onClick={() => setSettings({ showUi: !settings.showUi })}
-          className="mr-2 w-full"
+          className="mr-2 w-5/6 hover:bg-green-800"
         >
           Always show UI
         </Button>

@@ -10,6 +10,7 @@ export default {
           stone: '#1E2A38',
           stoneLight: '#D3D3D3',
           stoneCrimson: '#7A1F2E',
+          stoneCrimsonDark: '#5E1824',
 
           // Neutrals
           parchment: '#D9CBB4',

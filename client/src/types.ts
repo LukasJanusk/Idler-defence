@@ -108,8 +108,9 @@ export type Level = {
 export type LevelSelectable = {
   id: number;
   name: string;
-  image?: string;
+  icon?: string;
   locked: boolean;
+  background?: string;
 };
 export type GameStore = {
   gameClock: GameClock;

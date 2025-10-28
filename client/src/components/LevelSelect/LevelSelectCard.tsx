@@ -1,10 +1,11 @@
 import levelDefaultImage from '@/assets/Levels/default_level_image.png';
 import { LockIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   level: number;
   selected: number;
-  image?: string;
+  icon?: string;
   locked: boolean;
   setSelected: () => void;
 };
@@ -12,28 +13,40 @@ type Props = {
 export default function LevelSelectCard({
   level,
   selected,
-  image,
+  icon,
   locked,
   setSelected,
 }: Props) {
   const isSelected = level === selected;
+  const [wiggle, setWiggle] = useState(false);
+
+  useEffect(() => {}, []);
   return (
     <div
-      onClick={() => setSelected()}
-      className={`h-[256px] w-[256px] overflow-hidden p-1 shadow-medieval-dark duration-200 hover:-translate-y-2 hover:shadow-xl ${isSelected ? '-translate-y-2 scale-105 bg-medieval-stoneCrimson' : 'hover:bg-medieval-green-700'}`}
+      onClick={() => {
+        if (locked) {
+          setWiggle(true);
+          setTimeout(() => setWiggle(false), 300);
+        }
+
+        setSelected();
+      }}
+      className={`group h-[320px] w-[320px] cursor-pointer overflow-hidden p-1 shadow-medieval-dark duration-200 hover:-translate-y-2 hover:shadow-xl ${isSelected ? '-translate-y-2 scale-105 hover:animate-pulse hover:bg-medieval-emerald' : ''}`}
     >
       <div
         className={`relative h-full w-full bg-medieval-dark/90 text-medieval-parchment`}
       >
         <img
-          className="h-full w-full object-cover"
-          alt={`Background image of level ${level}`}
-          src={image || new URL(levelDefaultImage, import.meta.url).href}
-        ></img>
+          className="h-full w-full"
+          alt={`image of level ${level}`}
+          src={icon || new URL(levelDefaultImage, import.meta.url).href}
+        />
         {locked && (
           <div className="absolute left-0 top-0 h-full w-full bg-medieval-dark/80 hover:bg-medieval-dark/10">
             <div className="relative h-full w-full">
-              <LockIcon className="absolute left-0 top-0 h-1/2 w-1/2 translate-x-1/2 translate-y-1/2 text-medieval-parchment" />
+              <LockIcon
+                className={`absolute left-0 top-0 h-1/2 w-1/2 translate-x-1/2 translate-y-1/2 text-medieval-parchment duration-300 group-hover:left-4 group-hover:top-4 group-hover:h-8 group-hover:w-8 group-hover:translate-x-0 group-hover:translate-y-0 ${wiggle ? 'animate-wiggle text-medieval-stoneCrimson' : ''}`}
+              />
             </div>
           </div>
         )}
@@ -41,6 +54,9 @@ export default function LevelSelectCard({
           {level === 0 ? 'Tutorial' : `${level}`}
         </div>
       </div>
+      <div
+        className={`h-full w-full blur-sm ${isSelected ? 'bg-medieval-emerald' : 'bg-medieval-stoneCrimson'}`}
+      />
     </div>
   );
 }
