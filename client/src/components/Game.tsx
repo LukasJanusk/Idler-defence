@@ -5,9 +5,15 @@ import Level from './Level';
 import MainMenu from './MainMenu/MainMenu';
 import { useGameStore } from '@/store';
 import LevelSelectScreen from './LevelSelect/LevelSelectScreen';
+import TestLevelBackground from '@/assets/background/bg_dungeon.png';
 
 const levels = [
-  { id: 0, name: 'Tutorial', locked: false },
+  {
+    id: 0,
+    name: 'Tutorial',
+    locked: false,
+    background: new URL(TestLevelBackground, import.meta.url).href,
+  },
   { id: 1, name: 'Level 1', locked: true },
   { id: 2, name: 'Level 2', locked: true },
   { id: 3, name: 'Level 3', locked: true },

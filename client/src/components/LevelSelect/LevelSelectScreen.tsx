@@ -5,6 +5,8 @@ import { useGameStore } from '@/store';
 import useSmoothScroll from '@/hooks/useSmoothScroll';
 import LevelScreenButton from './LevelScreenButton';
 import { ArrowBigRightIcon, ArrowBigLeftIcon } from 'lucide-react';
+import BackdropAnimation from '@/components/reusable/BackdropAnimation';
+import { GAME_HEIGHT, GAME_WIDTH } from '@/constants';
 
 type Props = {
   levels: LevelSelectable[];
@@ -36,53 +38,59 @@ export default function LevelSelectScreen({
           src={levels[selectedLevel].background}
         />
       )}
-
-      <div
-        className={`relative flex h-full w-full flex-nowrap items-center justify-center gap-1 bg-gradient-to-t from-medieval-dark/80 via-medieval-arcane to-medieval-stone/30 px-4`}
+      <BackdropAnimation
+        source={undefined}
+        width={GAME_WIDTH}
+        height={GAME_HEIGHT}
+        duration={50}
       >
-        <div className="absolute top-6 flex w-full justify-center bg-medieval-dark/80 p-4 text-4xl font-bold text-medieval-parchment">
-          {levels[selectedLevel]?.name}
-        </div>
         <div
-          ref={containerRef}
-          className="scrollbar-hide flex w-full flex-nowrap gap-2 overflow-x-auto scroll-smooth p-2 py-10"
+          className={`relative flex h-full w-full flex-nowrap items-center justify-center gap-1 bg-gradient-to-t from-black/90 via-medieval-arcane to-medieval-stone/30 px-4`}
         >
-          {levels.map((level) => (
-            <div key={level.id}>
-              <LevelSelectCard
-                level={level.id}
-                selected={selectedLevel}
-                icon={level.icon}
-                locked={level.locked}
-                setSelected={() => {
-                  if (level.locked) return;
-                  setSelectedLevel(level.id);
-                  handleLevelSelect(level.id);
-                }}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="absolute bottom-8 left-8">
-          <LevelScreenButton
-            onClick={() => returnToMenu()}
-            type="secondary"
-            className="group flex h-14 items-center gap-2"
+          <div className="absolute top-6 flex w-full justify-center bg-medieval-dark/80 p-4 text-4xl font-bold text-medieval-parchment">
+            {levels[selectedLevel]?.name}
+          </div>
+          <div
+            ref={containerRef}
+            className="scrollbar-hide flex w-full flex-nowrap gap-2 overflow-x-auto scroll-smooth p-2 py-10"
           >
-            <ArrowBigLeftIcon className="duration-150 group-hover:animate-pulse group-active:animate-pop" />{' '}
-            Menu
-          </LevelScreenButton>
+            {levels.map((level) => (
+              <div key={level.id}>
+                <LevelSelectCard
+                  level={level.id}
+                  selected={selectedLevel}
+                  icon={level.icon}
+                  locked={level.locked}
+                  setSelected={() => {
+                    if (level.locked) return;
+                    setSelectedLevel(level.id);
+                    handleLevelSelect(level.id);
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="absolute bottom-8 left-8">
+            <LevelScreenButton
+              onClick={() => returnToMenu()}
+              type="secondary"
+              className="group flex h-14 items-center gap-2"
+            >
+              <ArrowBigLeftIcon className="duration-150 group-hover:animate-pulse group-active:animate-pop" />{' '}
+              Menu
+            </LevelScreenButton>
+          </div>
+          <div className="absolute bottom-10 right-8">
+            <LevelScreenButton
+              className="w-50 group flex h-14 items-center justify-between gap-2"
+              onClick={() => startGame(true)}
+            >
+              Start
+              <ArrowBigRightIcon className="duration-150 group-hover:animate-pulse group-active:animate-pop" />
+            </LevelScreenButton>
+          </div>
         </div>
-        <div className="absolute bottom-8 right-8">
-          <LevelScreenButton
-            className="group flex h-14 w-24 items-center justify-between"
-            onClick={() => startGame(true)}
-          >
-            Start
-            <ArrowBigRightIcon className="duration-150 group-hover:animate-pulse group-active:animate-pop" />
-          </LevelScreenButton>
-        </div>
-      </div>
+      </BackdropAnimation>
     </div>
   );
 }
