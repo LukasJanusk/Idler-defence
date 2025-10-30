@@ -42,12 +42,12 @@ export default function LevelSelectScreen({
         source={undefined}
         width={GAME_WIDTH}
         height={GAME_HEIGHT}
-        duration={50}
+        duration={20}
       >
         <div
           className={`relative flex h-full w-full flex-nowrap items-center justify-center gap-1 bg-gradient-to-t from-black/90 via-medieval-arcane to-medieval-stone/30 px-4`}
         >
-          <div className="absolute top-6 flex w-full justify-center bg-medieval-dark/80 p-4 text-4xl font-bold text-medieval-parchment">
+          <div className="pointer-events-none absolute top-6 flex w-full justify-center bg-medieval-dark/80 p-4 text-4xl font-bold text-medieval-parchment">
             {levels[selectedLevel]?.name}
           </div>
           <div

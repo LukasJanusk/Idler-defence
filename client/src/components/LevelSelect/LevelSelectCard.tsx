@@ -19,6 +19,7 @@ export default function LevelSelectCard({
 }: Props) {
   const isSelected = level === selected;
   const [wiggle, setWiggle] = useState(false);
+  const [splash, setSplash] = useState(false);
 
   useEffect(() => {}, []);
   return (
@@ -31,15 +32,17 @@ export default function LevelSelectCard({
 
         setSelected();
       }}
-      className={`group h-[320px] w-[320px] cursor-pointer overflow-hidden p-1 shadow-medieval-dark duration-200 hover:-translate-y-2 hover:shadow-xl ${isSelected ? '-translate-y-2 scale-105 hover:animate-pulse hover:bg-medieval-emerald' : ''}`}
+      className={`${splash ? `animate-pulse ${isSelected ? 'bg-medieval-emerald/50' : 'bg-medieval-stoneCrimson/50'}` : ''} group h-[320px] w-[320px] cursor-pointer overflow-hidden p-1 shadow-medieval-dark duration-200 hover:-translate-y-2 hover:shadow-xl ${isSelected ? '-translate-y-2 scale-105 hover:animate-pulse' : ''}`}
     >
       <div
-        className={`relative h-full w-full bg-medieval-dark/90 text-medieval-parchment`}
+        onClick={() => {
+          setSplash(true);
+          setTimeout(() => setSplash(false), 300);
+        }}
+        className={`$ relative h-full w-full bg-medieval-dark/90 text-medieval-parchment`}
       >
-        <img
-          className="h-full w-full"
-          alt={`image of level ${level}`}
-          src={icon || new URL(levelDefaultImage, import.meta.url).href}
+        <div
+          className={`${splash ? `animate-pulse ${isSelected ? 'bg-medieval-emerald/50' : 'bg-medieval-stoneCrimson/50'}` : ''} absolute left-0 top-0 h-full w-full transition-all duration-300`}
         />
         {locked && (
           <div className="absolute left-0 top-0 h-full w-full bg-medieval-dark/80 hover:bg-medieval-dark/10">
@@ -50,6 +53,11 @@ export default function LevelSelectCard({
             </div>
           </div>
         )}
+        <img
+          className="h-full w-full object-cover"
+          alt={`image of level ${level}`}
+          src={icon || new URL(levelDefaultImage, import.meta.url).href}
+        />
         <div className="absolute bottom-1 right-1 text-2xl font-bold">
           {level === 0 ? 'Tutorial' : `${level}`}
         </div>
