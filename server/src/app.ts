@@ -2,6 +2,7 @@ import type { Response } from 'express';
 import express from 'express';
 import cors from 'cors';
 import { getHighscores, postHighscore } from './controllers/highscores';
+import { getUser, postUser } from './controllers/user';
 import type { Database } from './database';
 
 export default function createApp(db: Database) {
@@ -10,6 +11,8 @@ export default function createApp(db: Database) {
   app.use(express.json());
   app.get('/api/highscores', getHighscores(db));
   app.post('/api/highscores', postHighscore(db));
+  app.get('/api/user/:id', getUser(db));
+  app.post('/api/user', postUser(db));
   app.use('/api/health', (_, res: Response) => {
     res.status(200).send('OK');
   });

@@ -2,6 +2,7 @@ import { createTestDatabase } from '@/tests/utils/createTestDatabase';
 import { insertAll } from '@/tests/utils/records';
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { useUserRepository } from '.';
+import { omit } from 'lodash';
 
 const db = createTestDatabase();
 const repo = useUserRepository(db);
@@ -22,7 +23,7 @@ describe('game.user', () => {
     };
     const user = await repo.createUser(insertable);
 
-    expect(user).toEqual({ id: expect.any(Number) });
+    expect(user).toEqual({ id: expect.any(Number), email: insertable.email });
   });
 
   it('getUser', async () => {
@@ -30,13 +31,13 @@ describe('game.user', () => {
       {
         name: 'test',
         email: 'test@mail.com',
-        password: 'securepassword777%',
+        password: 'SecurePassword$$$777',
         date: '025-09-03T12:34:56.789Z',
       },
     ]);
 
     const returned = await repo.getUser(user.id);
 
-    expect(returned).toEqual(user);
+    expect(returned).toEqual(omit(user, ['password']));
   });
 });

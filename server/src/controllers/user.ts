@@ -24,15 +24,18 @@ export const postUser = (db: Database) => {
     }
   };
 };
-export const getHighscores = (db: Database) => {
+export const getUser = (db: Database) => {
   return async (req: Request, res: Response) => {
     const repo = useUserRepository(db);
-    console.log('GET ' + '/api/user');
+    console.log('GET ' + '/api/user/:id');
     try {
-      const user = await repo.getUser(req.body.id);
+      const userId = req.params.id || req.query.id;
+      if (!userId)
+        return res.status(400).json({ error: 'User ID is required' });
+      const user = await repo.getUser(Number(userId));
       res.status(200).json(user);
     } catch (err) {
-      res.status(400).json(err);
+      res.status(404).json({ error: 'User not found' });
     }
   };
 };

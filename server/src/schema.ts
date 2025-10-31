@@ -23,6 +23,7 @@ const userSchema = z.object({
 
 export const scoreSchemaWithoutRank = scoreSchema.omit({ rank: true });
 export const userInsertable = userSchema.omit({ id: true });
+export const userReturnable = userSchema.omit({ password: true });
 
 export const parsePostScoreSchema = (data: unknown) =>
   postScoreSchema.parse(data);
@@ -35,3 +36,4 @@ export type ScoreNoRank = z.infer<typeof scoreSchemaWithoutRank>;
 export type Score = z.infer<typeof scoreSchema>;
 export type User = z.infer<typeof userSchema>;
 export type UserInsertable = z.infer<typeof userInsertable>;
+export type UserReturnable = z.infer<typeof userReturnable>;

@@ -3,6 +3,7 @@ import createApp from '@/app';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createTestDatabase } from '@/tests/utils/createTestDatabase';
 import { insertAll } from '@/tests/utils/records';
+import { omit } from 'lodash';
 
 const db = createTestDatabase();
 const app = createApp(db);
@@ -20,9 +21,9 @@ describe('userController', () => {
       email: 'testUser@mail.com',
     });
     expect(response.status).toBe(201);
-    expect(response.body.user.length).toBe(1);
-    expect(response.body.user).toContainEqual({
+    expect(response.body).toEqual({
       id: expect.any(Number),
+      email: 'testUser@mail.com',
     });
   });
 
@@ -36,25 +37,21 @@ describe('userController', () => {
       },
     ]);
 
-    const response = (await request(app).get('/api/user')).body({
-      id: testUser.id,
-    });
-
+    const response = await request(app).get(`/api/user/${testUser.id}`);
     expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body).toEqual(omit(testUser, ['password']));
   });
   it('should throw error for invalid user data', async () => {
     const response = await request(app)
       .post('/api/user')
-      .send({ id: 123, dance: 'slow' });
+      .send({ id: 123, email: 'slow', name: 'testUser' });
 
     expect(response.status).toBe(400);
-    expect(response.body).toMatch(/Invalid input/i);
+    expect(response.body).toMatch(/must be a valid email/i);
   });
   it('should throw error when no user found', async () => {
-    const response = await request(app).get('/api/user').send({ id: 99999 });
-
-    expect(response.status).toBe(400);
-    expect(response.body).toMatch(/Not found/i);
+    const response = await request(app).get('/api/user/99999');
+    expect(response.status).toBe(404);
+    expect(response.body.error).toMatch(/user not found/i);
   });
 });

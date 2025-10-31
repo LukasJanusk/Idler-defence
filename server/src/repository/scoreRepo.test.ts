@@ -32,7 +32,11 @@ describe('game.score', () => {
     const returned = await repo.getAllScores();
 
     expect(returned).toHaveLength(1);
-    expect(returned[0]).toEqual({ ...score, id: expect.any(Number) });
+    expect(returned[0]).toEqual({
+      ...score,
+      id: expect.any(Number),
+      rank: 1,
+    });
   });
 
   it('getScoresAround', async () => {
