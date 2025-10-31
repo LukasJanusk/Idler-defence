@@ -8,7 +8,9 @@
     "server"
   ],
   "devDependencies": {
-    "@types/node": "^24.9.1"
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.9.1",
+    "lodash": "^4.17.21"
   },
   "scripts": {}
 }

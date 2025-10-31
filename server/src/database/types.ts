@@ -3,12 +3,11 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from 'kysely';
+import type { ColumnType } from "kysely";
 
-export type Generated<T> =
-  T extends ColumnType<infer S, infer I, infer U>
-    ? ColumnType<S, I | undefined, U>
-    : ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export interface GameScore {
   date: string;
@@ -17,6 +16,15 @@ export interface GameScore {
   score: number;
 }
 
+export interface GameUser {
+  date: string;
+  email: string;
+  id: Generated<number>;
+  name: string;
+  password: string;
+}
+
 export interface DB {
-  'game.score': GameScore;
+  "game.score": GameScore;
+  "game.user": GameUser;
 }
