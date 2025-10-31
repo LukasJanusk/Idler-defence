@@ -1,6 +1,12 @@
 import { type Selectable, sql } from 'kysely';
 import { type Database } from '../database/index';
-import type { PostScore, Score, ScoreNoRank } from '../schema';
+import type {
+  PostScore,
+  Score,
+  ScoreNoRank,
+  User,
+  UserInsertable,
+} from '../schema';
 
 export function scoreRepository(db: Database) {
   const createScore = async (values: PostScore): Promise<ScoreNoRank> => {
@@ -61,4 +67,25 @@ export function scoreRepository(db: Database) {
   return { createScore, getScoresAround, getAllScores };
 }
 
+function userRepository(db: Database) {
+  const getUser = async (id: number): Promise<Selectable<User>> => {
+    return db
+      .selectFrom('game.user')
+      .selectAll()
+      .where('game.user.id', '=', id)
+      .executeTakeFirstOrThrow();
+  };
+
+  const createUser = async (user: UserInsertable) => {
+    return db
+      .insertInto('game.user')
+      .values({ ...user, date: new Date().toISOString() })
+      .returning('game.user.id')
+      .executeTakeFirstOrThrow();
+  };
+
+  return { getUser, createUser };
+}
+
 export const useScoreRepository = (db: Database) => scoreRepository(db);
+export const useUserRepository = (db: Database) => userRepository(db);
