@@ -12,10 +12,15 @@ export default function Avatar({ clickable = true }: Props) {
       <AvatarIcon
         size="sm"
         onClick={() => {
-          if (clickable) setDropdownOpen((prev) => !prev);
+          if (clickable) setDropdownOpen(true);
         }}
       />
-      <AvatarOptions open={dropdownOpen} />
+      <AvatarOptions
+        open={dropdownOpen}
+        setDropdownOpen={(open) => {
+          setDropdownOpen(open);
+        }}
+      />
     </div>
   );
 }

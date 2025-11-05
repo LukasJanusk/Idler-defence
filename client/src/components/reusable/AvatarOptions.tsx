@@ -3,16 +3,23 @@ import DropDown from './DropDown';
 import Modal from './Modal';
 import LoginForm from './LoginForm';
 import Button from './Button';
-import Alert from './Alert';
+import SingupForm from './SignupForm';
+import useClickOutside from '@/hooks/useClickOutside';
 
 type Props = {
   open: boolean;
+  setDropdownOpen: (open: boolean) => void;
 };
-export default function AvatarOptions({ open }: Props) {
+export default function AvatarOptions({ open, setDropdownOpen }: Props) {
   const [signInModal, setSignInModal] = useState(false);
   const [singUpModal, setSignUpModal] = useState(false);
+
+  const handleClickOutside = () => {
+    setDropdownOpen(false);
+  };
+  const [ref] = useClickOutside<HTMLDivElement>(handleClickOutside);
   return (
-    <div>
+    <div ref={ref}>
       <DropDown
         open={open}
         width={200}
@@ -32,9 +39,10 @@ export default function AvatarOptions({ open }: Props) {
       )}
       {singUpModal && (
         <Modal onClose={() => setSignUpModal(false)}>
-          <Alert
+          <SingupForm
+            onSubmit={() => alert('Not yet implemented')}
             onClose={() => setSignUpModal(false)}
-            message="Not yet implemented"
+            open={signInModal}
           />
         </Modal>
       )}
