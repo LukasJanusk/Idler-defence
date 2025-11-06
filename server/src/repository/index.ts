@@ -4,8 +4,8 @@ import type {
   PostScore,
   Score,
   ScoreNoRank,
+  User,
   UserInsertable,
-  UserReturnable,
 } from '../schema';
 
 export function scoreRepository(db: Database) {
@@ -68,15 +68,10 @@ export function scoreRepository(db: Database) {
 }
 
 function userRepository(db: Database) {
-  const getUser = async (id: number): Promise<Selectable<UserReturnable>> => {
+  const getUser = async (id: number): Promise<Selectable<User>> => {
     return db
       .selectFrom('game.user')
-      .select([
-        'game.user.id',
-        'game.user.date',
-        'game.user.email',
-        'game.user.name',
-      ])
+      .selectAll()
       .where('game.user.id', '=', id)
       .executeTakeFirstOrThrow();
   };
@@ -89,7 +84,15 @@ function userRepository(db: Database) {
       .executeTakeFirstOrThrow();
   };
 
-  return { getUser, createUser };
+  const getUserByEmail = (email: string) => {
+    return db
+      .selectFrom('game.user')
+      .selectAll()
+      .where('game.user.email', '=', email)
+      .executeTakeFirstOrThrow();
+  };
+
+  return { getUser, createUser, getUserByEmail };
 }
 
 export const useScoreRepository = (db: Database) => scoreRepository(db);

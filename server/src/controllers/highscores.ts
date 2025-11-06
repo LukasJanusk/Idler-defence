@@ -3,11 +3,13 @@ import type { Request, Response } from 'express';
 import { useScoreRepository } from '../repository/index';
 import type { Database } from '@/database';
 import { ZodError, prettifyError } from 'zod';
+import { Router } from 'express';
 
-export const postHighscore = (db: Database) => {
-  return async (req: Request, res: Response) => {
-    const repo = useScoreRepository(db);
+export const highscoresController = (db: Database) => {
+  const repo = useScoreRepository(db);
+  const router = Router();
 
+  router.post('/', async (req: Request, res: Response) => {
     console.log('POST ' + '/api/highscores');
     try {
       const data = parsePostScoreSchema(req.body);
@@ -26,12 +28,9 @@ export const postHighscore = (db: Database) => {
       }
       res.status(400).json(err);
     }
-  };
-};
-export const getHighscores = (db: Database) => {
-  return async (_req: Request, res: Response) => {
-    const repo = useScoreRepository(db);
+  });
 
+  router.get('/', async (_req: Request, res: Response) => {
     console.log('GET ' + '/api/highscores');
     try {
       const scores = await repo.getAllScores();
@@ -39,5 +38,7 @@ export const getHighscores = (db: Database) => {
     } catch (err) {
       res.status(400).json(err);
     }
-  };
+  });
+
+  return router;
 };

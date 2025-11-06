@@ -1,41 +1,82 @@
-import { parseUserInsertable } from '../schema';
-import type { Request, Response } from 'express';
+import { parseUserInsertable, parseUserLoginData } from '../schema';
+import { Router, type Request, type Response } from 'express';
 import { useUserRepository } from '../repository/index';
 import type { Database } from '@/database';
 import { ZodError, prettifyError } from 'zod';
+import { omit } from 'lodash';
+import { compare, hash } from 'bcrypt';
+import config from '@/config';
+import jwt from 'jsonwebtoken';
 
-export const postUser = (db: Database) => {
-  return async (req: Request, res: Response) => {
-    const repo = useUserRepository(db);
+export const userController = (db: Database) => {
+  const router = Router();
+  const repo = useUserRepository(db);
 
-    console.log('POST ' + '/api/user');
-    try {
-      const data = parseUserInsertable({
-        ...req.body,
-        date: new Date().toISOString(),
-      });
-      const newUser = await repo.createUser(data);
-      res.status(201).json(newUser);
-    } catch (err) {
-      if (err instanceof ZodError) {
-        res.status(400).json(prettifyError(err));
+  router.post('/'),
+    async (req: Request, res: Response) => {
+      console.log('POST ' + '/api/user');
+      try {
+        const data = parseUserInsertable({
+          ...req.body,
+          date: new Date().toISOString(),
+        });
+
+        const passwordHash = await hash(
+          data.password,
+          config.auth.passwordCost
+        );
+        const newUser = await repo.createUser({
+          ...data,
+          password: passwordHash,
+        });
+        res.status(201).json(newUser);
+      } catch (err) {
+        if (err instanceof ZodError) {
+          res.status(400).json(prettifyError(err));
+        }
+        res.status(400).json(err);
       }
-      res.status(400).json(err);
-    }
-  };
-};
-export const getUser = (db: Database) => {
-  return async (req: Request, res: Response) => {
-    const repo = useUserRepository(db);
+    };
+
+  router.get('/', async (req: Request, res: Response) => {
     console.log('GET ' + '/api/user/:id');
     try {
       const userId = req.params.id || req.query.id;
       if (!userId)
         return res.status(400).json({ error: 'User ID is required' });
       const user = await repo.getUser(Number(userId));
-      res.status(200).json(user);
+
+      res.status(200).json(omit(user, ['password']));
     } catch (err) {
       res.status(404).json({ error: 'User not found' });
     }
-  };
+  });
+
+  router.get('/login', async (req: Request, res: Response) => {
+    try {
+      const data = parseUserLoginData({
+        ...req.body,
+        date: new Date().toISOString(),
+      });
+      const user = await repo.getUserByEmail(data.email);
+
+      const match = await compare(data.password, user.password);
+      if (!match) res.status(401).json({ message: 'Incorrect password' });
+
+      const tokenPayload = { user: { id: user.id } };
+
+      const accessToken = jwt.sign(tokenPayload, config.auth.tokenKey, {
+        expiresIn: '7d',
+      });
+
+      res.status(200).json(accessToken);
+    } catch (err) {
+      if (err instanceof ZodError) {
+        res.status(400).json(prettifyError(err));
+      }
+      res.status(400).json(err);
+    }
+  });
+
+  return router;
 };

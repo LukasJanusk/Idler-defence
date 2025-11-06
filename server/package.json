@@ -13,8 +13,10 @@
     "e2e": "NODE_ENV=test tsx watch src"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.15.5",
     "kysely-codegen": "^0.18.5",
     "lodash": "^4.17.21",
@@ -23,8 +25,10 @@
   },
   "dependencies": {
     "@types/supertest": "^6.0.3",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "kysely": "^0.28.5",
     "pg": "^8.16.3",
     "supertest": "^7.1.4",

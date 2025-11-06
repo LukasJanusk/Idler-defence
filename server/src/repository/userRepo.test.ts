@@ -2,7 +2,6 @@ import { createTestDatabase } from '@/tests/utils/createTestDatabase';
 import { insertAll } from '@/tests/utils/records';
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { useUserRepository } from '.';
-import { omit } from 'lodash';
 
 const db = createTestDatabase();
 const repo = useUserRepository(db);
@@ -38,6 +37,21 @@ describe('game.user', () => {
 
     const returned = await repo.getUser(user.id);
 
-    expect(returned).toEqual(omit(user, ['password']));
+    expect(returned).toEqual({ ...user, password: expect.any(String) });
+  });
+
+  it('getUserByEmail', async () => {
+    const [user] = await insertAll(db, 'game.user', [
+      {
+        name: 'test',
+        email: 'test@mail.com',
+        password: 'SecurePassword$$$777',
+        date: '025-09-03T12:34:56.789Z',
+      },
+    ]);
+
+    const returned = await repo.getUserByEmail(user.email);
+
+    expect(returned).toEqual({ ...user, password: expect.any(String) });
   });
 });

@@ -21,6 +21,8 @@ const userSchema = z.object({
   date: z.coerce.string('Must be a string'),
 });
 
+const userLoginSchema = userSchema.pick({ email: true, password: true });
+
 export const scoreSchemaWithoutRank = scoreSchema.omit({ rank: true });
 export const userInsertable = userSchema.omit({ id: true });
 export const userReturnable = userSchema.omit({ password: true });
@@ -30,6 +32,8 @@ export const parsePostScoreSchema = (data: unknown) =>
 export const parseUserSchema = (data: unknown) => userSchema.parse(data);
 export const parseUserInsertable = (data: unknown) =>
   userInsertable.parse(data);
+export const parseUserLoginData = (data: unknown) =>
+  userLoginSchema.parse(data);
 
 export type PostScore = z.infer<typeof postScoreSchema>;
 export type ScoreNoRank = z.infer<typeof scoreSchemaWithoutRank>;
@@ -37,3 +41,4 @@ export type Score = z.infer<typeof scoreSchema>;
 export type User = z.infer<typeof userSchema>;
 export type UserInsertable = z.infer<typeof userInsertable>;
 export type UserReturnable = z.infer<typeof userReturnable>;
+export type UserLoginData = z.infer<typeof userLoginSchema>;

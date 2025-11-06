@@ -10,12 +10,20 @@ const schema = z.object({
   database: z.object({
     connectionString: z.url('Invalid url'),
   }),
+  auth: z.object({
+    passwordCost: z.number(),
+    tokenKey: z.string(),
+  }),
 });
 
 const config = schema.parse({
   env: env.NODE_ENV,
   port: env.PORT,
   database: { connectionString: isTest ? env.TEST_DATABASE : env.DATABASE_URL },
+  auth: {
+    passwordCost: 10,
+    tokenKey: env.TOKEN_KEY,
+  },
 });
 
 export default config;
