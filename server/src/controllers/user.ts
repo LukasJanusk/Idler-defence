@@ -3,7 +3,6 @@ import { Router, type Request, type Response } from 'express';
 import { useUserRepository } from '../repository/index';
 import type { Database } from '@/database';
 import { ZodError, prettifyError } from 'zod';
-import { omit } from 'lodash';
 import { compare, hash } from 'bcrypt';
 import config from '@/config';
 import jwt from 'jsonwebtoken';
@@ -12,31 +11,27 @@ export const userController = (db: Database) => {
   const router = Router();
   const repo = useUserRepository(db);
 
-  router.post('/'),
-    async (req: Request, res: Response) => {
-      console.log('POST ' + '/api/user');
-      try {
-        const data = parseUserInsertable({
-          ...req.body,
-          date: new Date().toISOString(),
-        });
+  router.post('/', async (req: Request, res: Response) => {
+    console.log('POST ' + '/api/user');
+    try {
+      const data = parseUserInsertable({
+        ...req.body,
+        date: new Date().toISOString(),
+      });
 
-        const passwordHash = await hash(
-          data.password,
-          config.auth.passwordCost
-        );
-        const newUser = await repo.createUser({
-          ...data,
-          password: passwordHash,
-        });
-        res.status(201).json(newUser);
-      } catch (err) {
-        if (err instanceof ZodError) {
-          res.status(400).json(prettifyError(err));
-        }
-        res.status(400).json(err);
+      const passwordHash = await hash(data.password, config.auth.passwordCost);
+      const newUser = await repo.createUser({
+        ...data,
+        password: passwordHash,
+      });
+      res.status(201).json(newUser);
+    } catch (err) {
+      if (err instanceof ZodError) {
+        res.status(400).json(prettifyError(err));
       }
-    };
+      res.status(400).json(err);
+    }
+  });
 
   router.get('/', async (req: Request, res: Response) => {
     console.log('GET ' + '/api/user/:id');
@@ -46,7 +41,7 @@ export const userController = (db: Database) => {
         return res.status(400).json({ error: 'User ID is required' });
       const user = await repo.getUser(Number(userId));
 
-      res.status(200).json(omit(user, ['password']));
+      res.status(200).json({ id: user.id, email: user.email });
     } catch (err) {
       res.status(404).json({ error: 'User not found' });
     }
