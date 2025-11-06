@@ -39,7 +39,7 @@ describe('userController', () => {
 
     const response = await request(app).get(`/api/user/${testUser.id}`);
     expect(response.status).toBe(200);
-    expect(response.body).toEqual(omit(testUser, ['password']));
+    expect(response.body).toEqual(omit(testUser, ['password', 'date']));
   });
   it('should throw error for invalid user data', async () => {
     const response = await request(app)

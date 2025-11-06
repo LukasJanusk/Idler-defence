@@ -41,7 +41,7 @@ export const userController = (db: Database) => {
         return res.status(400).json({ error: 'User ID is required' });
       const user = await repo.getUser(Number(userId));
 
-      res.status(200).json({ id: user.id, email: user.email });
+      res.status(200).json({ id: user.id, email: user.email, name: user.name });
     } catch (err) {
       res.status(404).json({ error: 'User not found' });
     }
