@@ -1,5 +1,5 @@
 import config from '@/config';
-import { parseHighscores, type Highscores } from '@/schema/scoreSchema';
+import { parseHighscores, type Highscores } from '@/modules/score/schema';
 import { useEffect, useState } from 'react';
 import z, { ZodError } from 'zod';
 

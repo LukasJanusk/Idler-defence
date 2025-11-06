@@ -1,5 +1,7 @@
-import type { FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import CloseButton from './CloseButton';
+import LoadingCircle from './LoadingCircle';
+import Error from './ErrorComponent';
 
 type Props = {
   onSubmit: () => void;
@@ -16,11 +18,20 @@ export default function SingupForm({
 }: Props) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     onSubmit();
   };
   const handleClose = () => {
     onClose?.();
   };
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<null | string>(null);
+  if (loading) return <LoadingCircle />;
+  if (error) return <Error onClose={() => setError(null)} message={error} />;
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -35,6 +46,8 @@ export default function SingupForm({
         id="username"
         name="username"
         placeholder="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <label className="font-bold text-medieval-parchment" htmlFor="email">
         Email
@@ -45,6 +58,8 @@ export default function SingupForm({
         id="email"
         name="email"
         placeholder="youremail@mail.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <label className="font-bold text-medieval-parchment" htmlFor="password">
         Password
@@ -54,6 +69,8 @@ export default function SingupForm({
         type="password"
         id="password"
         name="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <button
         type="submit"

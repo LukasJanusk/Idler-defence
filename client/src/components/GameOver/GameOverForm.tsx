@@ -1,6 +1,9 @@
 import type { Highscores, Score } from '@/types';
 import { useState } from 'react';
-import { parseCreateScore, parsePostScoreResponse } from '@/schema/scoreSchema';
+import {
+  parseCreateScore,
+  parsePostScoreResponse,
+} from '@/modules/score/schema';
 import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
 import config from '@/config';

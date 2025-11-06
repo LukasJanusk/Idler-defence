@@ -16,7 +16,7 @@ import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
 import type { GameClock } from './model/gameClock';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
-import type { CreateScore, Score, Highscores } from './schema/scoreSchema';
+import type { CreateScore, Score, Highscores } from './modules/score/schema';
 
 export type EnemyType =
   | 'zombieOne'

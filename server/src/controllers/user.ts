@@ -47,7 +47,7 @@ export const userController = (db: Database) => {
     }
   });
 
-  router.get('/login', async (req: Request, res: Response) => {
+  router.post('/login', async (req: Request, res: Response) => {
     try {
       const data = parseUserLoginData({
         ...req.body,
