@@ -33,7 +33,7 @@ export const userController = (db: Database) => {
     }
   });
 
-  router.get('/', async (req: Request, res: Response) => {
+  router.get('/:id', async (req: Request, res: Response) => {
     console.log('GET ' + '/api/user/:id');
     try {
       const userId = req.params.id || req.query.id;
