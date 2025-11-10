@@ -6,6 +6,7 @@ import {
   Wizard,
 } from './model/entities/character';
 import type { AnyCharacter, GameState, Settings } from './types';
+import { zombieOneDeath, zombieOneHurt } from './model/sound';
 
 import { Enemy } from './model/entities/enemy';
 import { createZombieOneAnimations } from './model/animations/enemies/zombieAnimations';
@@ -111,6 +112,8 @@ export const createZombieOne = () => {
   zombie.experience = 50;
   zombie.stunRecovery = 100;
   zombie.description = 'Your average hard working zombie.';
+  zombie.registerOnHit(() => zombieOneHurt.play());
+  zombie.registerOnDeath(() => zombieOneDeath.play());
   return zombie;
 };
 

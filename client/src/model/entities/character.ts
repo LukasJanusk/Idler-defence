@@ -34,6 +34,7 @@ import {
   magicArrowSound,
   magicSphereSound,
   zapSound,
+  levelUp,
 } from '../sound';
 
 export type BaseAction =
@@ -253,6 +254,7 @@ export abstract class Character<T extends string> {
     this.experienceToNext += 100;
     this.availableAttributes += 1;
     this.health = this.maxHealth;
+    levelUp.play();
   }
   levelUpSkill<T extends string>(skill: Skill<T>) {
     if (skill.level >= MAXIMUM_SKILL_LEVEL) return false;
@@ -329,6 +331,18 @@ export abstract class Character<T extends string> {
     });
   }
 
+  initGeneralEffects(grid: Grid) {
+    const originalLevelUp = this.levelUp.bind(this);
+    this.levelUp = () => {
+      originalLevelUp();
+      grid.generateParticles(
+        'hollowSquare',
+        this.rect.x + this.rect.width / 2,
+        this.rect.y - 64,
+        50,
+      );
+    };
+  }
   updateHealth(ticks: number) {
     if (this.health <= 0) {
       this.state = 'death' as T;

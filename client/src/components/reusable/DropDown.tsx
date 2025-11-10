@@ -17,7 +17,7 @@ export default function DropDown({
   className,
 }: Props) {
   return (
-    <div className="relative">
+    <div className="relative z-50">
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={open ? { y: 10, opacity: 1 } : { y: 0, opacity: 0 }}

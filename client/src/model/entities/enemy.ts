@@ -26,6 +26,7 @@ export class Enemy<T extends string = never> {
   stunDuration = 0;
   onDead: Set<() => void> = new Set();
   onDeath: Set<() => void> = new Set();
+  onHit: Set<() => void> = new Set();
   maxHealth: number = 1000;
   armor: number = 0;
   healthRecovery: number = 0;
@@ -87,6 +88,9 @@ export class Enemy<T extends string = never> {
   }
   registerOnDead(fn: () => void) {
     this.onDead.add(fn);
+  }
+  registerOnHit(fn: () => void) {
+    this.onHit.add(fn);
   }
   registerBuff(buff: Buff) {
     if (Array.from(this.buffs).some((b) => b.id === buff.id)) return;
@@ -209,6 +213,7 @@ export class Enemy<T extends string = never> {
       };
       this.checkIfDead();
       this.checkStun(dt);
+      if (this.state === 'hit') this.onHit.forEach((fn) => fn());
       if (this.state === 'move') {
         this.rect = {
           ...this.rect,

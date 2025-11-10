@@ -69,6 +69,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       char.initAttributes();
       char.initAttacks(store.grid);
       char.initAudio();
+      char.initGeneralEffects(store.grid);
       char.initSkillCost();
       grid.setCharacterToPosition(pos, char);
       char.setAutomate(store.settings.automateSkillCast);
