@@ -26,7 +26,7 @@ export default function DropDown({
           width: width ? `${width || 200}px` : 'auto',
           height: height ? `${height}px` : 'auto',
         }}
-        className={`z-100 absolute right-0 flex flex-col overflow-hidden bg-medieval-stone p-2 ${className ?? ''}`}
+        className={`z-100 absolute right-0 flex flex-col overflow-hidden bg-medieval-stone/70 p-2 ${className ?? ''}`}
       >
         {children}
       </motion.div>

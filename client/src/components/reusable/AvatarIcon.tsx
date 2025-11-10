@@ -18,7 +18,7 @@ export default function AvatarIcon({ url, className, size, onClick }: Props) {
         height: `${size === 'sm' ? SMALL : size === 'md' ? MEDIUM : LARGE}px`,
         width: `${size === 'sm' ? SMALL : size === 'md' ? MEDIUM : LARGE}px`,
       }}
-      className={`group relative flex cursor-pointer items-center justify-center overflow-hidden rounded-full bg-medieval-stone p-1 ${className || ''}`}
+      className={`group relative flex cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gradient-to-t from-transparent via-medieval-stone to-medieval-dark p-1 ${className || ''}`}
       onClick={() => onClick?.()}
     >
       {url ? (

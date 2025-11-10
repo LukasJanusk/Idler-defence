@@ -5,8 +5,10 @@ import Highscores from '@/components/Highscores';
 function HomePage() {
   return (
     <PageBackdrop>
-      <Highscores />
-      <StartGameButton>Start Game</StartGameButton>
+      <div className="z-10 flex h-full w-full flex-col items-center gap-2 p-4">
+        <Highscores />
+        <StartGameButton text={'Start Game'} />
+      </div>
     </PageBackdrop>
   );
 }

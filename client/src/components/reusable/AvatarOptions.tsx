@@ -23,7 +23,7 @@ export default function AvatarOptions({ open, setDropdownOpen }: Props) {
       <DropDown
         open={open}
         width={200}
-        className="gap-2 border-2 border-medieval-silver p-4 shadow-sm"
+        className="gap-2 border-2 border-medieval-silver/30 p-4 shadow-sm"
       >
         <Button onClick={() => setSignInModal(true)}>Sign In</Button>
         <Button onClick={() => setSignUpModal(true)}>Sign up</Button>
