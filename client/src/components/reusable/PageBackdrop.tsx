@@ -5,7 +5,7 @@ type Props = {
 };
 export default function PageBackdrop({ children }: Props) {
   return (
-    <div className="§h-full relative flex w-full flex-col items-center justify-center bg-gray-400 text-2xl">
+    <div className="relative flex h-full w-full flex-col items-center justify-center bg-gray-400 text-2xl">
       <img
         className={`absolute h-full w-full`}
         src={new URL(BG, import.meta.url).href}
