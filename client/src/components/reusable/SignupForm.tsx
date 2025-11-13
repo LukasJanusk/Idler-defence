@@ -1,7 +1,10 @@
 import { useState, type FormEvent } from 'react';
 import CloseButton from './CloseButton';
 import LoadingCircle from './LoadingCircle';
-import Error from './ErrorComponent';
+import { signUp } from '@/modules/user';
+import { parseSignupData } from '@/modules/user/schema';
+import { prettifyError, ZodError } from 'zod';
+import ErrorComponent from './ErrorComponent';
 
 type Props = {
   onSubmit: () => void;
@@ -16,21 +19,41 @@ export default function SingupForm({
   onSubmit,
   className,
 }: Props) {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    onSubmit();
-  };
-  const handleClose = () => {
-    onClose?.();
-  };
-  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const parsed = parseSignupData({ email, password, username });
+      const user = await signUp(parsed, onSubmit);
+      return user;
+    } catch (err) {
+      if (err instanceof ZodError) {
+        setError(prettifyError(err));
+      } else {
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'Unable to sign up, please try again',
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    onClose?.();
+  };
+
   if (loading) return <LoadingCircle />;
-  if (error) return <Error onClose={() => setError(null)} message={error} />;
+  if (error)
+    return <ErrorComponent onClose={() => setError(null)} message={error} />;
 
   return (
     <form
@@ -41,7 +64,7 @@ export default function SingupForm({
         Username
       </label>
       <input
-        className="rounded bg-gray-200 p-2"
+        className="rounded bg-gray-200 p-2 text-medieval-dark"
         type="username"
         id="username"
         name="username"
@@ -53,7 +76,7 @@ export default function SingupForm({
         Email
       </label>
       <input
-        className="rounded bg-gray-200 p-2"
+        className="rounded bg-gray-200 p-2 text-medieval-dark"
         type="email"
         id="email"
         name="email"
@@ -65,7 +88,7 @@ export default function SingupForm({
         Password
       </label>
       <input
-        className="rounded bg-gray-200 p-2"
+        className="rounded bg-gray-200 p-2 text-medieval-dark"
         type="password"
         id="password"
         name="password"

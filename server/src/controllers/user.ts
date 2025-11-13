@@ -14,6 +14,7 @@ export const userController = (db: Database) => {
   router.post('/', async (req: Request, res: Response) => {
     console.log('POST ' + '/api/user');
     try {
+      console.log(req.body);
       const data = parseUserInsertable({
         ...req.body,
         date: new Date().toISOString(),
@@ -24,12 +25,13 @@ export const userController = (db: Database) => {
         ...data,
         password: passwordHash,
       });
-      res.status(201).json(newUser);
+      return res.status(201).json(newUser);
     } catch (err) {
       if (err instanceof ZodError) {
-        res.status(400).json(prettifyError(err));
+        return res.status(400).json(prettifyError(err));
       }
-      res.status(400).json(err);
+
+      return res.status(400).json(err);
     }
   });
 
@@ -48,6 +50,7 @@ export const userController = (db: Database) => {
   });
 
   router.post('/login', async (req: Request, res: Response) => {
+    console.log('POST ' + '/api/user/login');
     try {
       const data = parseUserLoginData({
         ...req.body,
@@ -56,7 +59,8 @@ export const userController = (db: Database) => {
       const user = await repo.getUserByEmail(data.email);
 
       const match = await compare(data.password, user.password);
-      if (!match) res.status(401).json({ message: 'Incorrect password' });
+      if (!match)
+        return res.status(401).json({ message: 'Incorrect password' });
 
       const tokenPayload = { user: { id: user.id } };
 
@@ -64,12 +68,12 @@ export const userController = (db: Database) => {
         expiresIn: '7d',
       });
 
-      res.status(200).json(accessToken);
+      return res.status(200).json(accessToken);
     } catch (err) {
       if (err instanceof ZodError) {
-        res.status(400).json(prettifyError(err));
+        return res.status(400).json(prettifyError(err));
       }
-      res.status(400).json(err);
+      return res.status(400).json(err);
     }
   });
 

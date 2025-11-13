@@ -1,13 +1,22 @@
 import config from '@/config';
-import { type LoginData, type Token } from './schema';
+import {
+  parseUser,
+  type LoginData,
+  type SignupData,
+  type Token,
+  type User,
+} from './schema';
 import { setAccessToken } from '../localStorage';
 import type { LoginResponse } from './types';
 
 export const login = async (loginData: LoginData): Promise<LoginResponse> => {
   try {
-    const response = await fetch(new URL('/user/login', config.apiUrl).href, {
+    const response = await fetch(`${config.apiUrl}/user/login`, {
       method: 'POST',
       body: JSON.stringify(loginData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
@@ -27,8 +36,31 @@ export const login = async (loginData: LoginData): Promise<LoginResponse> => {
   }
 };
 
-export const signUp = () => {
-  console.warn('Not yet implemented');
+export const signUp = async (
+  formData: SignupData,
+  onSuccess?: () => void,
+  onError?: () => void,
+): Promise<User> => {
+  try {
+    const response = await fetch(`${config.apiUrl}/user`, {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const data = await response.json();
+    const user = parseUser(data);
+    onSuccess?.();
+    return user;
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : 'Failed to sign up');
+    onError?.();
+    throw err;
+  }
 };
 
 export const logout = () => {

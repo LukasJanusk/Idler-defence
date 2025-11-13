@@ -80,7 +80,11 @@ function userRepository(db: Database) {
     return db
       .insertInto('game.user')
       .values({ ...user, date: new Date().toISOString() })
-      .returning(['game.user.id', 'game.user.email'])
+      .returning([
+        'game.user.id as id',
+        'game.user.name as username',
+        'game.user.email as email',
+      ])
       .executeTakeFirstOrThrow();
   };
 

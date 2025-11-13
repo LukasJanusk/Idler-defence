@@ -25,7 +25,6 @@ export default function LoginForm({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      setError('test error');
       setLoading(true);
       const loginRes = await login({ email, password });
       if (!loginRes.success)

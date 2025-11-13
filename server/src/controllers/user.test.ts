@@ -24,6 +24,7 @@ describe('userController', () => {
     expect(response.body).toEqual({
       id: expect.any(Number),
       email: 'testUser@mail.com',
+      username: 'testUser',
     });
   });
 

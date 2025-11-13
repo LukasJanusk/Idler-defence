@@ -32,5 +32,15 @@ export const removeLocalUser = () => {
 };
 
 export const setAccessToken = (token: string) => {
-  localStorage.setItem('accessToken', token);
+  try {
+    localStorage.setItem('accessToken', token);
+    return true;
+  } catch (err) {
+    console.error(
+      err instanceof Error
+        ? err.message
+        : 'Failed to get access token from local storage',
+    );
+    return false;
+  }
 };

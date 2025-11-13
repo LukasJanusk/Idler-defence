@@ -3,6 +3,7 @@ import z from 'zod';
 const userSchema = z.object({
   id: z.coerce.string(),
   username: z.coerce.string(),
+  email: z.email(),
 });
 
 const loginSchema = z.object({

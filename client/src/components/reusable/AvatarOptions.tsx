@@ -31,8 +31,12 @@ export default function AvatarOptions({ open, setDropdownOpen }: Props) {
       {signInModal && (
         <Modal onClose={() => setSignInModal(false)}>
           <LoginForm
-            onSubmit={() => {}}
-            onClose={() => setSignInModal(false)}
+            onSubmit={() => {
+              alert('Login successfull');
+            }}
+            onClose={() => {
+              setSignInModal(false);
+            }}
             open={signInModal}
           />
         </Modal>
@@ -40,9 +44,13 @@ export default function AvatarOptions({ open, setDropdownOpen }: Props) {
       {singUpModal && (
         <Modal onClose={() => setSignUpModal(false)}>
           <SingupForm
-            onSubmit={() => alert('Not yet implemented')}
+            onSubmit={() => {
+              alert('Sign up successfull');
+              setSignUpModal(false);
+              setSignInModal(true);
+            }}
             onClose={() => setSignUpModal(false)}
-            open={signInModal}
+            open={singUpModal}
           />
         </Modal>
       )}

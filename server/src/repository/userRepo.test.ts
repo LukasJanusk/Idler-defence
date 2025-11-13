@@ -22,7 +22,11 @@ describe('game.user', () => {
     };
     const user = await repo.createUser(insertable);
 
-    expect(user).toEqual({ id: expect.any(Number), email: insertable.email });
+    expect(user).toEqual({
+      id: expect.any(Number),
+      email: insertable.email,
+      username: insertable.name,
+    });
   });
 
   it('getUser', async () => {
