@@ -32,6 +32,7 @@ export default function AvatarOptions({ open, setDropdownOpen }: Props) {
         <Modal onClose={() => setSignInModal(false)}>
           <LoginForm
             onSubmit={() => {
+              setSignInModal(false);
               alert('Login successfull');
             }}
             onClose={() => {

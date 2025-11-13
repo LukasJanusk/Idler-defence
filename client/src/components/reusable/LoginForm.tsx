@@ -29,7 +29,9 @@ export default function LoginForm({
       const loginRes = await login({ email, password });
       if (!loginRes.success)
         setError(loginRes.error ?? 'Failed to login, please try again');
-      onSubmit?.();
+      else {
+        onSubmit?.();
+      }
     } catch {
       setError('Unable to login, please try again');
     } finally {
