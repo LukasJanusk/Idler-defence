@@ -3,7 +3,7 @@ import Game from '@/components/Game';
 
 function GamePage() {
   return (
-    <div className="flex flex-grow items-center justify-center bg-gradient-to-t from-primary via-primary/80 to-primary">
+    <div className="flex flex-grow items-center justify-center bg-gradient-to-t from-primary via-gray-500 to-primary">
       <div className="relative">
         <ParticleContextProvider>
           <Game />

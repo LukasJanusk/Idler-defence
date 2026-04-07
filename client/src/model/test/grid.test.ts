@@ -94,7 +94,7 @@ describe('getCharacterFromPosition', () => {
     expect(character).toEqual(knight);
   });
 
-  it('returns Character from position3', () => {
+  it('returns Character from position4', () => {
     const grid = createDefaultGrid();
     const knight = createTestKnight();
     grid.grid[PARTY_POSITIO_ROW][0].characters.push(knight);
