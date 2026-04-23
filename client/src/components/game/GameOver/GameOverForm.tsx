@@ -8,7 +8,7 @@ import ErrorComponent from '@/components/reusable/ErrorComponent';
 import z, { ZodError } from 'zod';
 import config from '@/config';
 import CloseButton from '@/components/reusable/CloseButton';
-import LoadingCircle from '../reusable/LoadingCircle';
+import LoadingCircle from '@/components/reusable/LoadingCircle';
 
 type Props = {
   score: number;

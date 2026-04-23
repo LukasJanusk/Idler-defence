@@ -1,7 +1,7 @@
-import Sprite from '../reusable/Sprite';
+import Sprite from '@/components/reusable/Sprite';
 import type { EnemyAction } from '@/model/entities/character';
 import type { Enemy } from '@/model/entities/enemy';
-import Bar from '../reusable/Bar';
+import Bar from '@/components/reusable/Bar';
 import type React from 'react';
 import { useGameStore } from '@/store';
 

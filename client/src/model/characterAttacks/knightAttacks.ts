@@ -2,6 +2,7 @@ import { Attack } from '@/model/entities/attack';
 import { v4 } from 'uuid';
 import type { EnemyAction, Knight } from '../entities/character';
 import type { Grid } from '../grid';
+import type { GridRenderer } from '../gridRenderer';
 import { getRectMiddle, registerAttackToGrid } from '@/utils';
 import { Debuff } from '../entities/debuff';
 import { GRID_AREA_SIZE } from '@/constants';
@@ -12,7 +13,7 @@ import { Buff } from '../entities/buff';
 export const createKnightStabAttack = (
   x: number,
   y: number,
-  grid: Grid,
+  renderer: GridRenderer,
   multiplier: number = 1,
   damage: number = 80,
 ) => {
@@ -27,8 +28,8 @@ export const createKnightStabAttack = (
   attack.onHit = (enemy?: Enemy<EnemyAction> | AnyCharacter) => {
     if (!enemy) return;
     const middle = getRectMiddle(enemy.rect);
-    grid.generateParticles('line', middle.x, middle.y + 20, 1, 0);
-    grid.generateParticles('blood', middle.x, middle.y + 20, 5);
+    renderer.generateParticles('line', middle.x, middle.y + 20, 1, 0);
+    renderer.generateParticles('blood', middle.x, middle.y + 20, 5);
   };
   return attack;
 };
@@ -61,7 +62,11 @@ export const createKnightIntimidateAttack = (
   attack.duration = 50;
   return attack;
 };
-export const initKnightAttacks = (grid: Grid, knight: Knight) => {
+export const initKnightAttacks = (
+  grid: Grid,
+  renderer: GridRenderer,
+  knight: Knight,
+) => {
   registerAttackToGrid(
     grid,
     knight,
@@ -69,7 +74,7 @@ export const initKnightAttacks = (grid: Grid, knight: Knight) => {
       createKnightStabAttack(
         knight.rect.x,
         knight.rect.y,
-        grid,
+        renderer,
         knight.skills.find((s) => s.action === 'attack')?.multiplier,
         knight.skills.find((s) => s.action === 'attack')?.damage,
       ),

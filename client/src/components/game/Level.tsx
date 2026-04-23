@@ -1,22 +1,22 @@
-import Menu from '@/components/UIComponents/Menu';
-import GameOver from '@/components/GameOver/GameOver';
-import GoldDisplay from '@/components/UIComponents/GoldDisplay';
-import WaveDisplay from '@/components/UIComponents/WaveDisplay';
+import Menu from '@/components/game/UIComponents/Menu';
+import GameOver from '@/components/game/GameOver/GameOver';
+import GoldDisplay from '@/components/game/UIComponents/GoldDisplay';
+import WaveDisplay from '@/components/game/UIComponents/WaveDisplay';
 import Alert from '@/components/reusable/Alert';
-import ProjectileComponent from '@/components/ProjectileComponent/ProjectileComponent';
-import EnemyComponent from '@/components/EnemyComponent/EnemyComponent';
-import CharacterScreen from '@/components/CharacterScreen/CharacterScreen';
+import ProjectileComponent from '@/components/game/ProjectileComponent/ProjectileComponent';
+import EnemyComponent from '@/components/game/EnemyComponent/EnemyComponent';
+import CharacterScreen from '@/components/game/CharacterScreen/CharacterScreen';
+import { useGameRenderContext } from '@/context/GameRenderContext';
 import { useGameStore } from '@/store';
 import { useEffect, useState } from 'react';
-import useGrid from '@/hooks/useGrid';
-import NextWaveButton from '@/components/UIComponents/NextWaveButton';
+import NextWaveButton from '@/components/game/UIComponents/NextWaveButton';
 import { GAME_HEIGHT, GAME_WIDTH } from '@/constants';
 
 export default function Level() {
   const settings = useGameStore((store) => store.settings);
   const [wasPaused, setWasPaused] = useState<boolean>(false);
   const [alert, setAlert] = useState<null | string>(null);
-  const { enemies, projectiles, party } = useGrid();
+  const { enemies, projectiles, party } = useGameRenderContext();
   const pause = useGameStore((store) => store.pause);
   const play = useGameStore((store) => store.play);
 

@@ -7,11 +7,12 @@ import userEvent from '@testing-library/user-event';
 import type { AnyCharacter, PartyPositionName } from '@/types';
 import { createDefaultGrid, createTestKnight } from '@/model/test/utils';
 import { createKnightAnimations } from '@/model/animations/knightAnimations';
-import { mockResizeObserver } from './tests/utils';
+import { mockResizeObserver } from '../tests/utils';
 import { createTestLevel } from '@/model/entities/Level/testLevel';
 import { FireMage, type EnemyAction } from '@/model/entities/character';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import type { Enemy } from '@/model/entities/enemy';
+import { GridRenderer } from '@/model/gridRenderer';
 import Level from './Level';
 
 mockResizeObserver();
@@ -77,6 +78,7 @@ beforeEach(() => {
       currentWave: 0,
       gold: defaultGold(),
       grid: grid,
+      gridRenderer: new GridRenderer(grid),
       showNextWaveButton: true,
       levels: [createTestLevel(grid, mockLevelCallback)],
     }),

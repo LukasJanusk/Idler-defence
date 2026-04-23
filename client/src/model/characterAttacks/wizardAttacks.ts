@@ -2,6 +2,7 @@ import { Attack } from '@/model/entities/attack';
 import { v4 } from 'uuid';
 import type { Wizard } from '../entities/character';
 import type { Grid } from '../grid';
+import type { GridRenderer } from '../gridRenderer';
 import { getRandomInt, registerAttackToGrid } from '@/utils';
 import { GRID_AREA_SIZE, PARTY_POSITIO_ROW } from '@/constants';
 import { Buff } from '../entities/buff';
@@ -71,7 +72,11 @@ export const createWizardMagicArrowAttack = (
   projectile.stun = false;
   return projectile;
 };
-export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
+export const initWizardAttacks = (
+  grid: Grid,
+  renderer: GridRenderer,
+  wizard: Wizard,
+) => {
   const buff = () => {
     const getValue = () => {
       let value = 0.005;
@@ -102,7 +107,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
       wizard.skills.find((s) => s.action === 'magicArrow')?.damage,
     );
     arrow.onHit = (target) =>
-      grid.generateParticles(
+      renderer.generateParticles(
         'magic',
         target
           ? target.rect.x + target.rect.width / 2
@@ -126,7 +131,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
       wizard.skills.find((s) => s.action === 'magicBall')?.damage,
     );
     ball.onHit = (target) =>
-      grid.generateParticles(
+      renderer.generateParticles(
         'magic',
         target
           ? target.rect.x + target.rect.width / 2
@@ -163,7 +168,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
       if (prevOnHit) {
         prevOnHit(target);
       }
-      grid.generateParticles(
+      renderer.generateParticles(
         'magic',
         target
           ? target.rect.x + target.rect.width / 2
@@ -185,7 +190,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
     area?.registerEntity(projectile);
   });
   const generateHealth = () => {
-    grid.generateParticles(
+    renderer.generateParticles(
       'health',
       getRandomInt(0, GRID_AREA_SIZE * 4),
       (PARTY_POSITIO_ROW + 1) * GRID_AREA_SIZE - 10,
@@ -193,7 +198,7 @@ export const initWizardAttacks = (grid: Grid, wizard: Wizard) => {
     );
   };
   const generateEnergy = () => {
-    grid.generateParticles(
+    renderer.generateParticles(
       'arcane',
       getRandomInt(0, GRID_AREA_SIZE * 4),
       (PARTY_POSITIO_ROW + 1) * GRID_AREA_SIZE - 10,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { GAME_HEIGHT, GAME_WIDTH } from '@/constants';
-import SplashScreen from './reusable/SplashScreen';
+import SplashScreen from '@/components/reusable/SplashScreen';
 import Level from './Level';
 import MainMenu from './MainMenu/MainMenu';
 import { useGameStore } from '@/store';

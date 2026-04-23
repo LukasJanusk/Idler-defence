@@ -1,11 +1,12 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import CharacterGridSelectable, {
   type Props as CharacterGridSelectableProps,
-} from '@/components/CharacterScreen/CharacterSprite/CharacterGridSelectable';
+} from '@/components/game/CharacterScreen/CharacterSprite/CharacterGridSelectable';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters } from '@/defaults';
 import { GameClock } from '@/model/gameClock';
 import { Grid } from '@/model/grid';
+import { GridRenderer } from '@/model/gridRenderer';
 
 const withGameStore = (
   Story: StoryFn<typeof CharacterGridSelectable>,
@@ -15,9 +16,11 @@ const withGameStore = (
 ) => {
   const clock = new GameClock();
   clock.start();
+  const grid = new Grid(9, 5, 128);
   useGameStore.setState({
     gameClock: clock,
-    grid: new Grid(9, 5, 128),
+    grid,
+    gridRenderer: new GridRenderer(grid),
     selectedPosition: 'pos3',
     availableCharacters: createAvailableCharacters(),
     ...initialState,

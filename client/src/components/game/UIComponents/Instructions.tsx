@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
-import Button from '../reusable/Button';
-import CloseButton from '../reusable/CloseButton';
-import InstructionsDescription from '../reusable/InstructionsDesciption';
-import Sprite from '../reusable/Sprite';
-import { createZombieOne } from '../../defaults';
+import Button from '@/components/reusable/Button';
+import CloseButton from '@/components/reusable/CloseButton';
+import InstructionsDescription from '@/components/reusable/InstructionsDesciption';
+import Sprite from '@/components/reusable/Sprite';
+import { createZombieOne } from '@/defaults';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { wizardSkills } from '@/model/entities/skills/wizardSkills';
-import SkillButton from '../reusable/SkillButton';
+import SkillButton from '@/components/reusable/SkillButton';
 import GoldDisplay from './GoldDisplay';
 import WaveDisplay from './WaveDisplay';
 import NextWaveButton from './NextWaveButton';

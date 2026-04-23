@@ -1,5 +1,5 @@
 import ParticleContextProvider from '@/context/ParticleContextProvider';
-import Game from '@/components/Game';
+import Game from '@/components/game/Game';
 
 function GamePage() {
   return (

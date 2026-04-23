@@ -1,5 +1,13 @@
+import type { AnyCharacter } from '@/types';
 import { Attack } from './attack';
-import type { EnemyAction } from './character';
+import {
+  FireMage,
+  Knight,
+  LightningMage,
+  Warrior,
+  Wizard,
+  type EnemyAction,
+} from './character';
 import { Enemy } from './enemy';
 import { Projectile } from './projectile';
 
@@ -19,6 +27,19 @@ export const isEnemy = (entity: unknown): entity is Enemy<EnemyAction> => {
 
 export const isAttack = (entity: unknown): entity is Attack => {
   if (entity instanceof Attack) {
+    return true;
+  }
+  return false;
+};
+
+export const isCharacter = (entity: unknown): entity is AnyCharacter => {
+  if (
+    entity instanceof Warrior ||
+    entity instanceof FireMage ||
+    entity instanceof Wizard ||
+    entity instanceof LightningMage ||
+    entity instanceof Knight
+  ) {
     return true;
   }
   return false;

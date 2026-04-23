@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CharacterSprite from '@/components/CharacterScreen/CharacterSprite/CharacterSprite';
+import CharacterSprite from '@/components/game/CharacterScreen/CharacterSprite/CharacterSprite';
 import { createAvailableCharacters } from '@/defaults';
 import { Wizard } from '@/model/entities/character';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';

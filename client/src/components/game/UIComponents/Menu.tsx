@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MenuIcon } from 'lucide-react';
 import Button from '@/components/reusable/Button';
 import { useGameStore } from '@/store';
-import Toggle from '../reusable/Toggle';
+import Toggle from '@/components/reusable/Toggle';
 import Instructions from './Instructions';
 
 export default function Menu() {

@@ -1,4 +1,4 @@
-import Menu from '@/components/UIComponents/Menu';
+import Menu from '@/components/game/UIComponents/Menu';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import * as storeModule from '@/store';

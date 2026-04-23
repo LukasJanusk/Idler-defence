@@ -1,6 +1,6 @@
 import PageBackdrop from '@/components/reusable/PageBackdrop';
 import StartGameButton from '@/components/reusable/StarGameButton';
-import Highscores from '@/components/Highscores';
+import Highscores from '@/components/website/Highscores';
 
 function HomePage() {
   return (

@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router';
-import GamePage from './pages/GamePage';
-import HomePage from './pages/HomePage';
-import { Navigation } from './components/Navigation/Navigation';
-import Avatar from './components/reusable/Avatar';
+import GamePage from '@/pages/GamePage';
+import HomePage from '@/pages/HomePage';
+import { Navigation } from '@/components/website/Navigation/Navigation';
+import Avatar from '@/components/reusable/Avatar';
 
 function App() {
   return (

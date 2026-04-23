@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import GameOver from '@/components/GameOver/GameOver';
+import GameOver from '@/components/game/GameOver/GameOver';
 import { useGameStore } from '@/store';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

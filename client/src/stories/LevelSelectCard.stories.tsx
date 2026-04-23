@@ -1,4 +1,4 @@
-import LevelSelectCard from '@/components/LevelSelect/LevelSelectCard';
+import LevelSelectCard from '@/components/game/LevelSelect/LevelSelectCard';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {

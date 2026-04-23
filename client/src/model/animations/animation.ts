@@ -18,12 +18,14 @@ export class Sheet {
     if (this.img.complete && this.img.naturalWidth) {
       this.width = this.img.naturalWidth;
       this.height = this.img.naturalHeight;
+      this.loaded = true;
       return;
     }
     await new Promise<void>((resolve, reject) => {
       this.img.onload = () => {
         this.width = this.img.naturalWidth;
         this.height = this.img.naturalHeight;
+        this.loaded = true;
         resolve();
       };
       this.img.onerror = () => reject(new Error('Failed to load image'));

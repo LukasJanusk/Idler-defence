@@ -1,7 +1,4 @@
-import { useAnimation } from '@/hooks/useAnimation';
 import type { Animation } from '@/model/animations/animation';
-import useSpriteLoad from '@/hooks/useSpriteLoad';
-import { LoaderCircleIcon } from 'lucide-react';
 
 type Props = {
   animation: Animation;
@@ -10,20 +7,11 @@ type Props = {
 };
 
 export default function Sprite({ animation, entity, scale = 1 }: Props) {
-  const frame = useAnimation(animation);
-  const size = useSpriteLoad(animation);
   if (!animation) return <div>Animation not found!</div>;
-  if (!size)
-    return (
-      <div className="w-ful relative flex h-full items-center justify-center text-medieval-parchment">
-        <LoaderCircleIcon
-          aria-label="loading"
-          className="absolute h-12 w-12 animate-spin"
-        />
-      </div>
-    );
-  const width = size.width;
-  const height = size.height;
+  const width = animation.sheet.width / animation.nFrame;
+  const height = animation.sheet.height;
+
+  if (!width || !height) return null;
 
   return (
     <img
@@ -34,7 +22,7 @@ export default function Sprite({ animation, entity, scale = 1 }: Props) {
         height,
         objectFit: 'none',
         scale,
-        objectPosition: `-${frame && frame * width}px 0`,
+        objectPosition: `-${animation.frame * width}px 0`,
         transform: entity === 'enemy' ? `scaleX(-1)` : `scaleX(1)`,
       }}
       className={`pointer-events-none ${animation.id === 'Lightning-mage-discharge' ? 'ml-[32px]' : ''}`}

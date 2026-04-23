@@ -6,6 +6,7 @@ import { GRID_AREA_SIZE } from '@/constants';
 import { createAnimation } from '../animations/animation';
 import type { FireMage } from '../entities/character';
 import type { Grid } from '../grid';
+import type { GridRenderer } from '../gridRenderer';
 import { getRandomInt, registerAttackToGrid } from '@/utils';
 import { createBurnDebuff } from '../entities/debuff';
 
@@ -66,7 +67,11 @@ export const createFireWizardFireballAttack = (
   return projectile;
 };
 
-export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
+export const initFireWizardAttacks = (
+  grid: Grid,
+  renderer: GridRenderer,
+  fireWizard: FireMage,
+) => {
   registerAttackToGrid(
     grid,
     fireWizard,
@@ -95,7 +100,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
           5000,
         ),
       );
-      grid.generateParticles(
+      renderer.generateParticles(
         'ember',
         jet.rect.x + jet.rect.width / 2,
         jet.rect.y + jet.rect.height / 2,
@@ -114,7 +119,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
     2,
   );
   const generateEmbers = (stepX: number) => {
-    grid.generateParticles(
+    renderer.generateParticles(
       'ember',
       fireWizard.rect.x + stepX,
       fireWizard.rect.y + 76,
@@ -148,7 +153,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
           3000,
         ),
       );
-      grid.generateParticles(
+      renderer.generateParticles(
         'ember',
         target
           ? target.rect.x + target.rect.width / 2
@@ -173,7 +178,7 @@ export const initFireWizardAttacks = (grid: Grid, fireWizard: FireMage) => {
 
   const regenerate = () => {
     if (fireWizard.energy === fireWizard.maxEnergy) return;
-    grid.generateParticles(
+    renderer.generateParticles(
       'arcane',
       getRandomInt(
         fireWizard.rect.x + 30,

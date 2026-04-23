@@ -2,6 +2,7 @@ import lightningStrike from '@/assets/Lightning_Mage/Charge.png';
 import { v4 } from 'uuid';
 import { LightningMage } from '../entities/character';
 import { type Grid } from '../grid';
+import type { GridRenderer } from '../gridRenderer';
 import { registerAttackToGrid } from '@/utils';
 import { GRID_AREA_SIZE } from '@/constants';
 import { Projectile } from '../entities/projectile';
@@ -62,7 +63,11 @@ const createZapAttack = (
   return attack;
 };
 
-const createLightning = (damage: number, grid: Grid) => {
+const createLightning = (
+  damage: number,
+  grid: Grid,
+  renderer: GridRenderer,
+) => {
   const makeAttack = () => {
     const lightning = new Attack(
       `Lightning + ${Math.random()}`,
@@ -72,7 +77,7 @@ const createLightning = (damage: number, grid: Grid) => {
       9,
     );
     lightning.onHit = () => {
-      grid.generateParticles(
+      renderer.generateParticles(
         'spark',
         lightning.rect.x + lightning.rect.width / 2,
         lightning.rect.y + lightning.rect.height / 2,
@@ -106,6 +111,7 @@ const createDischargeAttack = (
 };
 export const initLightningMageAttacks = (
   grid: Grid,
+  renderer: GridRenderer,
   lightningMage: LightningMage,
 ) => {
   const lightningStrike = () => {
@@ -120,8 +126,9 @@ export const initLightningMageAttacks = (
         lightningMage.skills.find((s) => s.action === 'attack')?.damage ||
           attack.damage,
         grid,
+        renderer,
       );
-      grid.generateParticles(
+      renderer.generateParticles(
         'spark',
         target
           ? target.rect.x + target.rect.width / 2
@@ -152,7 +159,7 @@ export const initLightningMageAttacks = (
       lightningMage.skills.find((s) => s.action === 'chargedBolts')?.damage,
     );
     charge.onHit = (target) =>
-      grid.generateParticles(
+      renderer.generateParticles(
         'spark',
         target
           ? target.rect.x + target.rect.width / 2
@@ -178,7 +185,7 @@ export const initLightningMageAttacks = (
     );
 
     zapAttack.onHit = () => {
-      grid.generateParticles(
+      renderer.generateParticles(
         'spark',
         zapAttack.rect.x + zapAttack.rect.width / 2,
         zapAttack.rect.y + zapAttack.rect.height / 2,
@@ -203,7 +210,7 @@ export const initLightningMageAttacks = (
       lightningMage.skills.find((s) => s.action === 'discharge')?.damage,
     );
     charge.onHit = () =>
-      grid.generateParticles(
+      renderer.generateParticles(
         'spark',
         charge.rect.x + charge.rect.width / 2,
         charge.rect.y + charge.rect.height / 2,
@@ -220,7 +227,7 @@ export const initLightningMageAttacks = (
     2,
   );
   const generateSparks = (stepX: number) => {
-    grid.generateParticles(
+    renderer.generateParticles(
       'spark',
       lightningMage.rect.x + stepX,
       lightningMage.rect.y + 76,

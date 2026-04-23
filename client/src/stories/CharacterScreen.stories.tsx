@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CharacterScreen from '@/components/CharacterScreen/CharacterScreen';
+import CharacterScreen from '@/components/game/CharacterScreen/CharacterScreen';
 import { useGameStore } from '@/store';
 import { createAvailableCharacters, defaultSettings } from '@/defaults';
 import { GameClock } from '@/model/gameClock';
 import { Grid } from '@/model/grid';
+import { GridRenderer } from '@/model/gridRenderer';
 import ParticleContextProvider from '@/context/ParticleContextProvider';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,6 +18,7 @@ const withGameAndParticlesContext = (Story: any, context: any) => {
     gameClock: clock,
     gold: 1000,
     grid: grid,
+    gridRenderer: new GridRenderer(grid),
     selectedPosition: null,
     settings: defaultSettings,
     availableCharacters: availableCharacters,

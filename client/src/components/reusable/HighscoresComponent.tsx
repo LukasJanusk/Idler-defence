@@ -2,6 +2,20 @@ import type { Highscores, Score } from '@/types';
 import { X } from 'lucide-react';
 import HighscoresContainer from './HighscoresContainer';
 
+function formatScoreDate(date: string) {
+  const isoDateMatch = date.match(/^\d{4}-\d{2}-\d{2}/);
+  if (isoDateMatch) {
+    return isoDateMatch[0];
+  }
+
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) {
+    return date;
+  }
+
+  return parsed.toISOString().slice(0, 10);
+}
+
 type Props = {
   score?: Score;
   highscores: Highscores;
@@ -39,7 +53,7 @@ export default function HighscoresComponent({
                   <div className="flex justify-start">{s.name}</div>
                   <div className="flex justify-start">{s.score}</div>
                   <div className="flex justify-start">
-                    {new Date(s.date).toLocaleDateString()}
+                    {formatScoreDate(s.date)}
                   </div>
                 </li>
               );

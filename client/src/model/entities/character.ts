@@ -8,6 +8,7 @@ import type {
 import { initFireWizardAttacks } from '@/model/characterAttacks/fireWizardAttacks';
 import { Animation } from '@/model/animations/animation';
 import { type Grid } from '@/model/grid';
+import { type GridRenderer } from '@/model/gridRenderer';
 import { MAXIMUM_SKILL_LEVEL, UPDATE_RATE } from '@/constants';
 import { FireMageSkills } from '@/model/entities/skills/fireMageSkills';
 import { wizardSkills } from '@/model/entities/skills/wizardSkills';
@@ -110,7 +111,7 @@ export abstract class Character<T extends string> {
   private interval = UPDATE_RATE;
   private skillCostCleanups: Array<() => void> = [];
 
-  abstract initAttacks(grid: Grid): void;
+  abstract initAttacks(grid: Grid, renderer: GridRenderer): void;
   abstract initAudio(): void;
 
   constructor(
@@ -331,11 +332,11 @@ export abstract class Character<T extends string> {
     });
   }
 
-  initGeneralEffects(grid: Grid) {
+  initGeneralEffects(renderer: GridRenderer) {
     const originalLevelUp = this.levelUp.bind(this);
     this.levelUp = () => {
       originalLevelUp();
-      grid.generateParticles(
+      renderer.generateParticles(
         'hollowSquare',
         this.rect.x + this.rect.width / 2,
         this.rect.y - 64,
@@ -444,7 +445,7 @@ export class Warrior extends Character<WarriorAction> {
   initAudio() {
     console.log('Warrior audio not yet implemented');
   }
-  initAttacks(grid: Grid) {
+  initAttacks(grid: Grid, _renderer: GridRenderer) {
     if (this.attacksLoaded) return;
     console.log('Warrior attacks not implemented', grid);
     this.attacksLoaded = true;
@@ -488,9 +489,9 @@ export class FireMage extends Character<FireMageAction> {
     this.skills = FireMageSkills;
   }
 
-  initAttacks(grid: Grid) {
+  initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
-    initFireWizardAttacks(grid, this);
+    initFireWizardAttacks(grid, renderer, this);
     this.attacksLoaded = true;
   }
   initAudio() {
@@ -547,9 +548,9 @@ export class Knight extends Character<KnightAction> {
     };
     this.skills = knightSkills;
   }
-  initAttacks(grid: Grid) {
+  initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
-    initKnightAttacks(grid, this);
+    initKnightAttacks(grid, renderer, this);
     this.attacksLoaded = true;
   }
   initAudio() {
@@ -596,9 +597,9 @@ export class Wizard extends Character<WizardAction> {
     };
     this.skills = wizardSkills;
   }
-  initAttacks(grid: Grid) {
+  initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
-    initWizardAttacks(grid, this);
+    initWizardAttacks(grid, renderer, this);
     this.attacksLoaded = true;
   }
   initAudio() {
@@ -651,9 +652,9 @@ export class LightningMage extends Character<LightningMageAction> {
     };
     this.skills = lightningMageSkills;
   }
-  initAttacks(grid: Grid) {
+  initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
-    initLightningMageAttacks(grid, this);
+    initLightningMageAttacks(grid, renderer, this);
     this.attacksLoaded = true;
   }
   initAudio() {

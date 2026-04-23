@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { GameStore } from './types';
 import { Grid } from './model/grid';
+import { GridRenderer } from './model/gridRenderer';
 import { GameClock } from './model/gameClock';
 import {
   createAvailableCharacters,
@@ -17,6 +18,7 @@ const clock = new GameClock();
 clock.start();
 const levelHandler = new LevelEventHandler(clock);
 const grid = new Grid(9, 5, 128);
+const gridRenderer = new GridRenderer(grid);
 
 export const useGameStore = create<GameStore>((set, get) => ({
   // game state
@@ -24,6 +26,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gameClock: clock,
   selectedPosition: null,
   grid: grid,
+  gridRenderer: gridRenderer,
   availableCharacters: createAvailableCharacters(),
   gold: defaultGold(),
   score: 0,
@@ -67,9 +70,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const grid = store.grid;
       char.pos = pos;
       char.initAttributes();
-      char.initAttacks(store.grid);
+      char.initAttacks(store.grid, store.gridRenderer);
       char.initAudio();
-      char.initGeneralEffects(store.grid);
+      char.initGeneralEffects(store.gridRenderer);
       char.initSkillCost();
       grid.setCharacterToPosition(pos, char);
       char.setAutomate(store.settings.automateSkillCast);
@@ -174,6 +177,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((store) => {
       const grid = store.grid;
       grid.reset();
+      store.gridRenderer.clear();
       store.levelEventHandler.reset();
       store.gameClock.start();
       return {
@@ -217,7 +221,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       store.settings = { ...prev, ...patch };
-      store.grid.setRenderParticles(store.settings.drawParticles);
+      store.gridRenderer.setRenderParticles(store.settings.drawParticles);
       return { ...store };
     }),
   setShowNextWave: (isVisible: boolean) =>

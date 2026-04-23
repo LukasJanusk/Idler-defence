@@ -1,4 +1,4 @@
-import LevelSelectScreen from '@/components/LevelSelect/LevelSelectScreen';
+import LevelSelectScreen from '@/components/game/LevelSelect/LevelSelectScreen';
 import type { LevelSelectable } from '@/types';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 

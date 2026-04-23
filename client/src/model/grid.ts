@@ -1,35 +1,12 @@
 import { v4 } from 'uuid';
 import type { AnyCharacter, PartyPositionName, Rect } from '@/types';
 import { Projectile } from '@/model/entities/projectile';
-import {
-  FireMage,
-  Knight,
-  LightningMage,
-  Warrior,
-  Wizard,
-  type EnemyAction,
-} from './entities/character';
+import { type EnemyAction } from './entities/character';
 import { getRectMiddle, removeExpired } from '../utils';
 import { Enemy } from './entities/enemy';
 import { Attack } from './entities/attack';
-import { type ParticleType } from './entities/particles';
-import { MAXIMUM_PARTICLES, PARTY_POSITIO_ROW } from '@/constants';
-import { defaultSettings as settings } from '@/defaults';
-import { ParticleManager } from './particleManager';
-import { isAttack, isEnemy, isProjectile } from './entities/utils';
-
-const isCharacter = (entity: unknown): entity is AnyCharacter => {
-  if (
-    entity instanceof Warrior ||
-    entity instanceof FireMage ||
-    entity instanceof Wizard ||
-    entity instanceof LightningMage ||
-    entity instanceof Knight
-  ) {
-    return true;
-  }
-  return false;
-};
+import { PARTY_POSITIO_ROW } from '@/constants';
+import { isAttack, isCharacter, isEnemy, isProjectile } from './entities/utils';
 
 export class Area {
   id: string;
@@ -116,8 +93,6 @@ export class Grid {
   horizontal: number;
   vertical: number;
   areaSize: number;
-  particleManager: ParticleManager = new ParticleManager();
-  renderParticles: boolean = settings.drawParticles;
 
   constructor(horizontal: number, vertical: number, areaSize: number) {
     this.horizontal = horizontal;
@@ -149,23 +124,6 @@ export class Grid {
       }),
     );
     return closest;
-  }
-  setRenderParticles(render: boolean) {
-    this.renderParticles = render;
-  }
-  generateParticles(
-    type: ParticleType,
-    x: number,
-    y: number,
-    n: number,
-    arc?: number,
-  ) {
-    if (!this.renderParticles) return;
-    this.particleManager.generateParticles(type, x, y, n, arc);
-  }
-  updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {
-    if (!this.renderParticles) return;
-    this.particleManager.updateAndDrawParticles(dt, ctx, MAXIMUM_PARTICLES);
   }
   getAllAreas() {
     return this.grid.flat().flat();
@@ -295,17 +253,8 @@ export class Grid {
     );
     this.cleanup();
   }
-  cleanupParticles() {
-    this.particleManager.cleanupParticles({
-      x: 0,
-      y: 0,
-      width: this.horizontal * this.areaSize,
-      height: this.vertical * this.areaSize,
-    });
-  }
   cleanup() {
     this.grid.forEach((row) => row.forEach((area) => area.cleanup()));
-    this.cleanupParticles();
   }
   getEnemies() {
     return this.grid.flat().flatMap((area) => [...area.enemies]);
@@ -383,7 +332,6 @@ export class Grid {
     areas.forEach((area) => area.unregisterCharacter());
   }
   reset() {
-    this.particleManager.clear();
     const areas = this.getAllAreas();
     areas.forEach((a) => a.reset());
   }

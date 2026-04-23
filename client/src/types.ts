@@ -14,6 +14,7 @@ import type {
 } from './model/entities/character';
 import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
+import type { GridRenderer } from './model/gridRenderer';
 import type { GameClock } from './model/gameClock';
 import type { LevelEvent, LevelEventHandler } from './model/levelEventHandler';
 import type { CreateScore, Score, Highscores } from './modules/score/schema';
@@ -116,6 +117,7 @@ export type GameStore = {
   gameClock: GameClock;
   selectedPosition: null | PartyPositionName;
   grid: Grid;
+  gridRenderer: GridRenderer;
   availableCharacters: Set<AnyCharacter>;
   gold: number;
   score: number;

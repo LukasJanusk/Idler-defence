@@ -1,4 +1,4 @@
-import Button from '../reusable/Button';
+import Button from '@/components/reusable/Button';
 import { ReactComponent as Instagram } from '@/assets/social/instagram.svg?react';
 import { ReactComponent as Facebook } from '@/assets/social/facebook.svg?react';
 import Settings from '@/components/reusable/Settings';

@@ -1,6 +1,6 @@
 import { useHover } from '@/hooks/useHover';
-import SkillButton from '../../reusable/SkillButton';
-import SkillModal from '../../reusable/SkillModal';
+import SkillButton from '@/components/reusable/SkillButton';
+import SkillModal from '@/components/reusable/SkillModal';
 import type { Skill } from '@/types';
 
 type CharacterToHireSkillsProps<T extends string> = {

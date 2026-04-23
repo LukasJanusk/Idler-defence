@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import NextWaveButton from '@/components/UIComponents/NextWaveButton';
+import NextWaveButton from '@/components/game/UIComponents/NextWaveButton';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

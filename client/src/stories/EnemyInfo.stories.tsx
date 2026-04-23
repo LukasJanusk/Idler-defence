@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import EnemyInfo from '@/components/EnemyComponent/EnemyInfo';
+import EnemyInfo from '@/components/game/EnemyComponent/EnemyInfo';
 import { createZombieOne } from '@/defaults';
 
 const enemy = createZombieOne();
