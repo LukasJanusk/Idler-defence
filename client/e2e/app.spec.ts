@@ -8,9 +8,11 @@ test('On level end displays score form and submits and resets on close', async (
   page,
 }) => {
   await page.goto('/game');
-  await page.locator('svg').click();
+
+  await page.locator('svg').nth(1).click();
   await page.getByRole('button', { name: 'New Game' }).click();
-  await page.getByRole('img', { name: 'Background image of level 0' }).click();
+
+  await page.getByText('Tutorial').nth(1).click();
   await page.getByRole('button', { name: 'Start' }).click();
   await page.getByRole('button', { name: 'Menu button' }).click();
   await page.getByRole('button', { name: 'Always show UI' }).click();
