@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Button from '@/components/reusable/Button';
 import CloseButton from '@/components/reusable/CloseButton';
 import InstructionsDescription from '@/components/reusable/InstructionsDesciption';
 import Sprite from '@/components/reusable/Sprite';
 import { createZombieOne } from '@/defaults';
+import type { Animation } from '@/model/animations/animation';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { wizardSkills } from '@/model/entities/skills/wizardSkills';
 import SkillButton from '@/components/reusable/SkillButton';
@@ -11,6 +12,20 @@ import GoldDisplay from './GoldDisplay';
 import WaveDisplay from './WaveDisplay';
 import NextWaveButton from './NextWaveButton';
 import AddNewCharacterButton from '../CharacterScreen/CharacterSprite/AddNewCharacterButton';
+import { ANIMATION_FRAMETIME } from '@/constants';
+
+function loadGuidebookAnimations(animations: Animation[], onReady: () => void) {
+  animations.forEach((animation) => {
+    void animation.sheet
+      .load()
+      .then(onReady)
+      .catch(() => undefined);
+  });
+}
+
+function tickGuidebookAnimations(animations: Animation[]) {
+  animations.forEach((animation) => animation.tick(ANIMATION_FRAMETIME));
+}
 
 type InstructionsProps = {
   onClose?: () => void;
@@ -76,6 +91,31 @@ export default function Instructions({ onClose }: InstructionsProps) {
   const charAnim = useMemo(() => createWizardAnimations(), []);
   const [categories] = useState<Category[]>(categs);
   const [selected, setSelecetd] = useState<number>(0);
+  const [, setFrameVersion] = useState(0);
+
+  useEffect(() => {
+    const guidebookAnimations = [
+      enemy.animations.idle,
+      enemy.animations.attack,
+      enemy.animations.move,
+      charAnim.idle,
+      charAnim.magicBall,
+    ];
+
+    loadGuidebookAnimations(guidebookAnimations, () => {
+      setFrameVersion((version) => version + 1);
+    });
+
+    const intervalId = window.setInterval(() => {
+      tickGuidebookAnimations(guidebookAnimations);
+      setFrameVersion((version) => version + 1);
+    }, ANIMATION_FRAMETIME);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [charAnim, enemy]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="relative flex h-[600px] min-h-[512px] w-[640px] flex-col gap-2 overflow-auto border-4 border-medieval-silver bg-medieval-stone p-6 text-medieval-parchment shadow-xl">
@@ -108,8 +148,8 @@ export default function Instructions({ onClose }: InstructionsProps) {
                   <AddNewCharacterButton position="pos1" demo={true} />
                 </div>
 
-                <Sprite animation={charAnim.idle} entity="enemy" />
-                <Sprite animation={charAnim.magicBall} entity="enemy" />
+                <Sprite animation={charAnim.idle} entity="character" />
+                <Sprite animation={charAnim.magicBall} entity="character" />
               </div>
             )}
             {categories[selected].title === 'attributes' && (

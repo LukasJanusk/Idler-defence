@@ -1,9 +1,15 @@
 import Menu from '@/components/game/UIComponents/Menu';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import * as storeModule from '@/store';
 import { defaultSettings } from '@/defaults';
 import { userEvent } from 'storybook/internal/test';
+
+vi.mock('@/components/reusable/Sprite', () => ({
+  default: ({ entity }: { entity: 'character' | 'enemy' }) => (
+    <div aria-label={`${entity} animation`} />
+  ),
+}));
 
 beforeEach(() => {
   storeModule.useGameStore.setState({
@@ -38,6 +44,9 @@ describe('<Menu />', () => {
 
     await userEvent.click(screen.getByText('Help'));
     expect(await screen.findByText('Guidebook')).toBeVisible();
+    expect(await screen.findAllByLabelText('character animation')).toHaveLength(
+      2,
+    );
 
     await userEvent.click(screen.getByText('Help'));
     expect(screen.queryByText('Guidebook')).toBe(null);
