@@ -52,6 +52,19 @@ describe('<Menu />', () => {
     expect(screen.queryByText('Guidebook')).toBe(null);
   });
 
+  it('opens/closes Settings modal when settings button pressed', async () => {
+    render(<Menu />);
+
+    await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
+    expect(await screen.findByText('Always show UI')).toBeVisible();
+
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
+    expect(screen.queryByText('Always show UI')).toBe(null);
+  });
+
   it('toggles grid on', async () => {
     render(<Menu />);
     const showGrid = () =>
@@ -63,6 +76,8 @@ describe('<Menu />', () => {
     );
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Grid')).toBeVisible();
     const gridButton = await screen.findByText('Grid');
     await userEvent.click(gridButton);
@@ -81,6 +96,8 @@ describe('<Menu />', () => {
     );
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Grid')).toBeVisible();
     const gridButton = await screen.findByText('Grid');
     await userEvent.click(gridButton);
@@ -99,6 +116,8 @@ describe('<Menu />', () => {
     );
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Particles')).toBeVisible();
     const particlesButton = await screen.findByText('Particles');
     await userEvent.click(particlesButton);
@@ -117,6 +136,8 @@ describe('<Menu />', () => {
     );
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Particles')).toBeVisible();
     const particlesButton = await screen.findByText('Particles');
     await userEvent.click(particlesButton);
@@ -134,6 +155,8 @@ describe('<Menu />', () => {
     );
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Always show UI')).toBeVisible();
     const UIButton = await screen.findByText('Always show UI');
     await userEvent.click(UIButton);
@@ -151,6 +174,8 @@ describe('<Menu />', () => {
     );
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Always show UI')).toBeVisible();
     const UIButton = await screen.findByText('Always show UI');
     await userEvent.click(UIButton);
@@ -167,6 +192,8 @@ describe('<Menu />', () => {
     });
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Autocast')).toBeVisible();
     const autocastButton = await screen.findByText('Autocast');
     await userEvent.click(autocastButton);
@@ -187,6 +214,8 @@ describe('<Menu />', () => {
     });
 
     await userEvent.click(screen.getByLabelText('Menu button'));
+    expect(await screen.findByText('Pause')).toBeVisible();
+    await userEvent.click(screen.getByLabelText('toggle settings button'));
     expect(await screen.findByText('Autocast')).toBeVisible();
     const autocastButton = await screen.findByText('Autocast');
     await userEvent.click(autocastButton);

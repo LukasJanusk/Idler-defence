@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Button from '@/components/reusable/Button';
 import CloseButton from '@/components/reusable/CloseButton';
 import InstructionsDescription from '@/components/reusable/InstructionsDesciption';
+import Modal from '@/components/reusable/Modal';
 import Sprite from '@/components/reusable/Sprite';
 import { createZombieOne } from '@/defaults';
 import type { Animation } from '@/model/animations/animation';
@@ -117,7 +118,7 @@ export default function Instructions({ onClose }: InstructionsProps) {
   }, [charAnim, enemy]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <Modal onClose={() => onClose?.() ?? undefined}>
       <div className="relative flex h-[600px] min-h-[512px] w-[640px] flex-col gap-2 overflow-auto border-4 border-medieval-silver bg-medieval-stone p-6 text-medieval-parchment shadow-xl">
         <h1 className="text-2xl font-bold">Guidebook</h1>
         <CloseButton onClose={() => onClose?.()} />
@@ -208,6 +209,6 @@ export default function Instructions({ onClose }: InstructionsProps) {
           </InstructionsDescription>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
