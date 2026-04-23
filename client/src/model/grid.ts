@@ -12,20 +12,11 @@ import {
 import { getRectMiddle, removeExpired } from '../utils';
 import { Enemy } from './entities/enemy';
 import { Attack } from './entities/attack';
-import {
-  splashArane,
-  splashBlood,
-  splashEmbers,
-  splashHealth,
-  splashHollowSquares,
-  splashLines,
-  splashMagic,
-  splashSparks,
-  type AnyParticle,
-  type ParticleType,
-} from './entities/particles';
+import { type ParticleType } from './entities/particles';
 import { MAXIMUM_PARTICLES, PARTY_POSITIO_ROW } from '@/constants';
 import { defaultSettings as settings } from '@/defaults';
+import { ParticleManager } from './particleManager';
+import { isAttack, isEnemy, isProjectile } from './entities/utils';
 
 const isCharacter = (entity: unknown): entity is AnyCharacter => {
   if (
@@ -40,26 +31,6 @@ const isCharacter = (entity: unknown): entity is AnyCharacter => {
   return false;
 };
 
-const isProjectile = (entity: unknown): entity is Projectile => {
-  if (entity instanceof Projectile) {
-    return true;
-  }
-  return false;
-};
-
-const isEnemy = (entity: unknown): entity is Enemy<EnemyAction> => {
-  if (entity instanceof Enemy) {
-    return true;
-  }
-  return false;
-};
-
-const isAttack = (entity: unknown): entity is Attack => {
-  if (entity instanceof Attack) {
-    return true;
-  }
-  return false;
-};
 export class Area {
   id: string;
   width: number;
@@ -145,7 +116,7 @@ export class Grid {
   horizontal: number;
   vertical: number;
   areaSize: number;
-  particles: AnyParticle[] = [];
+  particleManager: ParticleManager = new ParticleManager();
   renderParticles: boolean = settings.drawParticles;
 
   constructor(horizontal: number, vertical: number, areaSize: number) {
@@ -190,33 +161,11 @@ export class Grid {
     arc?: number,
   ) {
     if (!this.renderParticles) return;
-    switch (type) {
-      case 'blood':
-        return this.particles.push(...splashBlood(x, y, n));
-      case 'ember':
-        return this.particles.push(...splashEmbers(x, y, n));
-      case 'arcane':
-        return this.particles.push(...splashArane(x, y, n));
-      case 'health':
-        return this.particles.push(...splashHealth(x, y, n));
-      case 'magic':
-        return this.particles.push(...splashMagic(x, y, n));
-      case 'spark':
-        return this.particles.push(...splashSparks(x, y, n));
-      case 'line':
-        return this.particles.push(...splashLines(x, y, n, arc));
-      case 'hollowSquare':
-        return this.particles.push(...splashHollowSquares(x, y, n));
-    }
+    this.particleManager.generateParticles(type, x, y, n, arc);
   }
   updateAndDrawParticles(dt: number, ctx: CanvasRenderingContext2D) {
     if (!this.renderParticles) return;
-    this.particles.forEach((p, index) => {
-      p.update(dt);
-      if (index <= MAXIMUM_PARTICLES) {
-        p.draw(ctx);
-      }
-    });
+    this.particleManager.updateAndDrawParticles(dt, ctx, MAXIMUM_PARTICLES);
   }
   getAllAreas() {
     return this.grid.flat().flat();
@@ -224,9 +173,6 @@ export class Grid {
   getColumn(index: number) {
     if (this.horizontal - 1 < index) return;
     return this.grid.map((row) => row[index]);
-  }
-  filterExpiredParticles() {
-    this.particles = this.particles.filter((p) => p.isAlive());
   }
   private registerEnemiesToArea(currentArea: Area) {
     currentArea.enemies.forEach((enemy) => {
@@ -349,16 +295,17 @@ export class Grid {
     );
     this.cleanup();
   }
+  cleanupParticles() {
+    this.particleManager.cleanupParticles({
+      x: 0,
+      y: 0,
+      width: this.horizontal * this.areaSize,
+      height: this.vertical * this.areaSize,
+    });
+  }
   cleanup() {
     this.grid.forEach((row) => row.forEach((area) => area.cleanup()));
-    this.particles.filter(
-      (p) =>
-        p.x <= this.areaSize * this.horizontal &&
-        p.y <= this.vertical * this.areaSize &&
-        p.x > 0 &&
-        p.y > 0 &&
-        p.isAlive(),
-    );
+    this.cleanupParticles();
   }
   getEnemies() {
     return this.grid.flat().flatMap((area) => [...area.enemies]);
@@ -436,7 +383,7 @@ export class Grid {
     areas.forEach((area) => area.unregisterCharacter());
   }
   reset() {
-    this.particles = [];
+    this.particleManager.clear();
     const areas = this.getAllAreas();
     areas.forEach((a) => a.reset());
   }

@@ -35,7 +35,6 @@ export function useParticles(
       const ctx = canvas.current?.getContext('2d');
       if (!ctx) return;
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      grid.filterExpiredParticles();
       grid.updateAndDrawParticles(dt, ctx);
     };
     gameClock.subscribe(onTick);
