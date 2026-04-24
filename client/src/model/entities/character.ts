@@ -32,6 +32,8 @@ import {
   fireWizardStabSound,
   flamejetSound,
   knightStabSound,
+  lightningPulseSound,
+  lightningStreamSound,
   magicArrowSound,
   magicSphereSound,
   zapSound,
@@ -665,6 +667,16 @@ export class LightningMage extends Character<LightningMageAction> {
     this.animations.chargedBolts.onFrame(0, () => {
       chargedBoltsSound.currentTime = 0;
       chargedBoltsSound.play();
+    });
+    this.animations.discharge.onFrame(2, () => {
+      lightningStreamSound.currentTime = 0;
+      lightningStreamSound.play();
+    });
+    [4, 6, 8, 10].forEach((frame) => {
+      this.animations.discharge.onFrame(frame, () => {
+        lightningPulseSound.currentTime = 0;
+        lightningPulseSound.play();
+      });
     });
   }
 }

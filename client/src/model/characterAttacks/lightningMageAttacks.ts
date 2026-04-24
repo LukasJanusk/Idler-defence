@@ -4,10 +4,12 @@ import { LightningMage } from '../entities/character';
 import { type Grid } from '../grid';
 import type { GridRenderer } from '../gridRenderer';
 import { registerAttackToGrid } from '@/utils';
-import { GRID_AREA_SIZE } from '@/constants';
+import { GAME_HEIGHT, GRID_AREA_SIZE } from '@/constants';
 import { Projectile } from '../entities/projectile';
 import { createAnimation } from '../animations/animation';
 import { Attack } from '../entities/attack';
+
+const LIGHTNING_STRIKE_BOTTOM_OFFSET = 256;
 
 export const createLightningChargeAttack = (
   x: number,
@@ -89,8 +91,12 @@ const createLightning = (
   const randomCol = Math.floor(Math.random() * (8 - 4 + 1)) + 4;
   const col = grid.getColumn(randomCol);
 
-  col?.forEach((a) => {
-    a.registerEntity(makeAttack());
+  col?.forEach((area) => {
+    renderer.spawnLightningStrike(
+      area.rect.x + area.rect.width / 2,
+      GAME_HEIGHT - LIGHTNING_STRIKE_BOTTOM_OFFSET,
+    );
+    area.registerEntity(makeAttack());
   });
 };
 const createDischargeAttack = (

@@ -1,10 +1,11 @@
 import { MAXIMUM_PARTICLES } from '@/constants';
 import { defaultSettings } from '@/defaults';
-import type { Animation } from '@/model/animations/animation';
+import { type Animation, Sheet } from '@/model/animations/animation';
 import type { Rect } from '@/types';
 import type { AnyCharacter } from '@/types';
 import type { ParticleType } from './entities/particles';
 import type { ProjectileAnimation } from './entities/projectile';
+import { EffectManager } from './effectManager';
 import type { Grid } from './grid';
 import { ParticleManager } from './particleManager';
 
@@ -12,6 +13,7 @@ type RenderAnimation = Animation | ProjectileAnimation;
 
 export class GridRenderer {
   particleManager: ParticleManager = new ParticleManager();
+  effectManager: EffectManager = new EffectManager();
   renderParticles = defaultSettings.drawParticles;
   private readonly grid: Grid;
 
@@ -34,6 +36,10 @@ export class GridRenderer {
     this.particleManager.generateParticles(type, x, y, n, arc);
   }
 
+  spawnLightningStrike(x: number, bottomY: number) {
+    this.effectManager.spawnLightningStrike(x, bottomY);
+  }
+
   getRenderState() {
     return {
       enemies: this.grid.getEnemies(),
@@ -43,22 +49,27 @@ export class GridRenderer {
   }
 
   tickAnimations(dt: number) {
+    this.effectManager.updateEffects(dt);
+
     for (const animation of this.getAnimations()) {
-      this.prepareSheet(animation);
+      this.prepareSheet(animation.sheet);
       animation.tick(dt);
     }
   }
 
   render(dt: number, ctx: CanvasRenderingContext2D) {
     if (!this.renderParticles) return;
+    this.effectManager.drawEffects(ctx);
     this.particleManager.updateAndDrawParticles(dt, ctx, MAXIMUM_PARTICLES);
   }
 
   cleanup() {
+    this.effectManager.cleanupEffects(this.getBounds());
     this.particleManager.cleanupParticles(this.getBounds());
   }
 
   clear() {
+    this.effectManager.clear();
     this.particleManager.clear();
   }
 
@@ -98,8 +109,7 @@ export class GridRenderer {
     yield animation;
   }
 
-  private prepareSheet(animation: RenderAnimation) {
-    const { sheet } = animation;
+  private prepareSheet(sheet: Sheet) {
     if (sheet.loaded) return;
     if (sheet.img.complete && sheet.img.naturalWidth) {
       sheet.width = sheet.img.naturalWidth;

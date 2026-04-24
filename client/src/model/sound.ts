@@ -10,6 +10,7 @@ import knightStab from '@/assets/Sounds/knight_stab.ogg';
 
 import zap from '@/assets/Sounds/zap.ogg';
 import chargedBolts from '@/assets/Sounds/chargedbolts.ogg';
+import lightningStream from '@/assets/Sounds/lightning_stream.wav';
 
 import levelUpSound from '@/assets/Sounds/level_up.ogg';
 import zombieOneDeathSound from '@/assets/Sounds/zombie_one_death.ogg';
@@ -33,10 +34,20 @@ export const knightStabSound = new Audio(
   new URL(knightStab, import.meta.url).href,
 );
 export const zapSound = new Audio(new URL(zap, import.meta.url).href);
+export const lightningPulseSound = new Audio(
+  new URL(zap, import.meta.url).href,
+);
 
 export const chargedBoltsSound = new Audio(
   new URL(chargedBolts, import.meta.url).href,
 );
+
+export const lightningStreamSound = new Audio(
+  new URL(lightningStream, import.meta.url).href,
+);
+
+lightningPulseSound.volume = 0.45;
+lightningStreamSound.volume = 0.32;
 
 export const levelUp = new Audio(new URL(levelUpSound, import.meta.url).href);
 export const zombieOneDeath = new Audio(

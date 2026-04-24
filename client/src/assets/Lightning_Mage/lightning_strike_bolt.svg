@@ -1,0 +1,22 @@
+<svg width="96" height="640" viewBox="0 0 96 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="core" x1="48" y1="0" x2="48" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF3" />
+      <stop offset="0.42" stop-color="#FFEBA8" />
+      <stop offset="1" stop-color="#F3C33D" stop-opacity="0.88" />
+    </linearGradient>
+    <linearGradient id="halo" x1="48" y1="0" x2="48" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1A8" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#D59B18" stop-opacity="0.18" />
+    </linearGradient>
+    <filter id="blur" x="0" y="0" width="96" height="640" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="8" />
+    </filter>
+  </defs>
+  <path d="M48 10L42 104L62 156L36 266L56 324L32 430L54 502L38 630" stroke="url(#halo)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" filter="url(#blur)" />
+  <path d="M48 10L42 104L62 156L36 266L56 324L32 430L54 502L38 630" stroke="url(#core)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M48 96L74 126" stroke="#FFF0AE" stroke-width="8" stroke-linecap="round" />
+  <path d="M40 212L16 244" stroke="#FFF0AE" stroke-width="7" stroke-linecap="round" />
+  <path d="M54 350L80 380" stroke="#FFF0AE" stroke-width="6" stroke-linecap="round" />
+  <path d="M42 540L18 570" stroke="#FFF0AE" stroke-width="6" stroke-linecap="round" />
+</svg>

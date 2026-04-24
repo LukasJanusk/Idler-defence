@@ -121,8 +121,8 @@ export class Enemy<T extends string = never> {
   }
   checkIfDead() {
     if (this.state === 'dead') {
-      // this.onDead.forEach((fn) => fn());
-      // this.onDead.clear();
+      this.onDead.forEach((fn) => fn());
+      this.onDead.clear();
       return;
     }
     if (this.health <= 0) {
