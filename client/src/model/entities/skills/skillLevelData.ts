@@ -92,3 +92,27 @@ export const lightningStrikeLevelUpData = {
   upgradeCost: 200,
   charLevelRequirements: 2,
 };
+export const samuraiArcherRecoveryLevelUpData = {
+  cost: -0.3,
+  upgradeCost: 200,
+  charLevelRequirements: 2,
+};
+export const samuraiArcherSlashLevelUpData = {
+  baseDamage: 8,
+  cost: 0.25,
+  upgradeCost: 200,
+  charLevelRequirements: 2,
+};
+export const samuraiArcherDrawCutLevelUpData = {
+  baseDamage: 12,
+  cost: 0.4,
+  upgradeCost: 200,
+  charLevelRequirements: 2,
+};
+export const samuraiArcherBowShotLevelUpData = {
+  baseDamage: 15,
+  cost: 0.5,
+  speed: 15,
+  upgradeCost: 200,
+  charLevelRequirements: 2,
+};

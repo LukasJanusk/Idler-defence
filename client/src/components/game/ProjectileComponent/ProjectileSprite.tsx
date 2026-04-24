@@ -10,7 +10,12 @@ export default function ProjectileSprite({ projectile }: Props) {
     <div
       aria-label={`${projectile.name} projectile`}
       className="border-box pointer-events-none absolute"
-      style={{ left: projectile.rect.x, top: projectile.rect.y }}
+      style={{
+        left: projectile.rect.x,
+        top: projectile.rect.y,
+        transform: `rotate(${projectile.rotation}deg)`,
+        transformOrigin: '50% 50%',
+      }}
     >
       <Sprite animation={projectile.animation} entity={projectile.source} />
     </div>

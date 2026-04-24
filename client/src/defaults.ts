@@ -3,6 +3,7 @@ import {
   FireMage,
   Knight,
   LightningMage,
+  SamuraiArcher,
   Wizard,
 } from './model/entities/character';
 import type { AnyCharacter, GameState, Settings } from './types';
@@ -81,6 +82,9 @@ export const createAvailableCharacters = () => {
     available.add(new Wizard(`Wizard${v4()}`, pickRandomName(namesMale)));
     available.add(
       new LightningMage(`LightningMage${v4()}`, pickRandomName(namesFemale)),
+    );
+    available.add(
+      new SamuraiArcher(`SamuraiArcher${v4()}`, pickRandomName(namesMale)),
     );
     available.add(new Knight(`Knight${v4()}`, pickRandomName(namesMale)));
     available.add(new FireMage(`FireMage${v4()}`, pickRandomName(namesMale)));

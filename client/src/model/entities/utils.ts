@@ -4,6 +4,7 @@ import {
   FireMage,
   Knight,
   LightningMage,
+  SamuraiArcher,
   Warrior,
   Wizard,
   type EnemyAction,
@@ -38,6 +39,7 @@ export const isCharacter = (entity: unknown): entity is AnyCharacter => {
     entity instanceof FireMage ||
     entity instanceof Wizard ||
     entity instanceof LightningMage ||
+    entity instanceof SamuraiArcher ||
     entity instanceof Knight
   ) {
     return true;

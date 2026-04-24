@@ -11,6 +11,8 @@ import type {
   WizardAction,
   LightningMage,
   LightningMageAction,
+  SamuraiArcher,
+  SamuraiArcherAction,
 } from './model/entities/character';
 import type { Projectile } from './model/entities/projectile';
 import type { Grid } from './model/grid';
@@ -72,12 +74,15 @@ export type WizardCharacter = Wizard & CharacterBase<WizardAction>;
 export type KnightCharacter = Knight & CharacterBase<KnightAction>;
 export type LightningMageCharacter = LightningMage &
   CharacterBase<LightningMageAction>;
+export type SamuraiArcherCharacter = SamuraiArcher &
+  CharacterBase<SamuraiArcherAction>;
 export type AnyCharacter =
   | WarriorCharacter
   | FireMageCharacter
   | WizardCharacter
   | KnightCharacter
-  | LightningMageCharacter;
+  | LightningMageCharacter
+  | SamuraiArcherCharacter;
 type Party = {
   pos1: AnyCharacter | null;
   pos2: AnyCharacter | null;

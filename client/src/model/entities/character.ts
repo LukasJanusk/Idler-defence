@@ -11,6 +11,7 @@ import { type Grid } from '@/model/grid';
 import { type GridRenderer } from '@/model/gridRenderer';
 import { MAXIMUM_SKILL_LEVEL, UPDATE_RATE } from '@/constants';
 import { FireMageSkills } from '@/model/entities/skills/fireMageSkills';
+import { samuraiArcherSkills } from '@/model/entities/skills/samuraiArcherSkills';
 import { wizardSkills } from '@/model/entities/skills/wizardSkills';
 import { lightningMageSkills } from '@/model/entities/skills/LightningMageSkills';
 import { knightSkills } from '@/model/entities/skills/knightSkills';
@@ -18,6 +19,7 @@ import { setupDeathResurrect } from '@/utils';
 import { createFireMageAnimations } from '@/model/animations/fireWizardAnimations';
 import { createKnightAnimations } from '@/model/animations/knightAnimations';
 import { createLightningMageAnimations } from '@/model/animations/lightningMageAnimations';
+import { createSamuraiArcherAnimations } from '@/model/animations/samuraiArcherAnimations';
 import { createWizardAnimations } from '@/model/animations/wizardAnimations';
 import { defaultSettings } from '@/defaults';
 import { initKnightAttacks } from '@/model/characterAttacks/knightAttacks';
@@ -25,6 +27,7 @@ import type { Debuff } from '@/model/entities/debuff';
 import type { Buff } from '@/model/entities/buff';
 import { initWizardAttacks } from '@/model/characterAttacks/wizardAttacks';
 import { initLightningMageAttacks } from '@/model/characterAttacks/lightningMageAttacks';
+import { initSamuraiArcherAttacks } from '@/model/characterAttacks/samuraiArcherAttacks';
 import {
   arcaneBlastSound,
   chargedBoltsSound,
@@ -52,6 +55,7 @@ export type WarriorAction = BaseAction | 'combo';
 export type KnightAction = BaseAction | 'guard' | 'protect';
 export type FireMageAction = BaseAction | 'flamejet' | 'fireball';
 export type LightningMageAction = BaseAction | 'chargedBolts' | 'discharge';
+export type SamuraiArcherAction = BaseAction | 'drawCut' | 'bowShot';
 export type WizardAction =
   | 'idle'
   | 'hit'
@@ -68,6 +72,7 @@ export type AnyAction =
   | WizardAction
   | KnightAction
   | LightningMageAction
+  | SamuraiArcherAction
   | EnemyAction;
 
 export type CharacterAction =
@@ -75,7 +80,8 @@ export type CharacterAction =
   | FireMageAction
   | WizardAction
   | KnightAction
-  | LightningMageAction;
+  | LightningMageAction
+  | SamuraiArcherAction;
 
 export abstract class Character<T extends string> {
   id: string;
@@ -677,6 +683,66 @@ export class LightningMage extends Character<LightningMageAction> {
         lightningPulseSound.currentTime = 0;
         lightningPulseSound.play();
       });
+    });
+  }
+}
+
+export class SamuraiArcher extends Character<SamuraiArcherAction> {
+  characterClass = 'Samurai Archer';
+  icon = '🏹';
+  stunRecovery = 220;
+  health = 160;
+  maxHealth = 160;
+  armor = 14;
+  attacksLoaded = false;
+
+  constructor(
+    id: string,
+    name: string,
+    animations: SpriteAnimations<SamuraiArcherAction> = createSamuraiArcherAnimations(),
+    actions: SamuraiArcherAction[] = [
+      'idle',
+      'attack',
+      'drawCut',
+      'bowShot',
+      'hit',
+      'death',
+      'resurrect',
+    ],
+  ) {
+    super(id, name, animations, actions);
+    setupDeathResurrect(
+      this.animations.death,
+      this.animations.resurrect,
+      (state) => (this.state = state),
+    );
+    this.attributes = {
+      strength: 14,
+      dexterity: 24,
+      intelligence: 9,
+      vitality: 18,
+    };
+    this.skills = samuraiArcherSkills;
+  }
+
+  initAttacks(grid: Grid, renderer: GridRenderer) {
+    if (this.attacksLoaded) return;
+    initSamuraiArcherAttacks(grid, renderer, this);
+    this.attacksLoaded = true;
+  }
+
+  initAudio() {
+    this.animations.attack.onFrame(3, () => {
+      knightStabSound.currentTime = 0;
+      knightStabSound.play();
+    });
+    this.animations.drawCut.onFrame(4, () => {
+      knightStabSound.currentTime = 0;
+      knightStabSound.play();
+    });
+    this.animations.bowShot.onFrame(8, () => {
+      magicArrowSound.currentTime = 0;
+      magicArrowSound.play();
     });
   }
 }

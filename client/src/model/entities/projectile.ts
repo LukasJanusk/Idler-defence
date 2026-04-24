@@ -97,12 +97,15 @@ export class Projectile {
   speed: number;
   rect: Rect;
   gravity: number;
+  arcHeight: number;
   didHit: boolean;
   isAlive: boolean;
   rotation: number = 0;
   stun: boolean = true;
   onHit?: (target?: AnyCharacter | Enemy<EnemyAction>) => void;
   private hitEntities: Set<string> = new Set();
+  private launchRect: Rect;
+  private traveledDistance: number = 0;
 
   constructor(
     id: string,
@@ -128,9 +131,11 @@ export class Projectile {
     this.speed = speed;
     this.rect = rect;
     this.gravity = gravity;
+    this.arcHeight = 0;
     this.didHit = false;
     this.isAlive = true;
     this.onHit = onHit;
+    this.launchRect = { ...rect };
     const projMiddle = getRectMiddle(this.rect);
     const targetMiddle = getRectMiddle(this.targetRect);
     const dx = targetMiddle.x - projMiddle.x;
@@ -151,16 +156,27 @@ export class Projectile {
       this.isAlive = false;
       return;
     }
-    const projMiddle = getRectMiddle(this.rect);
+    const launchMiddle = getRectMiddle(this.launchRect);
     const targetMiddle = getRectMiddle(this.targetRect);
-    const dx = targetMiddle.x - projMiddle.x;
-    const dy = targetMiddle.y - projMiddle.y;
-    const length = Math.hypot(dx, dy);
-    if (length === 0) return;
-    const velX = (dx / length) * this.speed;
-    const velY = (dy / length) * this.speed;
-    this.rect.x += velX * 0.001 * dt;
-    this.rect.y += velY * 0.001 * dt;
+    const dx = targetMiddle.x - launchMiddle.x;
+    const dy = targetMiddle.y - launchMiddle.y;
+    const totalDistance = Math.hypot(dx, dy);
+    if (totalDistance === 0) return;
+
+    this.traveledDistance = Math.min(
+      this.traveledDistance + this.speed * 0.001 * dt,
+      totalDistance,
+    );
+
+    const progress = this.traveledDistance / totalDistance;
+    const arcOffset =
+      this.arcHeight > 0 ? -4 * this.arcHeight * progress * (1 - progress) : 0;
+    const arcSlope =
+      this.arcHeight > 0 ? 4 * this.arcHeight * (2 * progress - 1) : 0;
+
+    this.rect.x = this.launchRect.x + dx * progress;
+    this.rect.y = this.launchRect.y + dy * progress + arcOffset;
+    this.rotation = (Math.atan2(dy + arcSlope, dx) * 180) / Math.PI;
   }
   hit(target: AnyCharacter | Enemy<EnemyAction>) {
     if (target.state === 'dead' || target.state === 'death') return;
