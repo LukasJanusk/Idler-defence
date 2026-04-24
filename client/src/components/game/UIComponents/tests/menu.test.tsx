@@ -21,6 +21,47 @@ describe('<Menu />', () => {
   it('renders Menu', async () => {
     render(<Menu />);
     expect(screen.getByLabelText('Menu button')).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('game speed button, current 1x speed'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('game speed button, current 1x speed'),
+    ).toContainHTML('<svg');
+    expect(
+      screen.getByLabelText('game speed button, current 1x speed'),
+    ).not.toHaveTextContent(/play|double|triple/i);
+  });
+
+  it('updates speed icon state between three modes', async () => {
+    render(<Menu />);
+
+    let gameSpeedButton = screen.getByLabelText(
+      'game speed button, current 1x speed',
+    );
+
+    await userEvent.click(gameSpeedButton);
+    await waitFor(() =>
+      expect(storeModule.useGameStore.getState().settings.gameSpeed).toBe(2),
+    );
+    gameSpeedButton = screen.getByLabelText(
+      'game speed button, current 2x speed',
+    );
+
+    await userEvent.click(gameSpeedButton);
+    await waitFor(() =>
+      expect(storeModule.useGameStore.getState().settings.gameSpeed).toBe(3),
+    );
+    gameSpeedButton = screen.getByLabelText(
+      'game speed button, current 3x speed',
+    );
+
+    await userEvent.click(gameSpeedButton);
+    await waitFor(() =>
+      expect(storeModule.useGameStore.getState().settings.gameSpeed).toBe(1),
+    );
+    expect(
+      screen.getByLabelText('game speed button, current 1x speed'),
+    ).toBeInTheDocument();
   });
 
   it('toggles resume/pause', async () => {

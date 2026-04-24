@@ -70,6 +70,7 @@ export const defaultSettings: Settings = {
   drawParticles: true,
   pause: false,
   showUi: false,
+  gameSpeed: 1,
 };
 
 export const defaultGold = () => 200;

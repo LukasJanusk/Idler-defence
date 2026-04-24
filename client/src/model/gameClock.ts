@@ -1,6 +1,7 @@
 export class GameClock {
   private subscribers: Set<(dt: number) => void> = new Set();
   private last = performance.now();
+  private timeScale = 1;
   running = false;
   private rafId: number | null = null;
 
@@ -10,7 +11,7 @@ export class GameClock {
     this.last = performance.now();
     const loop = () => {
       const now = performance.now();
-      const dt = now - this.last;
+      const dt = (now - this.last) * this.timeScale;
       this.last = now;
       this.subscribers.forEach((sub) => sub(dt));
       this.rafId = requestAnimationFrame(loop);
@@ -31,5 +32,9 @@ export class GameClock {
 
   unsubscribe(fn: (dt: number) => void) {
     this.subscribers.delete(fn);
+  }
+
+  setTimeScale(multiplier: number) {
+    this.timeScale = multiplier;
   }
 }

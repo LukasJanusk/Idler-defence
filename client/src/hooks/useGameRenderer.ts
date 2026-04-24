@@ -1,6 +1,7 @@
 import { UPDATE_RATE } from '@/constants';
 import type { GridRenderer } from '@/model/gridRenderer';
 import { useGameStore } from '@/store';
+import { isLevelCleared } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
 
 type RenderState = ReturnType<GridRenderer['getRenderState']> & {
@@ -15,6 +16,11 @@ export function useGameRenderer(
   const gridRenderer = useGameStore((store) => store.gridRenderer);
   const settings = useGameStore((store) => store.settings);
   const setGameOver = useGameStore((store) => store.setGameOver);
+  const currentLevel = useGameStore((store) => store.currentLevel);
+  const currentWave = useGameStore((store) => store.currentWave);
+  const levels = useGameStore((store) => store.levels);
+  const levelEventHandler = useGameStore((store) => store.levelEventHandler);
+  const gameOver = useGameStore((store) => store.gameOver);
   const elapsed = useRef(0);
   const [renderState, setRenderState] = useState<RenderState>(() => ({
     ...gridRenderer.getRenderState(),
@@ -39,15 +45,29 @@ export function useGameRenderer(
         return;
       }
 
+      if (
+        !gameOver &&
+        isLevelCleared({
+          grid,
+          levels,
+          currentLevel,
+          currentWave,
+          levelEventHandler,
+        })
+      ) {
+        setGameOver();
+        return;
+      }
+
       if (!settings.pause) {
         elapsed.current += dt;
         if (elapsed.current >= UPDATE_RATE) {
           grid.update(dt);
           elapsed.current %= UPDATE_RATE;
         }
-      }
 
-      gridRenderer.tickAnimations(dt);
+        gridRenderer.tickAnimations(dt);
+      }
 
       if (ctx) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -63,7 +83,19 @@ export function useGameRenderer(
     return () => {
       gameClock.unsubscribe(onTick);
     };
-  }, [gameClock, grid, gridRenderer, ref, setGameOver, settings.pause]);
+  }, [
+    currentLevel,
+    currentWave,
+    gameClock,
+    gameOver,
+    grid,
+    gridRenderer,
+    levelEventHandler,
+    levels,
+    ref,
+    setGameOver,
+    settings.pause,
+  ]);
 
   return {
     renderState,

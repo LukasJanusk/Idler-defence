@@ -199,7 +199,8 @@ export class Enemy<T extends string = never> {
 
     this.elapsed += dt;
     if (this.elapsed >= this.interval) {
-      let ticks = Math.floor(this.elapsed / this.interval);
+      const rawTicks = this.elapsed / this.interval;
+      let ticks = Math.floor(rawTicks);
       if (ticks > 2) ticks = 2;
       this.elapsed %= this.interval;
       this.updateHealth(ticks);
@@ -217,7 +218,7 @@ export class Enemy<T extends string = never> {
       if (this.state === 'move') {
         this.rect = {
           ...this.rect,
-          x: this.rect.x - this.speed * 0.1,
+          x: this.rect.x - this.speed * 0.1 * Math.min(rawTicks, 2),
         };
       }
     }

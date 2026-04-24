@@ -83,6 +83,12 @@ export type CharacterAction =
   | LightningMageAction
   | SamuraiArcherAction;
 
+const cloneSkills = <T extends string>(skills: Skill<T>[]) =>
+  skills.map((skill) => ({
+    ...skill,
+    skillLevelUpData: { ...skill.skillLevelUpData },
+  }));
+
 export abstract class Character<T extends string> {
   id: string;
   name: string;
@@ -494,7 +500,7 @@ export class FireMage extends Character<FireMageAction> {
       intelligence: 20,
       vitality: 10,
     };
-    this.skills = FireMageSkills;
+    this.skills = cloneSkills(FireMageSkills);
   }
 
   initAttacks(grid: Grid, renderer: GridRenderer) {
@@ -554,7 +560,7 @@ export class Knight extends Character<KnightAction> {
       intelligence: 10,
       vitality: 20,
     };
-    this.skills = knightSkills;
+    this.skills = cloneSkills(knightSkills);
   }
   initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
@@ -603,7 +609,7 @@ export class Wizard extends Character<WizardAction> {
       intelligence: 25,
       vitality: 10,
     };
-    this.skills = wizardSkills;
+    this.skills = cloneSkills(wizardSkills);
   }
   initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
@@ -658,7 +664,7 @@ export class LightningMage extends Character<LightningMageAction> {
       intelligence: 15,
       vitality: 10,
     };
-    this.skills = lightningMageSkills;
+    this.skills = cloneSkills(lightningMageSkills);
   }
   initAttacks(grid: Grid, renderer: GridRenderer) {
     if (this.attacksLoaded) return;
@@ -722,7 +728,7 @@ export class SamuraiArcher extends Character<SamuraiArcherAction> {
       intelligence: 9,
       vitality: 18,
     };
-    this.skills = samuraiArcherSkills;
+    this.skills = cloneSkills(samuraiArcherSkills);
   }
 
   initAttacks(grid: Grid, renderer: GridRenderer) {

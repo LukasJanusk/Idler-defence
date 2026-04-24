@@ -7,7 +7,7 @@ import { useGameStore } from '@/store';
 import type { CharacterAction } from '@/model/entities/character';
 import { PlusCircle } from 'lucide-react';
 import { useHover } from '@/hooks/useHover';
-import { MAXIMUM_SKILL_LEVEL } from '@/constants';
+import { MAXIMUM_SKILL_LEVEL, SKILL_UPGRADE_COST } from '@/constants';
 
 type Props<T extends string> = {
   skills: Skill<T>[];
@@ -29,7 +29,7 @@ export default function SkillContainer<T extends string>({
   const canUpgrade =
     selectedSkill &&
     selectedSkill.level < MAXIMUM_SKILL_LEVEL &&
-    selectedSkill.level * selectedSkill.skillLevelUpData.upgradeCost < gold;
+    SKILL_UPGRADE_COST <= gold;
 
   const upgradeSkill = () => {
     if (!canUpgrade) return;
@@ -72,11 +72,7 @@ export default function SkillContainer<T extends string>({
             <div
               className={`absolute -top-10 z-50 -translate-x-1/2 text-nowrap rounded bg-medieval-dark p-1 ${canUpgrade ? 'text-medieval-parchment' : 'text-red-800'}`}
             >
-              {selectedSkill
-                ? selectedSkill.level *
-                    selectedSkill.skillLevelUpData.upgradeCost +
-                  ' 🪙'
-                : ''}
+              {selectedSkill ? `${SKILL_UPGRADE_COST} 🪙` : ''}
             </div>
           )}{' '}
           {canUpgrade && (

@@ -62,17 +62,26 @@ export function removeExpired<T extends { isAlive: boolean }>(
   }
 }
 
+export function isLevelCleared(
+  store: Pick<
+    GameStore,
+    'grid' | 'levels' | 'currentLevel' | 'currentWave' | 'levelEventHandler'
+  >,
+) {
+  const isLastWave =
+    store.levels[store.currentLevel].waves.length === store.currentWave;
+  const noMoreEvents = store.levelEventHandler.events.size === 0;
+  const hasLivingEnemies = store.grid
+    .getEnemies()
+    .some((enemy) => enemy.state !== 'dead' && enemy.state !== 'death');
+
+  return isLastWave && noMoreEvents && !hasLivingEnemies;
+}
+
 export function createStoreCallbacksForLevel(store: GameStore) {
   return (enemy?: Enemy<EnemyAction>) => {
     store.addGold(enemy?.bounty ?? 0);
-    const isLastWave =
-      store.levels[store.currentLevel].waves.length === store.currentWave;
-    const noMoreEvents = store.levelEventHandler.events.size === 0;
-    const isLastEnemy =
-      store.grid
-        .getEnemies()
-        .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
-    if (isLastWave && noMoreEvents && isLastEnemy) {
+    if (isLevelCleared(store)) {
       store.setGameOver();
     }
   };

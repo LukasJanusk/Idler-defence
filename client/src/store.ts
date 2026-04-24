@@ -3,6 +3,7 @@ import type { GameStore } from './types';
 import { Grid } from './model/grid';
 import { GridRenderer } from './model/gridRenderer';
 import { GameClock } from './model/gameClock';
+import { SKILL_UPGRADE_COST } from './constants';
 import {
   createAvailableCharacters,
   defaultGold,
@@ -12,7 +13,17 @@ import { LevelEventHandler } from './model/levelEventHandler';
 import { createLevel } from './model/entities/Level/testLevel';
 import type { EnemyAction } from './model/entities/character';
 import type { Enemy } from './model/entities/enemy';
-import { calculateScore, createStoreCallbacksForLevel } from './utils';
+import {
+  calculateScore,
+  createStoreCallbacksForLevel,
+  isLevelCleared,
+} from './utils';
+
+const nextGameSpeed = {
+  1: 2,
+  2: 3,
+  3: 1,
+} as const;
 
 const clock = new GameClock();
 clock.start();
@@ -39,14 +50,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     createLevel(grid, (enemy?: Enemy<EnemyAction>) => {
       const store = get();
       store.addGold(enemy?.bounty ?? 0);
-      const isLastWave =
-        store.levels[store.currentLevel].waves.length === store.currentWave;
-      const noMoreEvents = store.levelEventHandler.events.size === 0;
-      const isLastEnemy =
-        store.grid
-          .getEnemies()
-          .filter((e) => e.state !== 'dead' && e.state !== 'death').length < 1;
-      if (isLastWave && noMoreEvents && isLastEnemy) {
+      if (isLevelCleared(store)) {
         store.setGameOver();
       }
     }),
@@ -114,7 +118,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const char = store.grid.getCharacterFromPosition(pos);
       if (!char) return store;
 
-      store.gold -= skill.level * skill.skillLevelUpData.upgradeCost;
+      store.gold -= SKILL_UPGRADE_COST;
       char.levelUpSkill<typeof skill.action>(skill);
 
       return store;
@@ -133,6 +137,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.levelEventHandler.start();
 
       return { ...store, settings: { ...store.settings, pause: false } };
+    }),
+  cycleGameSpeed: () =>
+    set((store) => {
+      const gameSpeed = nextGameSpeed[store.settings.gameSpeed];
+      store.gameClock.setTimeScale(gameSpeed);
+
+      return {
+        ...store,
+        settings: { ...store.settings, gameSpeed },
+      };
     }),
   setGameStarted: (started) =>
     set((store) => ({ ...store, gameStarted: started })),
@@ -179,12 +193,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       grid.reset();
       store.gridRenderer.clear();
       store.levelEventHandler.reset();
+      store.gameClock.setTimeScale(defaultSettings.gameSpeed);
       store.gameClock.start();
       return {
         ...store,
         levels: [createLevel(grid, createStoreCallbacksForLevel(store))],
         availableCharacters: createAvailableCharacters(),
-        settings: { ...store.settings, pause: false },
+        settings: { ...defaultSettings },
         gold: 200,
         score: 0,
         currentLevel: 0,
@@ -221,6 +236,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       store.settings = { ...prev, ...patch };
+      if (patch.gameSpeed !== undefined) {
+        store.gameClock.setTimeScale(patch.gameSpeed);
+      }
       store.gridRenderer.setRenderParticles(store.settings.drawParticles);
       return { ...store };
     }),

@@ -99,12 +99,14 @@ export type GameState = {
   projectiles: Projectile[];
   availableCharacters: Set<AnyCharacter>;
 };
+export type GameSpeed = 1 | 2 | 3;
 export type Settings = {
   automateSkillCast: boolean;
   showGrid: boolean;
   drawParticles: boolean;
   pause: boolean;
   showUi: boolean;
+  gameSpeed: GameSpeed;
 };
 export type Level = {
   id: string;
@@ -156,6 +158,7 @@ export type GameStore = {
   nextLevel: () => void;
   play: () => void;
   pause: () => void;
+  cycleGameSpeed: () => void;
   handleGameOver: () => void;
   setGameOver: () => void;
   setShowNextWave: (isVisible: boolean) => void;

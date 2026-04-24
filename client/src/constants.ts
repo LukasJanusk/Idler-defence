@@ -7,3 +7,4 @@ export const GRAVITY = 100;
 export const PARTY_POSITIO_ROW = 2;
 export const MAXIMUM_PARTICLES = 200;
 export const MAXIMUM_SKILL_LEVEL = 10;
+export const SKILL_UPGRADE_COST = 200;

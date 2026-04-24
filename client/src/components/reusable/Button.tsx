@@ -4,9 +4,15 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
   className?: string;
 };
-export default function Button({ children, onClick, className }: Props) {
+export default function Button({
+  children,
+  onClick,
+  className,
+  ...props
+}: Props) {
   return (
     <button
+      {...props}
       className={`border-2 border-medieval-silver bg-medieval-stone p-2 font-bold text-medieval-parchment transition-all duration-200 hover:scale-105 hover:bg-medieval-stoneCrimson active:scale-95 ${className || ''}`}
       onClick={(e) => onClick && onClick(e)}
     >

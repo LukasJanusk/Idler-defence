@@ -62,8 +62,14 @@ const createEnemy = (
 ) => {
   const enemy = createEnemyByType(type);
   if (onEnemyDeath) {
-    const onDeath = () => onEnemyDeath(enemy);
-    enemy.registerOnDeath(onDeath);
+    let callbackDidRun = false;
+    const onRemoved = () => {
+      if (callbackDidRun) return;
+      callbackDidRun = true;
+      onEnemyDeath(enemy);
+    };
+    enemy.registerOnDeath(onRemoved);
+    enemy.registerOnDead(onRemoved);
   }
   const giveExperience = () => {
     const characters = grid.getCharacters();
