@@ -20,7 +20,25 @@ import {
 } from './utils';
 import TutorialBackground from '@/assets/background/bg_dungeon.png';
 import LevelOneBackground from '@/assets/background/bg_level_one.svg';
+import LevelTwoBackground from '@/assets/background/bg_level_two.svg';
+import LevelThreeBackground from '@/assets/background/bg_level_three.svg';
+import LevelFourBackground from '@/assets/background/bg_level_four.svg';
+import LevelFiveBackground from '@/assets/background/bg_level_five.svg';
+import LevelSixBackground from '@/assets/background/bg_level_six.svg';
+import LevelSevenBackground from '@/assets/background/bg_level_seven.svg';
+import LevelEightBackground from '@/assets/background/bg_level_eight.svg';
+import LevelNineBackground from '@/assets/background/bg_level_nine.svg';
+import LevelTenBackground from '@/assets/background/bg_level_ten.svg';
 import LevelOneCard from '@/assets/Levels/level_one_card.svg';
+import LevelTwoCard from '@/assets/Levels/level_two_card.svg';
+import LevelThreeCard from '@/assets/Levels/level_three_card.svg';
+import LevelFourCard from '@/assets/Levels/level_four_card.svg';
+import LevelFiveCard from '@/assets/Levels/level_five_card.svg';
+import LevelSixCard from '@/assets/Levels/level_six_card.svg';
+import LevelSevenCard from '@/assets/Levels/level_seven_card.svg';
+import LevelEightCard from '@/assets/Levels/level_eight_card.svg';
+import LevelNineCard from '@/assets/Levels/level_nine_card.svg';
+import LevelTenCard from '@/assets/Levels/level_ten_card.svg';
 
 const nextGameSpeed = {
   1: 2,
@@ -48,16 +66,69 @@ const createSelectableLevels = () => [
     icon: new URL(LevelOneCard, import.meta.url).href,
     background: new URL(LevelOneBackground, import.meta.url).href,
   },
-  { id: 2, name: 'Level 2', locked: true },
-  { id: 3, name: 'Level 3', locked: true },
-  { id: 4, name: 'Level 4', locked: true },
-  { id: 5, name: 'Level 5', locked: true },
-  { id: 6, name: 'Level 6', locked: true },
-  { id: 7, name: 'Level 7', locked: true },
-  { id: 8, name: 'Level 8', locked: true },
-  { id: 9, name: 'Level 9', locked: true },
-  { id: 10, name: 'Level 10', locked: true },
-  { id: 11, name: 'Level 11', locked: true },
+  {
+    id: 2,
+    name: 'Level 2',
+    locked: true,
+    icon: new URL(LevelTwoCard, import.meta.url).href,
+    background: new URL(LevelTwoBackground, import.meta.url).href,
+  },
+  {
+    id: 3,
+    name: 'Level 3',
+    locked: true,
+    icon: new URL(LevelThreeCard, import.meta.url).href,
+    background: new URL(LevelThreeBackground, import.meta.url).href,
+  },
+  {
+    id: 4,
+    name: 'Level 4',
+    locked: true,
+    icon: new URL(LevelFourCard, import.meta.url).href,
+    background: new URL(LevelFourBackground, import.meta.url).href,
+  },
+  {
+    id: 5,
+    name: 'Level 5',
+    locked: true,
+    icon: new URL(LevelFiveCard, import.meta.url).href,
+    background: new URL(LevelFiveBackground, import.meta.url).href,
+  },
+  {
+    id: 6,
+    name: 'Level 6',
+    locked: true,
+    icon: new URL(LevelSixCard, import.meta.url).href,
+    background: new URL(LevelSixBackground, import.meta.url).href,
+  },
+  {
+    id: 7,
+    name: 'Level 7',
+    locked: true,
+    icon: new URL(LevelSevenCard, import.meta.url).href,
+    background: new URL(LevelSevenBackground, import.meta.url).href,
+  },
+  {
+    id: 8,
+    name: 'Level 8',
+    locked: true,
+    icon: new URL(LevelEightCard, import.meta.url).href,
+    background: new URL(LevelEightBackground, import.meta.url).href,
+  },
+  {
+    id: 9,
+    name: 'Level 9',
+    locked: true,
+    icon: new URL(LevelNineCard, import.meta.url).href,
+    background: new URL(LevelNineBackground, import.meta.url).href,
+  },
+  {
+    id: 10,
+    name: 'Level 10',
+    locked: true,
+    icon: new URL(LevelTenCard, import.meta.url).href,
+    background: new URL(LevelTenBackground, import.meta.url).href,
+  },
 ];
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -253,7 +324,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       if (
         reason === 'level-complete' &&
-        nextLevelIndex < store.levels.length &&
+        nextLevelIndex < selectableLevels.length &&
         selectableLevels[nextLevelIndex]
       ) {
         selectableLevels[nextLevelIndex].locked = false;

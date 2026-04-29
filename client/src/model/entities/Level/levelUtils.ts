@@ -10,7 +10,7 @@ import type { EnemyAction } from '@/model/entities/character';
 import type { Enemy } from '@/model/entities/enemy';
 import { Grid } from '@/model/grid';
 import { LevelEventHandler, type LevelEvent } from '@/model/levelEventHandler';
-import type { CreateEnemyEventData, EnemyType } from '@/types';
+import type { CreateEnemyEventData, EnemyType, Level } from '@/types';
 
 export const createLevelEvents = (
   interval: number,
@@ -108,3 +108,17 @@ export const createEnemyWaveEvents = (
 
   return allEvents;
 };
+
+export const createLevelFromWaveData = (
+  id: string,
+  name: string,
+  wavesData: CreateEnemyEventData[][],
+  grid: Grid,
+  onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
+): Level => ({
+  id,
+  name,
+  waves: wavesData.map((waveData) =>
+    createEnemyWaveEvents(waveData, grid, onEnemyDeath),
+  ),
+});

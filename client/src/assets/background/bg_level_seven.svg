@@ -1,0 +1,29 @@
+<svg width="1152" height="640" viewBox="0 0 1152 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="576" y1="0" x2="576" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#080E20"/>
+      <stop offset="0.4" stop-color="#302B66"/>
+      <stop offset="1" stop-color="#C7A8E8"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="576" y1="322" x2="576" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6A5E8A"/>
+      <stop offset="1" stop-color="#241E34"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(860 112) rotate(90) scale(120 150)">
+      <stop stop-color="#F3F2FF" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#F3F2FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1152" height="640" fill="url(#sky)"/>
+  <ellipse cx="860" cy="112" rx="150" ry="120" fill="url(#moon)"/>
+  <path d="M0 276L130 228L252 286L360 224L486 290L610 214L742 286L860 236L980 294L1098 244L1152 270V0H0V276Z" fill="#161739"/>
+  <rect y="322" width="1152" height="318" fill="url(#ground)"/>
+  <path d="M0 434L130 402L264 438L380 402L522 442L648 412L790 446L912 414L1050 438L1152 412V640H0V434Z" fill="#4A4162" fill-opacity="0.65"/>
+  <path d="M382 324L500 168H656L772 324H382Z" fill="#8B83AB"/>
+  <rect x="426" y="324" width="302" height="126" fill="#A29BC2"/>
+  <path d="M522 324V214H632V324" stroke="#E6DEFF" stroke-width="20"/>
+  <rect x="544" y="360" width="66" height="90" fill="#2D2233"/>
+  <circle cx="578" cy="304" r="28" fill="#DCD0FF" fill-opacity="0.86"/>
+  <path d="M120 486L164 392L206 486H120Z" fill="#1A1723"/>
+  <path d="M944 486L988 392L1032 486H944Z" fill="#1A1723"/>
+</svg>

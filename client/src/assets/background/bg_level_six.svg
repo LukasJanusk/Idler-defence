@@ -1,0 +1,24 @@
+<svg width="1152" height="640" viewBox="0 0 1152 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="576" y1="0" x2="576" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#120B13"/>
+      <stop offset="0.42" stop-color="#4D1A14"/>
+      <stop offset="1" stop-color="#F49E39"/>
+    </linearGradient>
+    <linearGradient id="lava" x1="576" y1="318" x2="576" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F25822"/>
+      <stop offset="1" stop-color="#4A110E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1152" height="640" fill="url(#sky)"/>
+  <path d="M0 250L108 214L226 238L346 196L458 240L584 182L706 242L818 202L942 248L1060 218L1152 240V0H0V250Z" fill="#210E11"/>
+  <path d="M0 318L112 294L236 320L344 294L468 330L604 296L734 336L856 300L996 330L1108 302L1152 312V640H0V318Z" fill="#3C1A18"/>
+  <path d="M0 438C156 412 282 460 428 432C576 404 694 454 834 430C978 404 1078 430 1152 420V640H0V438Z" fill="url(#lava)"/>
+  <path d="M280 304L336 194H816L872 304H280Z" fill="#5C524E"/>
+  <rect x="320" y="304" width="512" height="102" fill="#736764"/>
+  <rect x="520" y="334" width="112" height="72" fill="#251816"/>
+  <rect x="374" y="330" width="44" height="38" fill="#FFB347" fill-opacity="0.54"/>
+  <rect x="736" y="330" width="44" height="38" fill="#FFB347" fill-opacity="0.54"/>
+  <path d="M176 470L230 318L286 470H176Z" fill="#251714"/>
+  <path d="M880 470L934 318L990 470H880Z" fill="#251714"/>
+</svg>

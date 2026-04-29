@@ -1,6 +1,6 @@
 import type { LevelSelectable } from '@/types';
 import LevelSelectCard from './LevelSelectCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameStore } from '@/store';
 import useSmoothScroll from '@/hooks/useSmoothScroll';
 import LevelScreenButton from './LevelScreenButton';
@@ -14,18 +14,29 @@ type Props = {
   returnToMenu: () => void;
 };
 
+const getDefaultSelectedLevel = (levels: LevelSelectable[]) => {
+  const unlockedLevels = levels.filter((level) => !level.locked);
+  return unlockedLevels.at(-1)?.id ?? levels[0]?.id ?? 0;
+};
+
 export default function LevelSelectScreen({
   levels,
   startGame,
   returnToMenu,
 }: Props) {
   const [selectedLevel, setSelectedLevel] = useState<number>(
-    levels[0]?.id || 0,
+    getDefaultSelectedLevel(levels),
   );
   const setCurrentLevel = useGameStore((store) => store.setCurrentLevel);
   const handleLevelSelect = (levelId: number) => {
     setCurrentLevel(levelId);
   };
+
+  useEffect(() => {
+    const defaultSelectedLevel = getDefaultSelectedLevel(levels);
+    setSelectedLevel(defaultSelectedLevel);
+    setCurrentLevel(defaultSelectedLevel);
+  }, [levels, setCurrentLevel]);
 
   const [containerRef] = useSmoothScroll<HTMLDivElement>(selectedLevel);
 

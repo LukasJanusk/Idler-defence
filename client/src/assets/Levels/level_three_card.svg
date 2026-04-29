@@ -1,0 +1,22 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="160" y1="0" x2="160" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0A1528"/>
+      <stop offset="0.44" stop-color="#2A517A"/>
+      <stop offset="1" stop-color="#D6E1EF"/>
+    </linearGradient>
+    <linearGradient id="snow" x1="160" y1="176" x2="160" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EBEFF5"/>
+      <stop offset="1" stop-color="#AAB8C9"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" fill="url(#sky)"/>
+  <path d="M0 134L42 118L82 138L118 110L156 142L194 104L232 136L270 112L320 136V0H0V134Z" fill="#17324F"/>
+  <rect y="176" width="320" height="144" fill="url(#snow)"/>
+  <path d="M78 174L108 122H212L242 174H78Z" fill="#798493"/>
+  <rect x="90" y="174" width="140" height="54" fill="#909BA8"/>
+  <path d="M126 174V146H154V174" stroke="#E6EEF8" stroke-width="8"/>
+  <path d="M166 174V136H194V174" stroke="#E6EEF8" stroke-width="8"/>
+  <rect x="144" y="192" width="34" height="36" fill="#435061"/>
+  <path d="M0 246C52 236 96 252 142 244C190 236 232 252 320 236V320H0V246Z" fill="#EAF2FA" fill-opacity="0.4"/>
+</svg>
