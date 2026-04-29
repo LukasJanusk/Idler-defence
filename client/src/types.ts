@@ -120,15 +120,18 @@ export type LevelSelectable = {
   locked: boolean;
   background?: string;
 };
+export type GameOverReason = 'defeat' | 'level-complete';
 export type GameStore = {
   gameClock: GameClock;
   selectedPosition: null | PartyPositionName;
   grid: Grid;
   gridRenderer: GridRenderer;
+  selectableLevels: Array<LevelSelectable>;
   availableCharacters: Set<AnyCharacter>;
   gold: number;
   score: number;
   gameOver: boolean;
+  gameOverReason: GameOverReason;
   settings: Settings;
   levelEventHandler: LevelEventHandler;
   currentWave: number;
@@ -160,7 +163,7 @@ export type GameStore = {
   pause: () => void;
   cycleGameSpeed: () => void;
   handleGameOver: () => void;
-  setGameOver: () => void;
+  setGameOver: (reason?: GameOverReason) => void;
   setShowNextWave: (isVisible: boolean) => void;
   setCurrentLevel: (levelIndex: number) => void;
 };

@@ -5,41 +5,13 @@ import Level from './Level';
 import MainMenu from './MainMenu/MainMenu';
 import { useGameStore } from '@/store';
 import LevelSelectScreen from './LevelSelect/LevelSelectScreen';
-import TestLevelBackground from '@/assets/background/bg_dungeon.png';
-import LevelOneBackground from '@/assets/background/bg_level_one.svg';
-import LevelOneCard from '@/assets/Levels/level_one_card.svg';
-
-const levels = [
-  {
-    id: 0,
-    name: 'Tutorial',
-    locked: false,
-    background: new URL(TestLevelBackground, import.meta.url).href,
-  },
-  {
-    id: 1,
-    name: 'Level 1',
-    locked: false,
-    icon: new URL(LevelOneCard, import.meta.url).href,
-    background: new URL(LevelOneBackground, import.meta.url).href,
-  },
-  { id: 2, name: 'Level 2', locked: true },
-  { id: 3, name: 'Level 3', locked: true },
-  { id: 4, name: 'Level 4', locked: true },
-  { id: 5, name: 'Level 4', locked: true },
-  { id: 6, name: 'Level 4', locked: true },
-  { id: 7, name: 'Level 4', locked: true },
-  { id: 8, name: 'Level 4', locked: true },
-  { id: 9, name: 'Level 4', locked: true },
-  { id: 10, name: 'Level 4', locked: true },
-  { id: 11, name: 'Level 4', locked: true },
-];
 
 export default function Game() {
   const [splashVisible, setSplashVisible] = useState(true);
   const [levelSelected, setLevelSelected] = useState(false);
 
   const gameStarted = useGameStore((store) => store.gameStarted);
+  const selectableLevels = useGameStore((store) => store.selectableLevels);
   const setGameStarted = useGameStore((store) => store.setGameStarted);
 
   const enterLevelSelect = (inLevelSelect?: boolean) => {
@@ -81,7 +53,7 @@ export default function Game() {
     >
       {!gameStarted && levelSelected && (
         <LevelSelectScreen
-          levels={levels}
+          levels={selectableLevels}
           startGame={startGame}
           returnToMenu={() => {
             setLevelSelected(false);

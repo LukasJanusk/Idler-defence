@@ -41,7 +41,7 @@ export function useGameRenderer(
       const ctx = ref.current?.getContext('2d');
 
       if (grid.getEnemies().some((enemy) => enemy.rect.x < 0)) {
-        setGameOver();
+        setGameOver('defeat');
         return;
       }
 
@@ -55,7 +55,7 @@ export function useGameRenderer(
           levelEventHandler,
         })
       ) {
-        setGameOver();
+        setGameOver('level-complete');
         return;
       }
 

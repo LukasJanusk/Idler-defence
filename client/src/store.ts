@@ -15,9 +15,12 @@ import type { EnemyAction } from './model/entities/character';
 import type { Enemy } from './model/entities/enemy';
 import {
   calculateScore,
-  createStoreCallbacksForLevel,
+  createStoreCallbacksForLevelFromGetter,
   isLevelCleared,
 } from './utils';
+import TutorialBackground from '@/assets/background/bg_dungeon.png';
+import LevelOneBackground from '@/assets/background/bg_level_one.svg';
+import LevelOneCard from '@/assets/Levels/level_one_card.svg';
 
 const nextGameSpeed = {
   1: 2,
@@ -31,6 +34,32 @@ const levelHandler = new LevelEventHandler(clock);
 const grid = new Grid(9, 5, 128);
 const gridRenderer = new GridRenderer(grid);
 
+const createSelectableLevels = () => [
+  {
+    id: 0,
+    name: 'Tutorial',
+    locked: false,
+    background: new URL(TutorialBackground, import.meta.url).href,
+  },
+  {
+    id: 1,
+    name: 'Level 1',
+    locked: true,
+    icon: new URL(LevelOneCard, import.meta.url).href,
+    background: new URL(LevelOneBackground, import.meta.url).href,
+  },
+  { id: 2, name: 'Level 2', locked: true },
+  { id: 3, name: 'Level 3', locked: true },
+  { id: 4, name: 'Level 4', locked: true },
+  { id: 5, name: 'Level 5', locked: true },
+  { id: 6, name: 'Level 6', locked: true },
+  { id: 7, name: 'Level 7', locked: true },
+  { id: 8, name: 'Level 8', locked: true },
+  { id: 9, name: 'Level 9', locked: true },
+  { id: 10, name: 'Level 10', locked: true },
+  { id: 11, name: 'Level 11', locked: true },
+];
+
 export const useGameStore = create<GameStore>((set, get) => ({
   // game state
 
@@ -38,19 +67,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
   selectedPosition: null,
   grid: grid,
   gridRenderer: gridRenderer,
+  selectableLevels: createSelectableLevels(),
   availableCharacters: createAvailableCharacters(),
   gold: defaultGold(),
   score: 0,
   settings: defaultSettings,
   levelEventHandler: levelHandler,
   gameOver: false,
+  gameOverReason: 'defeat',
   showNextWaveButton: true,
   gameStarted: false,
   levels: createLevels(grid, (enemy?: Enemy<EnemyAction>) => {
     const store = get();
     store.addGold(enemy?.bounty ?? 0);
     if (isLevelCleared(store)) {
-      store.setGameOver();
+      store.setGameOver('level-complete');
     }
   }),
   currentLevel: 0,
@@ -195,7 +226,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.gameClock.start();
       return {
         ...store,
-        levels: createLevels(grid, createStoreCallbacksForLevel(store)),
+        levels: createLevels(grid, createStoreCallbacksForLevelFromGetter(get)),
+        selectableLevels: [...store.selectableLevels],
         availableCharacters: createAvailableCharacters(),
         settings: { ...defaultSettings },
         gold: 200,
@@ -205,17 +237,33 @@ export const useGameStore = create<GameStore>((set, get) => ({
         showNextWaveButton: true,
         selectedPosition: null,
         gameOver: false,
+        gameOverReason: 'defeat',
       };
     }),
-  setGameOver: () =>
+  setGameOver: (reason = 'defeat') =>
     set((store) => {
       store.levelEventHandler.stop();
       store.gameClock.stop();
       store.score = calculateScore(store.gold, store.grid);
 
+      const selectableLevels = store.selectableLevels.map((level) => ({
+        ...level,
+      }));
+      const nextLevelIndex = store.currentLevel + 1;
+
+      if (
+        reason === 'level-complete' &&
+        nextLevelIndex < store.levels.length &&
+        selectableLevels[nextLevelIndex]
+      ) {
+        selectableLevels[nextLevelIndex].locked = false;
+      }
+
       return {
         ...store,
         gameOver: true,
+        gameOverReason: reason,
+        selectableLevels,
         settings: { ...store.settings, pause: true },
       };
     }),

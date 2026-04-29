@@ -86,6 +86,17 @@ export function createStoreCallbacksForLevel(store: GameStore) {
     }
   };
 }
+export function createStoreCallbacksForLevelFromGetter(
+  getStore: () => GameStore,
+) {
+  return (enemy?: Enemy<EnemyAction>) => {
+    const store = getStore();
+    store.addGold(enemy?.bounty ?? 0);
+    if (isLevelCleared(store)) {
+      store.setGameOver('level-complete');
+    }
+  };
+}
 export function calculateScore(gold: number, grid: Grid) {
   const characters = grid.getCharacters();
   const totalLevels = characters.reduce((sum, c) => sum + c.level, 0);
