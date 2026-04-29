@@ -10,7 +10,7 @@ import {
   defaultSettings,
 } from './defaults';
 import { LevelEventHandler } from './model/levelEventHandler';
-import { createLevel } from './model/entities/Level/testLevel';
+import { createLevels } from './model/entities/Level';
 import type { EnemyAction } from './model/entities/character';
 import type { Enemy } from './model/entities/enemy';
 import {
@@ -46,15 +46,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gameOver: false,
   showNextWaveButton: true,
   gameStarted: false,
-  levels: [
-    createLevel(grid, (enemy?: Enemy<EnemyAction>) => {
-      const store = get();
-      store.addGold(enemy?.bounty ?? 0);
-      if (isLevelCleared(store)) {
-        store.setGameOver();
-      }
-    }),
-  ],
+  levels: createLevels(grid, (enemy?: Enemy<EnemyAction>) => {
+    const store = get();
+    store.addGold(enemy?.bounty ?? 0);
+    if (isLevelCleared(store)) {
+      store.setGameOver();
+    }
+  }),
   currentLevel: 0,
   currentWave: 0,
 
@@ -197,7 +195,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       store.gameClock.start();
       return {
         ...store,
-        levels: [createLevel(grid, createStoreCallbacksForLevel(store))],
+        levels: createLevels(grid, createStoreCallbacksForLevel(store)),
         availableCharacters: createAvailableCharacters(),
         settings: { ...defaultSettings },
         gold: 200,

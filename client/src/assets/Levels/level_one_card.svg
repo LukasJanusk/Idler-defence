@@ -1,0 +1,58 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="160" y1="0" x2="160" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101726"/>
+      <stop offset="0.5" stop-color="#243247"/>
+      <stop offset="1" stop-color="#6A5746"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="160" y1="178" x2="160" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7A6855"/>
+      <stop offset="1" stop-color="#2C2724"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(160 176) rotate(90) scale(58 74)">
+      <stop stop-color="#FFC56A" stop-opacity="0.88"/>
+      <stop offset="1" stop-color="#FFC56A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="320" height="320" fill="url(#sky)"/>
+  <path d="M0 150L44 136L88 148L132 120L182 146L228 132L278 150L320 134V0H0V150Z" fill="#17202D"/>
+  <rect y="178" width="320" height="142" fill="url(#ground)"/>
+  <path d="M0 214L52 206L101 222L156 204L216 220L266 210L320 198V320H0V214Z" fill="#463C35" fill-opacity="0.7"/>
+
+  <rect x="48" y="84" width="224" height="96" fill="#716A63"/>
+  <rect x="48" y="72" width="34" height="108" fill="#5E5954"/>
+  <rect x="92" y="64" width="42" height="116" fill="#67615B"/>
+  <rect x="146" y="78" width="40" height="102" fill="#716A63"/>
+  <rect x="198" y="60" width="44" height="120" fill="#67615B"/>
+  <rect x="246" y="80" width="26" height="100" fill="#5E5954"/>
+  <path d="M48 72H272L256 58H68L48 72Z" fill="#857D75"/>
+  <path d="M149 180H186V135C186 124 177 115 166 115H169C158 115 149 124 149 135V180Z" fill="#2D241E"/>
+  <rect x="155" y="132" width="25" height="48" fill="#302620"/>
+  <g stroke="#4A4541" stroke-width="2" opacity="0.28">
+    <path d="M62 95H258"/>
+    <path d="M62 118H258"/>
+    <path d="M62 142H258"/>
+    <path d="M62 166H258"/>
+    <path d="M72 84V180"/>
+    <path d="M98 84V180"/>
+    <path d="M126 84V180"/>
+    <path d="M154 84V180"/>
+    <path d="M182 84V180"/>
+    <path d="M210 84V180"/>
+    <path d="M238 84V180"/>
+  </g>
+
+  <path d="M123 180L100 226H220L196 180H123Z" fill="#796654"/>
+  <path d="M133 180L116 226H205L188 180H133Z" fill="#4E443B"/>
+  <ellipse cx="160" cy="176" rx="48" ry="34" fill="url(#light)"/>
+  <rect x="158" y="142" width="4" height="36" fill="#7F5F34"/>
+  <circle cx="160" cy="143" r="5" fill="#FFB150"/>
+
+  <g fill="#1C1B1B" opacity="0.7">
+    <ellipse cx="54" cy="236" rx="7" ry="18"/>
+    <ellipse cx="71" cy="239" rx="6" ry="15"/>
+    <ellipse cx="255" cy="236" rx="6" ry="16"/>
+    <ellipse cx="272" cy="239" rx="7" ry="18"/>
+  </g>
+</svg>

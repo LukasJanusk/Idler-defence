@@ -6,6 +6,8 @@ import MainMenu from './MainMenu/MainMenu';
 import { useGameStore } from '@/store';
 import LevelSelectScreen from './LevelSelect/LevelSelectScreen';
 import TestLevelBackground from '@/assets/background/bg_dungeon.png';
+import LevelOneBackground from '@/assets/background/bg_level_one.svg';
+import LevelOneCard from '@/assets/Levels/level_one_card.svg';
 
 const levels = [
   {
@@ -14,7 +16,13 @@ const levels = [
     locked: false,
     background: new URL(TestLevelBackground, import.meta.url).href,
   },
-  { id: 1, name: 'Level 1', locked: true },
+  {
+    id: 1,
+    name: 'Level 1',
+    locked: false,
+    icon: new URL(LevelOneCard, import.meta.url).href,
+    background: new URL(LevelOneBackground, import.meta.url).href,
+  },
   { id: 2, name: 'Level 2', locked: true },
   { id: 3, name: 'Level 3', locked: true },
   { id: 4, name: 'Level 4', locked: true },
