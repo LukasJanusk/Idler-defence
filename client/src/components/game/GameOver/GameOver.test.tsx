@@ -10,6 +10,7 @@ import { defaultGold, defaultSettings } from '@/defaults';
 vi.mock('./GameOverForm', () => ({
   default: ({
     onSubmit,
+    onClose,
   }: {
     onSubmit: (
       scores: Array<{
@@ -27,22 +28,28 @@ vi.mock('./GameOverForm', () => ({
         date: string;
       },
     ) => void;
+    onClose: () => void;
   }) => (
-    <button
-      aria-label="Mock submit score"
-      onClick={() => {
-        const submittedScore = {
-          id: 'score-1',
-          rank: 1,
-          name: 'Player',
-          score: 123,
-          date: '2026-04-29',
-        };
-        onSubmit([submittedScore], submittedScore);
-      }}
-    >
-      Mock Game Over Form
-    </button>
+    <>
+      <button
+        aria-label="Mock submit score"
+        onClick={() => {
+          const submittedScore = {
+            id: 'score-1',
+            rank: 1,
+            name: 'Player',
+            score: 123,
+            date: '2026-04-29',
+          };
+          onSubmit([submittedScore], submittedScore);
+        }}
+      >
+        Mock Game Over Form
+      </button>
+      <button aria-label="Mock close game over form" onClick={onClose}>
+        Mock Close Game Over Form
+      </button>
+    </>
   ),
 }));
 
@@ -117,6 +124,27 @@ describe('<GameOver />', () => {
       screen.getByRole('button', { name: 'Mock submit score' }),
     );
     await userEvent.click(screen.getByLabelText('Close modal'));
+
+    const store = useGameStore.getState();
+    expect(store.gameStarted).toBe(false);
+    expect(store.gameOver).toBe(false);
+    expect(store.currentLevel).toBe(0);
+  });
+
+  it('returns to level select when the highscore form is closed without submitting', async () => {
+    useGameStore.setState({
+      gameOver: true,
+      gameOverReason: 'defeat',
+      currentLevel: 1,
+      gameStarted: true,
+      score: 123,
+    });
+
+    render(<GameOver />);
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Mock close game over form' }),
+    );
 
     const store = useGameStore.getState();
     expect(store.gameStarted).toBe(false);

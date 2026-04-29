@@ -70,6 +70,7 @@ export default function GameOver() {
           }}
           onClose={() => {
             handleGameOver();
+            setGameStarted(false);
           }}
         />
       )}

@@ -14,6 +14,9 @@ const testSelectableLevels: LevelSelectable[] = [
 
 describe('useGameStore levelUpSkill', () => {
   beforeEach(() => {
+    localStorage.clear();
+    useGameStore.persist.clearStorage();
+
     const grid = createDefaultGrid();
 
     useGameStore.setState({
@@ -28,6 +31,74 @@ describe('useGameStore levelUpSkill', () => {
         { id: 'Level-2', name: 'Level 2', waves: [] },
       ],
     });
+  });
+
+  it('persists unlocked levels and selected settings to local storage', async () => {
+    useGameStore.setState({
+      currentLevel: 2,
+      selectableLevels: [
+        { id: 0, name: 'Tutorial', locked: false },
+        { id: 1, name: 'Level 1', locked: false },
+        { id: 2, name: 'Level 2', locked: false },
+      ],
+    });
+    useGameStore.getState().setSettings({
+      drawParticles: false,
+      gameSpeed: 3,
+    });
+
+    await useGameStore.persist.rehydrate();
+
+    const persisted = JSON.parse(localStorage.getItem('game-store') ?? '{}');
+
+    expect(persisted.state.currentLevel).toBe(2);
+    expect(persisted.state.selectableLevels[2].locked).toBe(false);
+    expect(persisted.state.settings.drawParticles).toBe(false);
+    expect(persisted.state.settings.gameSpeed).toBe(3);
+    expect(persisted.state.settings.pause).toBe(false);
+  });
+
+  it('loads persisted progression and settings from local storage', async () => {
+    useGameStore.setState({
+      selectableLevels: [
+        { id: 0, name: 'Tutorial', locked: false },
+        { id: 1, name: 'Level 1', locked: true },
+        { id: 2, name: 'Level 2', locked: true },
+        { id: 3, name: 'Level 3', locked: true },
+      ],
+    });
+
+    localStorage.setItem(
+      'game-store',
+      JSON.stringify({
+        state: {
+          currentLevel: 3,
+          selectableLevels: [
+            { id: 0, locked: false },
+            { id: 1, locked: false },
+            { id: 2, locked: false },
+            { id: 3, locked: false },
+          ],
+          settings: {
+            ...defaultSettings,
+            drawParticles: false,
+            gameSpeed: 2,
+            pause: true,
+          },
+        },
+        version: 0,
+      }),
+    );
+
+    await useGameStore.persist.rehydrate();
+
+    const store = useGameStore.getState();
+
+    expect(store.currentLevel).toBe(3);
+    expect(store.selectableLevels[3]?.locked).toBe(false);
+    expect(store.settings.drawParticles).toBe(false);
+    expect(store.settings.gameSpeed).toBe(2);
+    expect(store.settings.pause).toBe(false);
   });
 
   it('always charges a flat 200 gold for skill upgrades', () => {
@@ -70,6 +141,33 @@ describe('useGameStore levelUpSkill', () => {
         expect(refreshedSkill).not.toBe(skill);
       });
     });
+  });
+
+  it('preserves settings after returning to level select', () => {
+    useGameStore.setState({
+      settings: {
+        ...defaultSettings,
+        showGrid: true,
+        drawParticles: false,
+        automateSkillCast: false,
+        showUi: true,
+        gameSpeed: 3,
+        pause: true,
+      },
+      currentLevel: 2,
+      gameOver: true,
+    });
+
+    useGameStore.getState().handleGameOver();
+
+    const store = useGameStore.getState();
+
+    expect(store.settings.showGrid).toBe(true);
+    expect(store.settings.drawParticles).toBe(false);
+    expect(store.settings.automateSkillCast).toBe(false);
+    expect(store.settings.showUi).toBe(true);
+    expect(store.settings.gameSpeed).toBe(3);
+    expect(store.settings.pause).toBe(false);
   });
 
   it('preserves unlocked levels after reset', () => {
