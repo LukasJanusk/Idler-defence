@@ -100,7 +100,6 @@ export function createStoreCallbacksForLevelFromGetter(
 export function calculateScore(gold: number, grid: Grid) {
   const characters = grid.getCharacters();
   const totalLevels = characters.reduce((sum, c) => sum + c.level, 0);
-  const multiplier = (100 * 4) / characters.length ? characters.length : 1;
 
-  return gold + totalLevels * multiplier;
+  return totalLevels * 200 + Math.floor(gold / 10);
 }
