@@ -44,6 +44,27 @@ export const waveSevenEventsData: CreateEnemyEventData[] = [
   { enemyType: 'savageZombie', count: 6, interval: 7600, startTime: 16000 },
 ];
 
+export const waveEightEventsData: CreateEnemyEventData[] = [
+  { enemyType: 'greenGorgon', count: 1, interval: 0, startTime: 0 },
+  { enemyType: 'fastZombie', count: 16, interval: 2000, startTime: 7000 },
+  { enemyType: 'savageZombie', count: 8, interval: 7000, startTime: 13000 },
+  { enemyType: 'zombieOne', count: 12, interval: 5600, startTime: 18000 },
+];
+
+export const waveNineEventsData: CreateEnemyEventData[] = [
+  { enemyType: 'greenGorgon', count: 2, interval: 0, startTime: 0 },
+  { enemyType: 'fastZombie', count: 20, interval: 1780, startTime: 6000 },
+  { enemyType: 'savageZombie', count: 10, interval: 6230, startTime: 12000 },
+  { enemyType: 'zombieOne', count: 15, interval: 4984, startTime: 17000 },
+];
+
+export const waveTenEventsData: CreateEnemyEventData[] = [
+  { enemyType: 'greenGorgon', count: 3, interval: 0, startTime: 0 },
+  { enemyType: 'fastZombie', count: 25, interval: 1530, startTime: 5000 },
+  { enemyType: 'savageZombie', count: 13, interval: 5357, startTime: 11000 },
+  { enemyType: 'zombieOne', count: 19, interval: 4286, startTime: 16000 },
+];
+
 const levelFourWaves: CreateEnemyEventData[][] = [
   waveOneEventsData,
   waveTwoEventsData,
@@ -52,6 +73,9 @@ const levelFourWaves: CreateEnemyEventData[][] = [
   waveFiveEventsData,
   waveSixEventsData,
   waveSevenEventsData,
+  waveEightEventsData,
+  waveNineEventsData,
+  waveTenEventsData,
 ];
 
 export const createLevelFour = (

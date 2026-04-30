@@ -98,6 +98,14 @@ export const createLevelOne = (
   return {
     id: 'Level-1',
     name: 'Level 1',
-    waves: [waveOne, waveTwo, waveThree, waveFour, waveFive, waveSix, waveSeven],
+    waves: [
+      waveOne,
+      waveTwo,
+      waveThree,
+      waveFour,
+      waveFive,
+      waveSix,
+      waveSeven,
+    ],
   };
 };

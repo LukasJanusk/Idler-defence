@@ -42,6 +42,13 @@ export const waveSevenEventsData: CreateEnemyEventData[] = [
   { enemyType: 'savageZombie', count: 4, interval: 10000, startTime: 12000 },
 ];
 
+export const waveEightEventsData: CreateEnemyEventData[] = [
+  { enemyType: 'greenGorgon', count: 1, interval: 0, startTime: 0 },
+  { enemyType: 'fastZombie', count: 14, interval: 2200, startTime: 6000 },
+  { enemyType: 'savageZombie', count: 6, interval: 8000, startTime: 12000 },
+  { enemyType: 'zombieOne', count: 10, interval: 6500, startTime: 18000 },
+];
+
 export const createLevelTwo = (
   grid: Grid,
   onEnemyDeath?: (enemy?: Enemy<EnemyAction>) => void,
@@ -69,6 +76,11 @@ export const createLevelTwo = (
     grid,
     onEnemyDeath,
   );
+  const waveEight = createEnemyWaveEvents(
+    waveEightEventsData,
+    grid,
+    onEnemyDeath,
+  );
 
   return {
     id: 'Level-2',
@@ -81,6 +93,7 @@ export const createLevelTwo = (
       waveFive,
       waveSix,
       waveSeven,
+      waveEight,
     ],
   };
 };
