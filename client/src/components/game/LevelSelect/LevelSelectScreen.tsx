@@ -38,7 +38,12 @@ export default function LevelSelectScreen({
     setCurrentLevel(defaultSelectedLevel);
   }, [levels, setCurrentLevel]);
 
-  const [containerRef] = useSmoothScroll<HTMLDivElement>(selectedLevel);
+  const selectedLevelIndex = levels.findIndex(
+    (level) => level.id === selectedLevel,
+  );
+  const [containerRef] = useSmoothScroll<HTMLDivElement>(
+    selectedLevelIndex >= 0 ? selectedLevelIndex : 0,
+  );
 
   return (
     <div className="relative h-full w-full">
